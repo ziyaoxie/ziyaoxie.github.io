@@ -1,0 +1,83 @@
+# Site settings
+site: 提笔忘字
+title: 提笔忘字 - 我的博客
+keywords: 提笔忘字, 博客
+description: >-
+  正是江南好风景，落花时节又逢君。
+lang: zh-CN
+timezone:  	Asia/Shanghai
+#repo: https://github.com/onepase/Ephesus # site repo [optional]
+#google_verify:      XXX # Put your Google Verification here
+#google_analytics:   UA-XXXXXXXX-00 # Put your Google Analytics code
+#discus-identifier:  XXX
+
+# Author settings
+author:
+  name: Xie Ziyao
+  bio: CSer @NJU <br> Open Source @LTP <br> Computer Engineer @Tencent
+  picture: assets/images/profile.jpg 
+  github: wml5yw8gwgll # github username
+  twitter: XieZiyao # twitter username
+  linkedin: xieziyao # linkedin username
+  email: ziyaoxie@outlook.com # email address
+
+
+# URL settings
+url: "wml5yw8gwgll.github.io" # Domain Name of host. [username].github.io for github pages
+permalink: pretty
+
+# 百度统计
+baidu_tmid: 7236cce7205c66e3b7b7890fdcd6611f
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+
+exclude:
+  - .jekyll-cache
+  - .obsidian
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE.md
+  - README.md
+  - CONTRIBUTING.md
+
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-relative-links
+paginate: 20
+paginate_path: "/page/:num"
+
+collections:
+  pages:
+    output: true
+    permalink: /:name
+  posts:
+    output: true
+    permalink: /:slug
+  
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+relative_links:
+  enabled:     true
+  collections: false
