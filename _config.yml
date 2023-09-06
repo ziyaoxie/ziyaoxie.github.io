@@ -16,14 +16,15 @@ author:
   name: Xie Ziyao
   bio: CSer @NJU <br> Open Source @LTP <br> Computer Engineer @Tencent
   picture: assets/images/profile.jpg 
-  github: wml5yw8gwgll # github username
+  github: ziyaoxie # github username
   twitter: XieZiyao # twitter username
   linkedin: xieziyao # linkedin username
   email: ziyaoxie@outlook.com # email address
 
 
 # URL settings
-url: "wml5yw8gwgll.github.io" # Domain Name of host. [username].github.io for github pages
+baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+url: "https://imx.ink" # Domain Name of host. [username].github.io for github pages
 permalink: pretty
 
 # 百度统计
