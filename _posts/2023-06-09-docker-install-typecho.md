@@ -1,7 +1,7 @@
 ---
 title: "Docker 部署 Typecho"
 date: 2023-06-09T17:02:00+08:00
-author: Ziyao Xie
+author: Xie Ziyao
 layout: post
 permalink: /docker-install-typecho/
 categories: [技术文章]
@@ -18,7 +18,7 @@ tags: [docker, typecho]
 
 使用 [80x86/typecho](https://hub.docker.com/r/80x86/typecho) 开源镜像，注意 `/srv/http/typecho` 为 `typecho` 解压安装的路径，下载地址参考[链接](https://typecho.org/download)； 安装执行命令：
 
-{% highlight shell %}
+{% highlight bash %}
 $ docker run -d \
 --name=typecho-blog \
 --restart always \
@@ -37,14 +37,14 @@ $ docker run -d \
 
 进入 Docker 容器的 Nginx 配置目录：
 
-{% highlight shell %}
+{% highlight bash %}
 $ docker exec -it typecho /bin/sh
 $ cd /etc/nginx/sites-enabled
 {% endhighlight %}
 
 修改默认 server 配置 `default` 文件为：
 
-{% highlight shell %}
+{% highlight config %}
 server {
   listen   443 ssl; ## listen for ipv4; this line is default and implied
   listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
@@ -67,7 +67,7 @@ server {
 
 新建 `redirect` 文件：
 
-{% highlight shell %}
+{% highlight config %}
 server {
     listen 80;
     server_name yoursite.com www.yoursite.com;
@@ -78,7 +78,7 @@ server {
 
 重启 Nginx 服务：
 
-{% highlight shell %}
+{% highlight bash %}
 $ nginx -s reload
 {% endhighlight %}
 
@@ -92,7 +92,7 @@ $ nginx -s reload
 
 打开 `index.php` 文件，改为 `date ('Y 年 n 月 j 日')`：
 
-{% highlight shell %}
+{% highlight php %}
 <date class="post-meta">
     <?php $this->date('Y 年 n 月 j 日'); ?>
 </date>
@@ -100,7 +100,7 @@ $ nginx -s reload
 
 打开 `sidebar.php` 文件, 改为 `type=month&format=Y 年 m 月`：
 
-{% highlight shell %}
+{% highlight php %}
 <section class="widget">
     <h3 class="widget-title"><?php _e('归档'); ?></h3>
     <ul class="widget-list">
@@ -114,7 +114,7 @@ $ nginx -s reload
 
 打开 `style.css` 文件, 将 `color` 改为 `#C83C23`：
 
-{% highlight shell %}
+{% highlight css %}
 .post-content a, .comment-content a {
     border-bottom:1px solid #ddd;
     color: #C83C23;
@@ -125,14 +125,14 @@ $ nginx -s reload
 
 打开 `footer.php` 文件, 引入 `highlight.js`：
 
-{% highlight shell %}
+{% highlight php %}
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 {% endhighlight %}
 
 打开 `header.php`, 引入 `css` 样式文件, 可以自行在 `highlight.js` 官网选择：
 
-{% highlight shell %}
+{% highlight php %}
 <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
 {% endhighlight %}
 
@@ -140,7 +140,7 @@ $ nginx -s reload
 
 打开 `footer.php` 文件, 在 `\<body>` 标签中加入下面代码：
 
-{% highlight shell %}
+{% highlight php %}
 <script>
   const text = pangu.spacing("當你凝視著bug，bug也凝視著你");
   // text = '當你凝視著 bug，bug 也凝視著你'
@@ -160,7 +160,7 @@ $ nginx -s reload
 
 打开 `post.php` 文件, 在 `\</article>` 标签后添加下面代码：
 
-{% highlight shell %}
+{% highlight php %}
 <div class="post-nav">
     <div class="post-nav-pre" style="float:left;">
         <?php $this->thePrev('上一篇 : %s', ''); ?>
@@ -173,7 +173,7 @@ $ nginx -s reload
 
 打开 `style.css` 添加下面代码：
 
-{% highlight shell %}
+{% highlight css %}
 /* 文章翻页 */
 .post-nav{
     overflow: hidden;
@@ -195,7 +195,7 @@ $ nginx -s reload
 
 打开 `post.php`, 在 `\</article>` 标签后, 添加版权声明代码：
 
-{% highlight shell %}
+{% highlight php %}
 <div class=copyright>
     <div class=cp-title>
         <strong>本文标题：</strong><?php $this->title(); ?>
@@ -220,7 +220,7 @@ $ nginx -s reload
 
 打开 `style.css`, 添加版权声明样式：
 
-{% highlight shell %}
+{% highlight css %}
 /* 版权声明 */
 .copyright{
     background-color: #f0f0f0;
@@ -241,7 +241,7 @@ $ nginx -s reload
 
 打开 `post.php`, 添加下面代码在合适位置：
 
-{% highlight shell %}
+{% highlight php %}
 <div style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
     <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>打赏</span> </button>
     <p style="color:#999;font-size:14px;">多寡随意，丰俭由人</p>
@@ -260,7 +260,7 @@ $ nginx -s reload
 
 打开 `style.css`, 添加打赏按钮样式文件：
 
-{% highlight shell %}
+{% highlight css %}
 /* 文章打赏 */
 #QR {
     padding-top: 20px;
@@ -313,7 +313,7 @@ $ nginx -s reload
 
 打开 `style.css`：
 
-{% highlight shell %}
+{% highlight css %}
 .post-content img, .comment-content img {
     max-width:100%;
     margin-left: auto;
@@ -327,7 +327,7 @@ $ nginx -s reload
 
 打开 `style.css`：
 
-{% highlight shell %}
+{% highlight css %}
 blockquote {
     margin: 1.5em 0em;
     padding: 0.5em 1.5em;
@@ -345,7 +345,7 @@ blockquote {
 
 在 `header.php` 的 `<head></head>` 标签之间添加：
 
-{% highlight shell %}
+{% highlight php %}
 <link rel="shortcut icon" href="<?php $this->options->themeUrl('favicon.ico'); ?>" type="image/x-icon" />
 # 如果有下面这一行就删掉
 <link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
