@@ -29,5 +29,9 @@
 		<link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ site.url }}{{ site.baseurl }}/feed.json" />
 		<link rel="sitemap" type="application/xml" title="sitemap" href="{{ site.url }}{{ site.baseurl }}/sitemap.xml" />
 		<meta name="google-site-verification" content="{{site.google_verify}}" />
+
+		{% if page.layout == 'post' and site.gitalk.enable %}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+		{% endif %}
 	</head>
 <body>
