@@ -7,19 +7,13 @@ description: >-
 lang: zh-CN
 timezone: Asia/Shanghai
 
-#repo: https://github.com/onepase/Ephesus # site repo [optional]
-#google_verify:      XXX # Put your Google Verification here
-#google_analytics:   UA-XXXXXXXX-00 # Put your Google Analytics code
-#discus-identifier:  XXX
-
 # Author settings
 author:
   name: Xie Ziyao
   bio: CSer @NJU <br> Open Source @LTP <br> Computer Engineer @Tencent
-  picture: assets/images/profile.jpg 
-  github: ziyaoxie # github username
+  picture: assets/images/profile.jpg
   twitter: XieZiyao # twitter username
-  linkedin: xieziyao # linkedin username
+  github: ziyaoxie # github username
   email: ziyaoxie@outlook.com # email address
 
 gitalk:
