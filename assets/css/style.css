@@ -89,13 +89,21 @@ body{
 .post-header .post-date{font-weight: 600;}
 .post-header .post-share a{display: flex;}
 
-.tags-container{
+.tags-container-categories{
   width: 100%; 
   display: flex; 
   flex-direction: row; 
   flex-wrap: wrap; 
   align-items: center;
   margin-top: 20px;
+}
+
+.tags-container-tags{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   margin-bottom: 20px;
 }
 

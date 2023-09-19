@@ -17,6 +17,18 @@ author:
   linkedin: xieziyao # linkedin username
   email: ziyaoxie@outlook.com # email address
 
+# URL settings
+baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+url: "https://imx.ink" # Domain Name of host. [username].github.io for github pages
+permalink: pretty
+
+# 语法高亮
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# gitalk
 gitalk:
   enable: true # 总开关，控制gitalk功能是否开启
   clientId: 084594950ca06b86a714
@@ -26,19 +38,8 @@ gitalk:
   admin: ziyaoxie
 #  distractionFreeMode: true # 若设置为true，则当在评论框输入时，周围区域会变暗
 
-# URL settings
-baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
-url: "https://imx.ink" # Domain Name of host. [username].github.io for github pages
-permalink: pretty
-
 # 百度统计
 baidu_tmid: 7236cce7205c66e3b7b7890fdcd6611f
-
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-
 
 exclude:
   - .jekyll-cache
@@ -53,6 +54,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-relative-links
+
 paginate: 20
 paginate_path: "/page/:num"
 
