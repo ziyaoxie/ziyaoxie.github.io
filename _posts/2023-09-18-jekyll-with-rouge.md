@@ -1,5 +1,5 @@
 ---
-title: "在 Jekyll 中使用 Rouge 代码语法高亮"
+title: "Rouge 插件支持 Jekyll 代码高亮"
 date: 2023-09-18T20:36:00+08:00
 author: Xie Ziyao
 layout: post
