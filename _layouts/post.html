@@ -10,7 +10,7 @@ layout: default
 {% endif %}
 
 <div class="post-header">
-	<div class="post-date">{{ page.date | date: "%d.%m.%Y" }}</div>
+	<div class="post-date">{{ page.date | date: "%Y.%m.%d" }}</div>
 	<div class="post-share">
 		Share:&nbsp;
 		<a href="https://twitter.com/intent/tweet?source=tweetbutton&amp;original_referer={{site.url}}/{{page.slug}}&amp;text={{page.title}} - {{site.url}}/{{page.slug}}" target="_blank">
