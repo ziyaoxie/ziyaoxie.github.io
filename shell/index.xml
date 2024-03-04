@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shell on 提笔忘字</title><link>https://imx.ink/shell/</link><description>Recent content in Shell on 提笔忘字</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Thu, 06 Jul 2023 12:38:00 +0800</lastBuildDate><atom:link href="https://imx.ink/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>iptables 命令整理</title><link>https://imx.ink/tech/2023/07/06/shell-command-iptables/</link><pubDate>Thu, 06 Jul 2023 12:38:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/06/shell-command-iptables/</guid><description>iptables 是 Linux 系统上的 IP 信息包过滤系统。广义上的 iptables 实际上是由 netfilter 和 iptables 两个组件组成，而狭义上的 iptables 是指一个命令行工具，用于配置管理信息包的过滤规则。
+netfilter 是内核的一个子系统，其工作在内核空间，核心是一个报文过滤架构；iptables 工作在用户空间，用于设置、维护和检查信息包的过滤规则，与 netfilter 子系统交互，它使插入、修改和除去信息包过滤表中的规则变得容易。
+表/链/规则 使用 iptables 需要先理解表（table）、链（chain）、规则（rule）这三个概念。netfilter/iptables 系统可以理解成是 表（table） 的容器，这也是它被称为 iptables 的原因，而表则是 链（chain） 的容器，即所有的链都属于其对应的表，链又是 规则（rule） 的容器。
+表(tables) iptables 大致有 raw, filter, nat, mangle, security 等五类表，常用的表有 filter、nat、mangle 三个表。
+链(chains) 链(chains)是数据包传输的路径，对应着前面提到的报文处理的五个阶段，也相当于是五个不同的关卡：INPUT, OUTPUT 链更多的应用在本机的网络控制中，即主要针对本机进出数据的安全控制；而 FORWARD, PREROUTING, POSTROUTING 链更多地应用在对我的网络控制中，特别是机器作为网关使用时的情况。
+链是规则的容器，一条链中可能包含着众多的规则，当一个数据包到达一个链时，iptables 就会从链中第一条规则开始匹配，如果满足该规则的条件，系统就会根据该条规则所定义的方法处理该数据包，否则将继续匹配下一条规则，如果该数据包不符合链中任一条规则，iptables 就会根据该链预先定义的默认策略来处理数据包。
+规则(rules) 规则(rules)是一些预定义的数据包过滤条件。规则存储在内核空间的信息包过滤表中，数据包每经过一个链(关卡)时，系统会根据链中规则指定的匹配条件来尝试匹配，一旦匹配成功，则由规则后面指定的处理动作进行处理。
+规则分别指定了源地址、目的地址、传输协议（如TCP、UDP、ICMP）和服务类型（如HTTP、FTP和SMTP）等。当数据包与规则匹配时，iptables就根据规则所定义的方法来处理这些数据包，如放行（accept）、拒绝（reject）和丢弃（drop）等。配置防火墙的主要工作就是添加、修改和删除这些规则。
+数据包流向 已知 tables 由 chains 组成，而 chains 又由 rules 组成。常用的表有 filter、nat、mangle 三种，链有五种，对应报文处理的五个阶段。对规则理解的关键：一条规则包括一个条件和一个动作(target)；如果满足条件，就执行处理动作；如果不满足条件，就继续匹配下一条规则。
+以下简略图描述了网络数据包经过 netfilter/iptables 的过程：</description></item><item><title>history 命令整理</title><link>https://imx.ink/tech/2023/07/05/shell-command-history/</link><pubDate>Wed, 05 Jul 2023 19:34:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/05/shell-command-history/</guid><description>history 命令的常用方法记录。
+显示时间戳 如果要让 history 在显示历史命令时同时显示记录命令的时间，则需要设置如下环境变量：
+$ export HISTTIMEFORMAT=&amp;#39;%F %T &amp;#39; 也可以设置 alias 语句来查看最近的历史命令：
+alias h1=&amp;#39;history 10&amp;#39; alias h2=&amp;#39;history 20&amp;#39; alias h3=&amp;#39;history 30&amp;#39; 搜索历史命令 按下 Ctrl +R 然后输入关键字，可以在历史命令中通过关键字来查找已经历史命名。例如，搜索 red，则显示以前的命令中含有 red 的命令 cat/etc/redhat-release：
+# 在命令行提示符下按下Ctrl＋R, 终端将显示如下提示 (reverse-i-search)\`red`: cat/etc/redhat-release # 当看到命令后按回车键，就可以重新执行这条命令 $ cat /etc/redhat-release Fedora release 9 (Sulphur) 执行特定命令 用 history 显示历史命令的时候，在每个命令前边都有一个编号，用 ! + 编号 可以重新执行该条命令。例如：
+$ history | more 1 service network restart 2 exit 3 id 4 cat /etc/redhat-release $ !</description></item></channel></rss>

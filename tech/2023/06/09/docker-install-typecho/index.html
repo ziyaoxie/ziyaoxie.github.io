@@ -1,0 +1,1188 @@
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Docker 部署 Typecho | 提笔忘字</title>
+<meta name=title content="Docker 部署 Typecho"><meta name=description content='博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
+安装 Docker 并配置镜像加速源
+参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
+安装 Typecho 服务
+使用 80x86/typecho 开源镜像，注意 /srv/http/typecho 为 typecho 解压安装的路径，下载地址参考链接； 安装执行命令：
+$ docker run -d \
+--name=typecho-blog \
+--restart always \
+--mount type=tmpfs,destination=/tmp \
+-v /srv/http/typecho:/data \
+-e PHP_TZ=Asia/Shanghai \
+-e PHP_MAX_EXECUTION_TIME=600 \
+-p 80:80 \
+-p 443:443 \
+80x86/typecho:latest
+Docker HTTPS 开启
+腾讯云官网申请免费证书：免费 SSL 证书申请流程，下载 Nginx 证书，得到 xxxx.pem 和 xxxx.key 文件，上传至 /srv/http/typecho/crt 文件夹中，需要先新建此文件夹。
+进入 Docker 容器的 Nginx 配置目录：
+$ docker exec -it typecho /bin/sh
+$ cd /etc/nginx/sites-enabled
+修改默认 server 配置 default 文件为：
+server {
+  listen   443 ssl; ## listen for ipv4; this line is default and implied
+  listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
+
+  root /app;
+  index index.php index.html index.htm;
+
+  ssl_certificate "/data/crt/xxxx.com.pem";
+  ssl_certificate_key "/data/crt/xxxx.com.key";
+  ssl_session_cache shared:SSL:1m;
+  ssl_session_timeout 10m;
+
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!aNULL:!MD5:!ADH:!RC4;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+
+  # 其余不改动
+ }
+新建 redirect 文件：
+server {
+    listen 80;
+    server_name yoursite.com www.yoursite.com;
+
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+重启 Nginx 服务：
+$ nginx -s reload
+博客样式修改
+适用于 maupassant 主题，下载参考链接，部分修改需要清空缓存重新加载生效。
+文章日期修改
+主要修改了首页标题下日期，以及边栏归档日期的显示。
+打开 index.php 文件，改为 date (&#39;Y 年 n 月 j 日&#39;)：
+<date class="post-meta">
+    <?php $this->date(&#39;Y 年 n 月 j 日&#39;); ?>
+</date>
+打开 sidebar.php 文件, 改为 type=month&amp;format=Y 年 m 月：
+<section class="widget">
+    <h3 class="widget-title"><?php _e(&#39;归档&#39;); ?></h3>
+    <ul class="widget-list">
+        <?php $this->widget(&#39;Widget_Contents_Post_Date&#39;, &#39;type=month&amp;format=Y年m月&#39;)
+        ->parse(&#39;<li><a href="{permalink}">{date}</a></li>&#39;); ?>
+    </ul>
+</section>
+链接颜色修改
+打开 style.css 文件, 将 color 改为 #C83C23：
+.post-content a, .comment-content a {
+    border-bottom:1px solid #ddd;
+    color: #C83C23;
+}
+代码高亮修改
+打开 footer.php 文件, 引入 highlight.js：
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+打开 header.php, 引入 css 样式文件, 可以自行在 highlight.js 官网选择：
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+中西文自动加空格
+打开 footer.php 文件, 在 \<body> 标签中加入下面代码：
+<script>
+  const text = pangu.spacing("當你凝視著bug，bug也凝視著你");
+  // text = &#39;當你凝視著 bug，bug 也凝視著你&#39;
+
+  pangu.spacingElementById(&#39;main&#39;);
+  pangu.spacingElementByClassName(&#39;comment&#39;);
+  pangu.spacingElementByTagName(&#39;p&#39;);
+
+  document.addEventListener(&#39;DOMContentLoaded&#39;, () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+文章页添加翻页
+打开 post.php 文件, 在 \</article> 标签后添加下面代码：
+<div class="post-nav">
+    <div class="post-nav-pre" style="float:left;">
+        <?php $this->thePrev(&#39;上一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+    <div class="post-nav-next" style="float:right;">
+        <?php $this->theNext(&#39;下一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+</div>
+打开 style.css 添加下面代码：
+/* 文章翻页 */
+.post-nav{
+    overflow: hidden;
+    margin: 35px 0;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.post-nav-pre a{
+    color:#C83C23;
+}
+
+.post-nav-next a{
+    color:#C83C23;
+}
+添加版权声明
+打开 post.php, 在 \</article> 标签后, 添加版权声明代码：
+<div class=copyright>
+    <div class=cp-title>
+        <strong>本文标题：</strong><?php $this->title(); ?>
+    </div>
+    <div class=cp-author>
+        <strong>文章作者：</strong><?php $this->author(); ?>
+    </div>
+    <div class=cp-date>
+        <strong>发布时间：</strong><?php $this->date(&#39;Y 年 m 月 d 日&#39;); ?>
+    </div>
+    <div class=cp-update>
+        <strong>更新时间：</strong><?php echo date(&#39;Y 年 m 月 d 日&#39;, $this->modified);?>
+    </div>
+    <div class=cp-url>
+        <strong>原始链接：</strong><a href="<?php $this->permalink() ?>"><?php $this->permalink() ?></a>
+    </div>
+    <div class=cp-cc>
+        <strong>许可协议：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="noopener noreferrer nofollow">署名 4.0 国际（CC BY 4.0）</a>，转载请保留原文链接和作者。
+    </div>
+</div>
+打开 style.css, 添加版权声明样式：
+/* 版权声明 */
+.copyright{
+    background-color: #f0f0f0;
+    padding: 12px;
+    line-height: 1.6;
+}
+.cp-url a{
+    color:#C83C23;
+    border-bottom: 1px solid #ddd;
+}
+.cp-cc a{
+    color: #C83C23;
+    border-bottom: 1px solid #ddd;
+}
+添加打赏功能
+打开 post.php, 添加下面代码在合适位置：
+<div style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById(&#39;QR&#39;); if (qr.style.display === &#39;none&#39;) {qr.style.display=&#39;block&#39;;} else {qr.style.display=&#39;none&#39;}"> <span>打赏</span> </button>
+    <p style="color:#999;font-size:14px;">多寡随意，丰俭由人</p>
+    <div id="QR" style="display: none;">
+        <div id="wechat" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="wechat_qr" src="/yourpath/wechatpay.png" alt="WeChat Pay" /></a>
+        <p> 微信打赏 </p>
+        </div>
+        <div id="alipay" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="alipay_qr" src="/yourpath/alipay.png" alt="Alipay" /></a>
+        <p> 支付宝打赏 </p>
+        </div>
+    </div>
+</div>
+打开 style.css, 添加打赏按钮样式文件：
+/* 文章打赏 */
+#QR {
+    padding-top: 20px;
+    border: #f05050;
+}
+
+#QR a {
+    border: 0
+}
+
+#QR img {
+    width: 180px;
+    max-width: 100%;
+    display: inline-block;
+    margin: .8em 2em 0 2em
+}
+
+#rewardButton {
+    border: 1px solid #f05050;
+    line-height: 36px;
+    text-align: center;
+    height: 36px;
+    display: block;
+    border-radius: 4px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    background-color: #f05050;
+    color: #fff;
+    margin: 0 auto;
+    padding: 0 25px
+}
+
+#rewardButton:hover {
+    color: #f77b83;
+    border-color: #f77b83;
+    outline-style: none
+}
+
+#rewardButton {
+    background-color: #f05050;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+}
+图片 & 引用样式优化
+文章中的图片之前容易跟背景色融合，于是加上 border 和圆角处理，加了二层阴影。
+打开 style.css：
+.post-content img, .comment-content img {
+    max-width:100%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+打开 style.css：
+blockquote {
+    margin: 1.5em 0em;
+    padding: 0.5em 1.5em;
+    /* padding-left: 1.5em; */
+    border-left: 4px solid #ddd;
+    color: #777;
+    font-size: 0.82em;
+    background-color: #f9f9f9;
+}
+配置网站浏览器图标
+制作 ico 图片文件，可以参考链接，文件下载到 typecho/themes/{theme_name}/favicon.ico 路径。
+在 header.php 的 <head></head> 标签之间添加：
+<link rel="shortcut icon" href="<?php $this->options->themeUrl(&#39;favicon.ico&#39;); ?>" type="image/x-icon" />
+# 如果有下面这一行就删掉
+<link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
+主页只显示摘要方法
+在编写文章时在摘要和全文中间使用分隔符 `'><meta name=keywords content="typecho,"><meta property="og:title" content="Docker 部署 Typecho"><meta property="og:description" content='博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
+安装 Docker 并配置镜像加速源
+参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
+安装 Typecho 服务
+使用 80x86/typecho 开源镜像，注意 /srv/http/typecho 为 typecho 解压安装的路径，下载地址参考链接； 安装执行命令：
+$ docker run -d \
+--name=typecho-blog \
+--restart always \
+--mount type=tmpfs,destination=/tmp \
+-v /srv/http/typecho:/data \
+-e PHP_TZ=Asia/Shanghai \
+-e PHP_MAX_EXECUTION_TIME=600 \
+-p 80:80 \
+-p 443:443 \
+80x86/typecho:latest
+Docker HTTPS 开启
+腾讯云官网申请免费证书：免费 SSL 证书申请流程，下载 Nginx 证书，得到 xxxx.pem 和 xxxx.key 文件，上传至 /srv/http/typecho/crt 文件夹中，需要先新建此文件夹。
+进入 Docker 容器的 Nginx 配置目录：
+$ docker exec -it typecho /bin/sh
+$ cd /etc/nginx/sites-enabled
+修改默认 server 配置 default 文件为：
+server {
+  listen   443 ssl; ## listen for ipv4; this line is default and implied
+  listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
+
+  root /app;
+  index index.php index.html index.htm;
+
+  ssl_certificate "/data/crt/xxxx.com.pem";
+  ssl_certificate_key "/data/crt/xxxx.com.key";
+  ssl_session_cache shared:SSL:1m;
+  ssl_session_timeout 10m;
+
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!aNULL:!MD5:!ADH:!RC4;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+
+  # 其余不改动
+ }
+新建 redirect 文件：
+server {
+    listen 80;
+    server_name yoursite.com www.yoursite.com;
+
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+重启 Nginx 服务：
+$ nginx -s reload
+博客样式修改
+适用于 maupassant 主题，下载参考链接，部分修改需要清空缓存重新加载生效。
+文章日期修改
+主要修改了首页标题下日期，以及边栏归档日期的显示。
+打开 index.php 文件，改为 date (&#39;Y 年 n 月 j 日&#39;)：
+<date class="post-meta">
+    <?php $this->date(&#39;Y 年 n 月 j 日&#39;); ?>
+</date>
+打开 sidebar.php 文件, 改为 type=month&amp;format=Y 年 m 月：
+<section class="widget">
+    <h3 class="widget-title"><?php _e(&#39;归档&#39;); ?></h3>
+    <ul class="widget-list">
+        <?php $this->widget(&#39;Widget_Contents_Post_Date&#39;, &#39;type=month&amp;format=Y年m月&#39;)
+        ->parse(&#39;<li><a href="{permalink}">{date}</a></li>&#39;); ?>
+    </ul>
+</section>
+链接颜色修改
+打开 style.css 文件, 将 color 改为 #C83C23：
+.post-content a, .comment-content a {
+    border-bottom:1px solid #ddd;
+    color: #C83C23;
+}
+代码高亮修改
+打开 footer.php 文件, 引入 highlight.js：
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+打开 header.php, 引入 css 样式文件, 可以自行在 highlight.js 官网选择：
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+中西文自动加空格
+打开 footer.php 文件, 在 \<body> 标签中加入下面代码：
+<script>
+  const text = pangu.spacing("當你凝視著bug，bug也凝視著你");
+  // text = &#39;當你凝視著 bug，bug 也凝視著你&#39;
+
+  pangu.spacingElementById(&#39;main&#39;);
+  pangu.spacingElementByClassName(&#39;comment&#39;);
+  pangu.spacingElementByTagName(&#39;p&#39;);
+
+  document.addEventListener(&#39;DOMContentLoaded&#39;, () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+文章页添加翻页
+打开 post.php 文件, 在 \</article> 标签后添加下面代码：
+<div class="post-nav">
+    <div class="post-nav-pre" style="float:left;">
+        <?php $this->thePrev(&#39;上一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+    <div class="post-nav-next" style="float:right;">
+        <?php $this->theNext(&#39;下一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+</div>
+打开 style.css 添加下面代码：
+/* 文章翻页 */
+.post-nav{
+    overflow: hidden;
+    margin: 35px 0;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.post-nav-pre a{
+    color:#C83C23;
+}
+
+.post-nav-next a{
+    color:#C83C23;
+}
+添加版权声明
+打开 post.php, 在 \</article> 标签后, 添加版权声明代码：
+<div class=copyright>
+    <div class=cp-title>
+        <strong>本文标题：</strong><?php $this->title(); ?>
+    </div>
+    <div class=cp-author>
+        <strong>文章作者：</strong><?php $this->author(); ?>
+    </div>
+    <div class=cp-date>
+        <strong>发布时间：</strong><?php $this->date(&#39;Y 年 m 月 d 日&#39;); ?>
+    </div>
+    <div class=cp-update>
+        <strong>更新时间：</strong><?php echo date(&#39;Y 年 m 月 d 日&#39;, $this->modified);?>
+    </div>
+    <div class=cp-url>
+        <strong>原始链接：</strong><a href="<?php $this->permalink() ?>"><?php $this->permalink() ?></a>
+    </div>
+    <div class=cp-cc>
+        <strong>许可协议：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="noopener noreferrer nofollow">署名 4.0 国际（CC BY 4.0）</a>，转载请保留原文链接和作者。
+    </div>
+</div>
+打开 style.css, 添加版权声明样式：
+/* 版权声明 */
+.copyright{
+    background-color: #f0f0f0;
+    padding: 12px;
+    line-height: 1.6;
+}
+.cp-url a{
+    color:#C83C23;
+    border-bottom: 1px solid #ddd;
+}
+.cp-cc a{
+    color: #C83C23;
+    border-bottom: 1px solid #ddd;
+}
+添加打赏功能
+打开 post.php, 添加下面代码在合适位置：
+<div style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById(&#39;QR&#39;); if (qr.style.display === &#39;none&#39;) {qr.style.display=&#39;block&#39;;} else {qr.style.display=&#39;none&#39;}"> <span>打赏</span> </button>
+    <p style="color:#999;font-size:14px;">多寡随意，丰俭由人</p>
+    <div id="QR" style="display: none;">
+        <div id="wechat" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="wechat_qr" src="/yourpath/wechatpay.png" alt="WeChat Pay" /></a>
+        <p> 微信打赏 </p>
+        </div>
+        <div id="alipay" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="alipay_qr" src="/yourpath/alipay.png" alt="Alipay" /></a>
+        <p> 支付宝打赏 </p>
+        </div>
+    </div>
+</div>
+打开 style.css, 添加打赏按钮样式文件：
+/* 文章打赏 */
+#QR {
+    padding-top: 20px;
+    border: #f05050;
+}
+
+#QR a {
+    border: 0
+}
+
+#QR img {
+    width: 180px;
+    max-width: 100%;
+    display: inline-block;
+    margin: .8em 2em 0 2em
+}
+
+#rewardButton {
+    border: 1px solid #f05050;
+    line-height: 36px;
+    text-align: center;
+    height: 36px;
+    display: block;
+    border-radius: 4px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    background-color: #f05050;
+    color: #fff;
+    margin: 0 auto;
+    padding: 0 25px
+}
+
+#rewardButton:hover {
+    color: #f77b83;
+    border-color: #f77b83;
+    outline-style: none
+}
+
+#rewardButton {
+    background-color: #f05050;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+}
+图片 & 引用样式优化
+文章中的图片之前容易跟背景色融合，于是加上 border 和圆角处理，加了二层阴影。
+打开 style.css：
+.post-content img, .comment-content img {
+    max-width:100%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+打开 style.css：
+blockquote {
+    margin: 1.5em 0em;
+    padding: 0.5em 1.5em;
+    /* padding-left: 1.5em; */
+    border-left: 4px solid #ddd;
+    color: #777;
+    font-size: 0.82em;
+    background-color: #f9f9f9;
+}
+配置网站浏览器图标
+制作 ico 图片文件，可以参考链接，文件下载到 typecho/themes/{theme_name}/favicon.ico 路径。
+在 header.php 的 <head></head> 标签之间添加：
+<link rel="shortcut icon" href="<?php $this->options->themeUrl(&#39;favicon.ico&#39;); ?>" type="image/x-icon" />
+# 如果有下面这一行就删掉
+<link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
+主页只显示摘要方法
+在编写文章时在摘要和全文中间使用分隔符 `'><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/06/09/docker-install-typecho/"><meta property="og:image" content="https://imx.ink/images/share.png"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-06-09T17:02:00+08:00"><meta property="article:modified_time" content="2023-06-09T17:02:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://imx.ink/images/share.png"><meta name=twitter:title content="Docker 部署 Typecho"><meta name=twitter:description content='博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
+安装 Docker 并配置镜像加速源
+参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
+安装 Typecho 服务
+使用 80x86/typecho 开源镜像，注意 /srv/http/typecho 为 typecho 解压安装的路径，下载地址参考链接； 安装执行命令：
+$ docker run -d \
+--name=typecho-blog \
+--restart always \
+--mount type=tmpfs,destination=/tmp \
+-v /srv/http/typecho:/data \
+-e PHP_TZ=Asia/Shanghai \
+-e PHP_MAX_EXECUTION_TIME=600 \
+-p 80:80 \
+-p 443:443 \
+80x86/typecho:latest
+Docker HTTPS 开启
+腾讯云官网申请免费证书：免费 SSL 证书申请流程，下载 Nginx 证书，得到 xxxx.pem 和 xxxx.key 文件，上传至 /srv/http/typecho/crt 文件夹中，需要先新建此文件夹。
+进入 Docker 容器的 Nginx 配置目录：
+$ docker exec -it typecho /bin/sh
+$ cd /etc/nginx/sites-enabled
+修改默认 server 配置 default 文件为：
+server {
+  listen   443 ssl; ## listen for ipv4; this line is default and implied
+  listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
+
+  root /app;
+  index index.php index.html index.htm;
+
+  ssl_certificate "/data/crt/xxxx.com.pem";
+  ssl_certificate_key "/data/crt/xxxx.com.key";
+  ssl_session_cache shared:SSL:1m;
+  ssl_session_timeout 10m;
+
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!aNULL:!MD5:!ADH:!RC4;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+
+  # 其余不改动
+ }
+新建 redirect 文件：
+server {
+    listen 80;
+    server_name yoursite.com www.yoursite.com;
+
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+重启 Nginx 服务：
+$ nginx -s reload
+博客样式修改
+适用于 maupassant 主题，下载参考链接，部分修改需要清空缓存重新加载生效。
+文章日期修改
+主要修改了首页标题下日期，以及边栏归档日期的显示。
+打开 index.php 文件，改为 date (&#39;Y 年 n 月 j 日&#39;)：
+<date class="post-meta">
+    <?php $this->date(&#39;Y 年 n 月 j 日&#39;); ?>
+</date>
+打开 sidebar.php 文件, 改为 type=month&amp;format=Y 年 m 月：
+<section class="widget">
+    <h3 class="widget-title"><?php _e(&#39;归档&#39;); ?></h3>
+    <ul class="widget-list">
+        <?php $this->widget(&#39;Widget_Contents_Post_Date&#39;, &#39;type=month&amp;format=Y年m月&#39;)
+        ->parse(&#39;<li><a href="{permalink}">{date}</a></li>&#39;); ?>
+    </ul>
+</section>
+链接颜色修改
+打开 style.css 文件, 将 color 改为 #C83C23：
+.post-content a, .comment-content a {
+    border-bottom:1px solid #ddd;
+    color: #C83C23;
+}
+代码高亮修改
+打开 footer.php 文件, 引入 highlight.js：
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+打开 header.php, 引入 css 样式文件, 可以自行在 highlight.js 官网选择：
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+中西文自动加空格
+打开 footer.php 文件, 在 \<body> 标签中加入下面代码：
+<script>
+  const text = pangu.spacing("當你凝視著bug，bug也凝視著你");
+  // text = &#39;當你凝視著 bug，bug 也凝視著你&#39;
+
+  pangu.spacingElementById(&#39;main&#39;);
+  pangu.spacingElementByClassName(&#39;comment&#39;);
+  pangu.spacingElementByTagName(&#39;p&#39;);
+
+  document.addEventListener(&#39;DOMContentLoaded&#39;, () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+文章页添加翻页
+打开 post.php 文件, 在 \</article> 标签后添加下面代码：
+<div class="post-nav">
+    <div class="post-nav-pre" style="float:left;">
+        <?php $this->thePrev(&#39;上一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+    <div class="post-nav-next" style="float:right;">
+        <?php $this->theNext(&#39;下一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+</div>
+打开 style.css 添加下面代码：
+/* 文章翻页 */
+.post-nav{
+    overflow: hidden;
+    margin: 35px 0;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.post-nav-pre a{
+    color:#C83C23;
+}
+
+.post-nav-next a{
+    color:#C83C23;
+}
+添加版权声明
+打开 post.php, 在 \</article> 标签后, 添加版权声明代码：
+<div class=copyright>
+    <div class=cp-title>
+        <strong>本文标题：</strong><?php $this->title(); ?>
+    </div>
+    <div class=cp-author>
+        <strong>文章作者：</strong><?php $this->author(); ?>
+    </div>
+    <div class=cp-date>
+        <strong>发布时间：</strong><?php $this->date(&#39;Y 年 m 月 d 日&#39;); ?>
+    </div>
+    <div class=cp-update>
+        <strong>更新时间：</strong><?php echo date(&#39;Y 年 m 月 d 日&#39;, $this->modified);?>
+    </div>
+    <div class=cp-url>
+        <strong>原始链接：</strong><a href="<?php $this->permalink() ?>"><?php $this->permalink() ?></a>
+    </div>
+    <div class=cp-cc>
+        <strong>许可协议：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="noopener noreferrer nofollow">署名 4.0 国际（CC BY 4.0）</a>，转载请保留原文链接和作者。
+    </div>
+</div>
+打开 style.css, 添加版权声明样式：
+/* 版权声明 */
+.copyright{
+    background-color: #f0f0f0;
+    padding: 12px;
+    line-height: 1.6;
+}
+.cp-url a{
+    color:#C83C23;
+    border-bottom: 1px solid #ddd;
+}
+.cp-cc a{
+    color: #C83C23;
+    border-bottom: 1px solid #ddd;
+}
+添加打赏功能
+打开 post.php, 添加下面代码在合适位置：
+<div style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById(&#39;QR&#39;); if (qr.style.display === &#39;none&#39;) {qr.style.display=&#39;block&#39;;} else {qr.style.display=&#39;none&#39;}"> <span>打赏</span> </button>
+    <p style="color:#999;font-size:14px;">多寡随意，丰俭由人</p>
+    <div id="QR" style="display: none;">
+        <div id="wechat" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="wechat_qr" src="/yourpath/wechatpay.png" alt="WeChat Pay" /></a>
+        <p> 微信打赏 </p>
+        </div>
+        <div id="alipay" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="alipay_qr" src="/yourpath/alipay.png" alt="Alipay" /></a>
+        <p> 支付宝打赏 </p>
+        </div>
+    </div>
+</div>
+打开 style.css, 添加打赏按钮样式文件：
+/* 文章打赏 */
+#QR {
+    padding-top: 20px;
+    border: #f05050;
+}
+
+#QR a {
+    border: 0
+}
+
+#QR img {
+    width: 180px;
+    max-width: 100%;
+    display: inline-block;
+    margin: .8em 2em 0 2em
+}
+
+#rewardButton {
+    border: 1px solid #f05050;
+    line-height: 36px;
+    text-align: center;
+    height: 36px;
+    display: block;
+    border-radius: 4px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    background-color: #f05050;
+    color: #fff;
+    margin: 0 auto;
+    padding: 0 25px
+}
+
+#rewardButton:hover {
+    color: #f77b83;
+    border-color: #f77b83;
+    outline-style: none
+}
+
+#rewardButton {
+    background-color: #f05050;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+}
+图片 & 引用样式优化
+文章中的图片之前容易跟背景色融合，于是加上 border 和圆角处理，加了二层阴影。
+打开 style.css：
+.post-content img, .comment-content img {
+    max-width:100%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+打开 style.css：
+blockquote {
+    margin: 1.5em 0em;
+    padding: 0.5em 1.5em;
+    /* padding-left: 1.5em; */
+    border-left: 4px solid #ddd;
+    color: #777;
+    font-size: 0.82em;
+    background-color: #f9f9f9;
+}
+配置网站浏览器图标
+制作 ico 图片文件，可以参考链接，文件下载到 typecho/themes/{theme_name}/favicon.ico 路径。
+在 header.php 的 <head></head> 标签之间添加：
+<link rel="shortcut icon" href="<?php $this->options->themeUrl(&#39;favicon.ico&#39;); ?>" type="image/x-icon" />
+# 如果有下面这一行就删掉
+<link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
+主页只显示摘要方法
+在编写文章时在摘要和全文中间使用分隔符 `'><meta itemprop=name content="Docker 部署 Typecho"><meta itemprop=description content='博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
+安装 Docker 并配置镜像加速源
+参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
+安装 Typecho 服务
+使用 80x86/typecho 开源镜像，注意 /srv/http/typecho 为 typecho 解压安装的路径，下载地址参考链接； 安装执行命令：
+$ docker run -d \
+--name=typecho-blog \
+--restart always \
+--mount type=tmpfs,destination=/tmp \
+-v /srv/http/typecho:/data \
+-e PHP_TZ=Asia/Shanghai \
+-e PHP_MAX_EXECUTION_TIME=600 \
+-p 80:80 \
+-p 443:443 \
+80x86/typecho:latest
+Docker HTTPS 开启
+腾讯云官网申请免费证书：免费 SSL 证书申请流程，下载 Nginx 证书，得到 xxxx.pem 和 xxxx.key 文件，上传至 /srv/http/typecho/crt 文件夹中，需要先新建此文件夹。
+进入 Docker 容器的 Nginx 配置目录：
+$ docker exec -it typecho /bin/sh
+$ cd /etc/nginx/sites-enabled
+修改默认 server 配置 default 文件为：
+server {
+  listen   443 ssl; ## listen for ipv4; this line is default and implied
+  listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
+
+  root /app;
+  index index.php index.html index.htm;
+
+  ssl_certificate "/data/crt/xxxx.com.pem";
+  ssl_certificate_key "/data/crt/xxxx.com.key";
+  ssl_session_cache shared:SSL:1m;
+  ssl_session_timeout 10m;
+
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!aNULL:!MD5:!ADH:!RC4;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+
+  # 其余不改动
+ }
+新建 redirect 文件：
+server {
+    listen 80;
+    server_name yoursite.com www.yoursite.com;
+
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+重启 Nginx 服务：
+$ nginx -s reload
+博客样式修改
+适用于 maupassant 主题，下载参考链接，部分修改需要清空缓存重新加载生效。
+文章日期修改
+主要修改了首页标题下日期，以及边栏归档日期的显示。
+打开 index.php 文件，改为 date (&#39;Y 年 n 月 j 日&#39;)：
+<date class="post-meta">
+    <?php $this->date(&#39;Y 年 n 月 j 日&#39;); ?>
+</date>
+打开 sidebar.php 文件, 改为 type=month&amp;format=Y 年 m 月：
+<section class="widget">
+    <h3 class="widget-title"><?php _e(&#39;归档&#39;); ?></h3>
+    <ul class="widget-list">
+        <?php $this->widget(&#39;Widget_Contents_Post_Date&#39;, &#39;type=month&amp;format=Y年m月&#39;)
+        ->parse(&#39;<li><a href="{permalink}">{date}</a></li>&#39;); ?>
+    </ul>
+</section>
+链接颜色修改
+打开 style.css 文件, 将 color 改为 #C83C23：
+.post-content a, .comment-content a {
+    border-bottom:1px solid #ddd;
+    color: #C83C23;
+}
+代码高亮修改
+打开 footer.php 文件, 引入 highlight.js：
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+打开 header.php, 引入 css 样式文件, 可以自行在 highlight.js 官网选择：
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css">
+中西文自动加空格
+打开 footer.php 文件, 在 \<body> 标签中加入下面代码：
+<script>
+  const text = pangu.spacing("當你凝視著bug，bug也凝視著你");
+  // text = &#39;當你凝視著 bug，bug 也凝視著你&#39;
+
+  pangu.spacingElementById(&#39;main&#39;);
+  pangu.spacingElementByClassName(&#39;comment&#39;);
+  pangu.spacingElementByTagName(&#39;p&#39;);
+
+  document.addEventListener(&#39;DOMContentLoaded&#39;, () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+文章页添加翻页
+打开 post.php 文件, 在 \</article> 标签后添加下面代码：
+<div class="post-nav">
+    <div class="post-nav-pre" style="float:left;">
+        <?php $this->thePrev(&#39;上一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+    <div class="post-nav-next" style="float:right;">
+        <?php $this->theNext(&#39;下一篇 : %s&#39;, &#39;&#39;); ?>
+    </div>
+</div>
+打开 style.css 添加下面代码：
+/* 文章翻页 */
+.post-nav{
+    overflow: hidden;
+    margin: 35px 0;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.post-nav-pre a{
+    color:#C83C23;
+}
+
+.post-nav-next a{
+    color:#C83C23;
+}
+添加版权声明
+打开 post.php, 在 \</article> 标签后, 添加版权声明代码：
+<div class=copyright>
+    <div class=cp-title>
+        <strong>本文标题：</strong><?php $this->title(); ?>
+    </div>
+    <div class=cp-author>
+        <strong>文章作者：</strong><?php $this->author(); ?>
+    </div>
+    <div class=cp-date>
+        <strong>发布时间：</strong><?php $this->date(&#39;Y 年 m 月 d 日&#39;); ?>
+    </div>
+    <div class=cp-update>
+        <strong>更新时间：</strong><?php echo date(&#39;Y 年 m 月 d 日&#39;, $this->modified);?>
+    </div>
+    <div class=cp-url>
+        <strong>原始链接：</strong><a href="<?php $this->permalink() ?>"><?php $this->permalink() ?></a>
+    </div>
+    <div class=cp-cc>
+        <strong>许可协议：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="noopener noreferrer nofollow">署名 4.0 国际（CC BY 4.0）</a>，转载请保留原文链接和作者。
+    </div>
+</div>
+打开 style.css, 添加版权声明样式：
+/* 版权声明 */
+.copyright{
+    background-color: #f0f0f0;
+    padding: 12px;
+    line-height: 1.6;
+}
+.cp-url a{
+    color:#C83C23;
+    border-bottom: 1px solid #ddd;
+}
+.cp-cc a{
+    color: #C83C23;
+    border-bottom: 1px solid #ddd;
+}
+添加打赏功能
+打开 post.php, 添加下面代码在合适位置：
+<div style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById(&#39;QR&#39;); if (qr.style.display === &#39;none&#39;) {qr.style.display=&#39;block&#39;;} else {qr.style.display=&#39;none&#39;}"> <span>打赏</span> </button>
+    <p style="color:#999;font-size:14px;">多寡随意，丰俭由人</p>
+    <div id="QR" style="display: none;">
+        <div id="wechat" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="wechat_qr" src="/yourpath/wechatpay.png" alt="WeChat Pay" /></a>
+        <p> 微信打赏 </p>
+        </div>
+        <div id="alipay" style="display: inline-block">
+        <a class="fancybox" rel="group"><img id="alipay_qr" src="/yourpath/alipay.png" alt="Alipay" /></a>
+        <p> 支付宝打赏 </p>
+        </div>
+    </div>
+</div>
+打开 style.css, 添加打赏按钮样式文件：
+/* 文章打赏 */
+#QR {
+    padding-top: 20px;
+    border: #f05050;
+}
+
+#QR a {
+    border: 0
+}
+
+#QR img {
+    width: 180px;
+    max-width: 100%;
+    display: inline-block;
+    margin: .8em 2em 0 2em
+}
+
+#rewardButton {
+    border: 1px solid #f05050;
+    line-height: 36px;
+    text-align: center;
+    height: 36px;
+    display: block;
+    border-radius: 4px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    background-color: #f05050;
+    color: #fff;
+    margin: 0 auto;
+    padding: 0 25px
+}
+
+#rewardButton:hover {
+    color: #f77b83;
+    border-color: #f77b83;
+    outline-style: none
+}
+
+#rewardButton {
+    background-color: #f05050;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+}
+图片 & 引用样式优化
+文章中的图片之前容易跟背景色融合，于是加上 border 和圆角处理，加了二层阴影。
+打开 style.css：
+.post-content img, .comment-content img {
+    max-width:100%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+打开 style.css：
+blockquote {
+    margin: 1.5em 0em;
+    padding: 0.5em 1.5em;
+    /* padding-left: 1.5em; */
+    border-left: 4px solid #ddd;
+    color: #777;
+    font-size: 0.82em;
+    background-color: #f9f9f9;
+}
+配置网站浏览器图标
+制作 ico 图片文件，可以参考链接，文件下载到 typecho/themes/{theme_name}/favicon.ico 路径。
+在 header.php 的 <head></head> 标签之间添加：
+<link rel="shortcut icon" href="<?php $this->options->themeUrl(&#39;favicon.ico&#39;); ?>" type="image/x-icon" />
+# 如果有下面这一行就删掉
+<link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
+主页只显示摘要方法
+在编写文章时在摘要和全文中间使用分隔符 `'><meta itemprop=datePublished content="2023-06-09T17:02:00+08:00"><meta itemprop=dateModified content="2023-06-09T17:02:00+08:00"><meta itemprop=wordCount content="698"><meta itemprop=image content="https://imx.ink/images/share.png"><meta itemprop=keywords content="typecho,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+<a href=/tech>技术文章</a>
+<a href=/project>项目实践</a>
+<a href=/xueqiu>滚雪球</a>
+<a href=/about>关于</a></nav></header><main><content><p>博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。</p><h2 id=安装-docker-并配置镜像加速源>安装 Docker 并配置镜像加速源</h2><p>参考<a href=https://cloud.tencent.com/document/product/213/46000>搭建 Docker</a> 和<a href=https://cloud.tencent.com/document/product/213/8623>腾讯云软件源加速软件包下载和更新</a>安装部署；</p><h2 id=安装-typecho-服务>安装 Typecho 服务</h2><p>使用 <a href=https://hub.docker.com/r/80x86/typecho>80x86/typecho</a> 开源镜像，注意 <code>/srv/http/typecho</code> 为 <code>typecho</code> 解压安装的路径，下载地址参考<a href=https://typecho.org/download>链接</a>； 安装执行命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--name<span style=color:#f92672>=</span>typecho-blog <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--restart always <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--mount type<span style=color:#f92672>=</span>tmpfs,destination<span style=color:#f92672>=</span>/tmp <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>-v /srv/http/typecho:/data <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>-e PHP_TZ<span style=color:#f92672>=</span>Asia/Shanghai <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>-e PHP_MAX_EXECUTION_TIME<span style=color:#f92672>=</span><span style=color:#ae81ff>600</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>-p 80:80 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>-p 443:443 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>80x86/typecho:latest
+</span></span></code></pre></div><h2 id=docker-https-开启>Docker HTTPS 开启</h2><p>腾讯云官网申请免费证书：<a href=https://cloud.tencent.com/document/product/400/6814>免费 SSL 证书申请流程</a>，下载 <code>Nginx</code> 证书，得到 <code>xxxx.pem</code> 和 <code>xxxx.key</code> 文件，上传至 <code>/srv/http/typecho/crt</code> 文件夹中，需要先新建此文件夹。</p><p>进入 Docker 容器的 Nginx 配置目录：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ docker exec -it typecho /bin/sh
+</span></span><span style=display:flex><span>$ cd /etc/nginx/sites-enabled
+</span></span></code></pre></div><p>修改默认 server 配置 <code>default</code> 文件为：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>server {
+</span></span><span style=display:flex><span>  listen   443 ssl; ## listen for ipv4; this line is default and implied
+</span></span><span style=display:flex><span>  listen   [::]:443 ssl default ipv6only=on; ## listen for ipv6
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  root /app;
+</span></span><span style=display:flex><span>  index index.php index.html index.htm;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ssl_certificate &#34;/data/crt/xxxx.com.pem&#34;;
+</span></span><span style=display:flex><span>  ssl_certificate_key &#34;/data/crt/xxxx.com.key&#34;;
+</span></span><span style=display:flex><span>  ssl_session_cache shared:SSL:1m;
+</span></span><span style=display:flex><span>  ssl_session_timeout 10m;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!aNULL:!MD5:!ADH:!RC4;
+</span></span><span style=display:flex><span>  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+</span></span><span style=display:flex><span>  ssl_prefer_server_ciphers on;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  # 其余不改动
+</span></span><span style=display:flex><span> }
+</span></span></code></pre></div><p>新建 <code>redirect</code> 文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>server {
+</span></span><span style=display:flex><span>    listen 80;
+</span></span><span style=display:flex><span>    server_name yoursite.com www.yoursite.com;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    rewrite ^(.*)$  https://$host$1 permanent;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>重启 Nginx 服务：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ nginx -s reload
+</span></span></code></pre></div><h2 id=博客样式修改>博客样式修改</h2><p>适用于 <code>maupassant</code> 主题，下载参考<a href=https://github.com/pagecho/maupassant>链接</a>，部分修改需要清空缓存重新加载生效。</p><h3 id=文章日期修改>文章日期修改</h3><p>主要修改了首页标题下日期，以及边栏归档日期的显示。</p><p>打开 <code>index.php</code> 文件，改为 <code>date ('Y 年 n 月 j 日')</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>date</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;post-meta&#34;</span>&gt;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>&lt;?php $this-&gt;date(&#39;Y 年 n 月 j 日&#39;); ?&gt;</span>
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>date</span>&gt;
+</span></span></code></pre></div><p>打开 <code>sidebar.php</code> 文件, 改为 <code>type=month&amp;format=Y 年 m 月</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>section</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;widget&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>h3</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;widget-title&#34;</span>&gt;<span style=color:#75715e>&lt;?php _e(&#39;归档&#39;); ?&gt;</span>&lt;/<span style=color:#f92672>h3</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>ul</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;widget-list&#34;</span>&gt;
+</span></span><span style=display:flex><span>        <span style=color:#75715e>&lt;?php $this-&gt;widget(&#39;Widget_Contents_Post_Date&#39;, &#39;type=month&amp;format=Y年m月&#39;)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        -&gt;parse(&#39;&lt;li&gt;&lt;a href=&#34;{permalink}&#34;&gt;{date}&lt;/a&gt;&lt;/li&gt;&#39;); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>ul</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>section</span>&gt;
+</span></span></code></pre></div><h3 id=链接颜色修改>链接颜色修改</h3><p>打开 <code>style.css</code> 文件, 将 <code>color</code> 改为 <code>#C83C23</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>post-content</span> <span style=color:#f92672>a</span><span style=color:#f92672>,</span> .<span style=color:#a6e22e>comment-content</span> <span style=color:#f92672>a</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-bottom</span>:<span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#ddd</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#C83C23</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=代码高亮修改>代码高亮修改</h3><p>打开 <code>footer.php</code> 文件, 引入 <code>highlight.js</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/highlight.min.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;<span style=color:#a6e22e>hljs</span>.<span style=color:#a6e22e>initHighlightingOnLoad</span>();&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>打开 <code>header.php</code>, 引入 <code>css</code> 样式文件, 可以自行在 <code>highlight.js</code> 官网选择：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;stylesheet&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/default.min.css&#34;</span>&gt;
+</span></span></code></pre></div><h3 id=中西文自动加空格>中西文自动加空格</h3><p>打开 <code>footer.php</code> 文件, 在 <code>\&lt;body></code> 标签中加入下面代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>text</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>pangu</span>.<span style=color:#a6e22e>spacing</span>(<span style=color:#e6db74>&#34;當你凝視著bug，bug也凝視著你&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// text = &#39;當你凝視著 bug，bug 也凝視著你&#39;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pangu</span>.<span style=color:#a6e22e>spacingElementById</span>(<span style=color:#e6db74>&#39;main&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pangu</span>.<span style=color:#a6e22e>spacingElementByClassName</span>(<span style=color:#e6db74>&#39;comment&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pangu</span>.<span style=color:#a6e22e>spacingElementByTagName</span>(<span style=color:#e6db74>&#39;p&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  document.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#39;DOMContentLoaded&#39;</span>, () =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// listen to any DOM change and automatically perform spacing via MutationObserver()
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>pangu</span>.<span style=color:#a6e22e>autoSpacingPage</span>();
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><h3 id=文章页添加翻页>文章页添加翻页</h3><p>打开 <code>post.php</code> 文件, 在 <code>\&lt;/article></code> 标签后添加下面代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;post-nav&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;post-nav-pre&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;float:left;&#34;</span>&gt;
+</span></span><span style=display:flex><span>        <span style=color:#75715e>&lt;?php $this-&gt;thePrev(&#39;上一篇 : %s&#39;, &#39;&#39;); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;post-nav-next&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;float:right;&#34;</span>&gt;
+</span></span><span style=display:flex><span>        <span style=color:#75715e>&lt;?php $this-&gt;theNext(&#39;下一篇 : %s&#39;, &#39;&#39;); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span></code></pre></div><p>打开 <code>style.css</code> 添加下面代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#75715e>/* 文章翻页 */</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>post-nav</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>overflow</span>: <span style=color:#66d9ef>hidden</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin</span>: <span style=color:#ae81ff>35</span><span style=color:#66d9ef>px</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding-top</span>: <span style=color:#ae81ff>10</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-top</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#ddd</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>post-nav-pre</span> <span style=color:#f92672>a</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>:<span style=color:#ae81ff>#C83C23</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>post-nav-next</span> <span style=color:#f92672>a</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>:<span style=color:#ae81ff>#C83C23</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=添加版权声明>添加版权声明</h3><p>打开 <code>post.php</code>, 在 <code>\&lt;/article></code> 标签后, 添加版权声明代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>copyright</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-title</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;本文标题：&lt;/<span style=color:#f92672>strong</span>&gt;<span style=color:#75715e>&lt;?php $this-&gt;title(); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-author</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;文章作者：&lt;/<span style=color:#f92672>strong</span>&gt;<span style=color:#75715e>&lt;?php $this-&gt;author(); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-date</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;发布时间：&lt;/<span style=color:#f92672>strong</span>&gt;<span style=color:#75715e>&lt;?php $this-&gt;date(&#39;Y 年 m 月 d 日&#39;); ?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-update</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;更新时间：&lt;/<span style=color:#f92672>strong</span>&gt;<span style=color:#75715e>&lt;?php echo date(&#39;Y 年 m 月 d 日&#39;, $this-&gt;modified);?&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-url</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;原始链接：&lt;/<span style=color:#f92672>strong</span>&gt;&lt;<span style=color:#f92672>a</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&lt;?php $this-&gt;permalink() ?&gt;&#34;</span>&gt;<span style=color:#75715e>&lt;?php $this-&gt;permalink() ?&gt;</span>&lt;/<span style=color:#f92672>a</span>&gt;
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>cp-cc</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>strong</span>&gt;许可协议：&lt;/<span style=color:#f92672>strong</span>&gt;&lt;<span style=color:#f92672>a</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://creativecommons.org/licenses/by/4.0/deed.zh&#34;</span> <span style=color:#a6e22e>target</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;_blank&#34;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;noopener noreferrer nofollow&#34;</span>&gt;署名 4.0 国际（CC BY 4.0）&lt;/<span style=color:#f92672>a</span>&gt;，转载请保留原文链接和作者。
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span></code></pre></div><p>打开 <code>style.css</code>, 添加版权声明样式：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#75715e>/* 版权声明 */</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>copyright</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background-color</span>: <span style=color:#ae81ff>#f0f0f0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding</span>: <span style=color:#ae81ff>12</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>line-height</span>: <span style=color:#ae81ff>1.6</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>cp-url</span> <span style=color:#f92672>a</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>:<span style=color:#ae81ff>#C83C23</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-bottom</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#ddd</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>cp-cc</span> <span style=color:#f92672>a</span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#C83C23</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-bottom</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#ddd</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=添加打赏功能>添加打赏功能</h3><p>打开 <code>post.php</code>, 添加下面代码在合适位置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;rewardButton&#34;</span> <span style=color:#a6e22e>disable</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;enable&#34;</span> <span style=color:#a6e22e>onclick</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;var qr = document.getElementById(&#39;QR&#39;); if (qr.style.display === &#39;none&#39;) {qr.style.display=&#39;block&#39;;} else {qr.style.display=&#39;none&#39;}&#34;</span>&gt; &lt;<span style=color:#f92672>span</span>&gt;打赏&lt;/<span style=color:#f92672>span</span>&gt; &lt;/<span style=color:#f92672>button</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>p</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;color:#999;font-size:14px;&#34;</span>&gt;多寡随意，丰俭由人&lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;QR&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;display: none;&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;wechat&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;display: inline-block&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>a</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;fancybox&#34;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;group&#34;</span>&gt;&lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;wechat_qr&#34;</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/yourpath/wechatpay.png&#34;</span> <span style=color:#a6e22e>alt</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;WeChat Pay&#34;</span> /&gt;&lt;/<span style=color:#f92672>a</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>p</span>&gt; 微信打赏 &lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>        &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;alipay&#34;</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;display: inline-block&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>a</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;fancybox&#34;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;group&#34;</span>&gt;&lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;alipay_qr&#34;</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/yourpath/alipay.png&#34;</span> <span style=color:#a6e22e>alt</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Alipay&#34;</span> /&gt;&lt;/<span style=color:#f92672>a</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>p</span>&gt; 支付宝打赏 &lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>        &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span></code></pre></div><p>打开 <code>style.css</code>, 添加打赏按钮样式文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#75715e>/* 文章打赏 */</span>
+</span></span><span style=display:flex><span>#QR {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding-top</span>: <span style=color:#ae81ff>20</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border</span>: <span style=color:#ae81ff>#f05050</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>#QR <span style=color:#f92672>a</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border</span>: <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>#QR <span style=color:#f92672>img</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>180</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>max-width</span>: <span style=color:#ae81ff>100</span><span style=color:#66d9ef>%</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>inline-block</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin</span>: <span style=color:#ae81ff>.8</span><span style=color:#66d9ef>em</span> <span style=color:#ae81ff>2</span><span style=color:#66d9ef>em</span> <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>2</span><span style=color:#66d9ef>em</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>#rewardButton {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#f05050</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>line-height</span>: <span style=color:#ae81ff>36</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>text-align</span>: <span style=color:#66d9ef>center</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>height</span>: <span style=color:#ae81ff>36</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>block</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-radius</span>: <span style=color:#ae81ff>4</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-webkit-</span><span style=color:#66d9ef>transition-duration</span>: <span style=color:#ae81ff>.4</span><span style=color:#66d9ef>s</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>transition-duration</span>: <span style=color:#ae81ff>.4</span><span style=color:#66d9ef>s</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background-color</span>: <span style=color:#ae81ff>#f05050</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#fff</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin</span>: <span style=color:#ae81ff>0</span> <span style=color:#66d9ef>auto</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding</span>: <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>25</span><span style=color:#66d9ef>px</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>#rewardButton:<span style=color:#a6e22e>hover</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#f77b83</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-color</span>: <span style=color:#ae81ff>#f77b83</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>outline-style</span>: <span style=color:#66d9ef>none</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>#rewardButton {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background-color</span>: <span style=color:#ae81ff>#f05050</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#66d9ef>white</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-radius</span>: <span style=color:#ae81ff>50</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>cursor</span>: <span style=color:#66d9ef>pointer</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=图片--引用样式优化>图片 & 引用样式优化</h3><p>文章中的图片之前容易跟背景色融合，于是加上 border 和圆角处理，加了二层阴影。</p><p>打开 <code>style.css</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>post-content</span> <span style=color:#f92672>img</span><span style=color:#f92672>,</span> .<span style=color:#a6e22e>comment-content</span> <span style=color:#f92672>img</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>max-width</span>:<span style=color:#ae81ff>100</span><span style=color:#66d9ef>%</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin-left</span>: <span style=color:#66d9ef>auto</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin-right</span>:<span style=color:#66d9ef>auto</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>display</span>:<span style=color:#66d9ef>block</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border</span>: <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#f0f0f0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-radius</span>: <span style=color:#ae81ff>6</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>box-shadow</span>: <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>4</span><span style=color:#66d9ef>px</span> <span style=color:#ae81ff>6</span><span style=color:#66d9ef>px</span> rgba(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0.1</span>), <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>1</span><span style=color:#66d9ef>px</span> <span style=color:#ae81ff>3</span><span style=color:#66d9ef>px</span> rgba(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0.08</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>打开 <code>style.css</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#f92672>blockquote</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>margin</span>: <span style=color:#ae81ff>1.5</span><span style=color:#66d9ef>em</span> <span style=color:#ae81ff>0</span><span style=color:#66d9ef>em</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>padding</span>: <span style=color:#ae81ff>0.5</span><span style=color:#66d9ef>em</span> <span style=color:#ae81ff>1.5</span><span style=color:#66d9ef>em</span>;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* padding-left: 1.5em; */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>border-left</span>: <span style=color:#ae81ff>4</span><span style=color:#66d9ef>px</span> <span style=color:#66d9ef>solid</span> <span style=color:#ae81ff>#ddd</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>color</span>: <span style=color:#ae81ff>#777</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>font-size</span>: <span style=color:#ae81ff>0.82</span><span style=color:#66d9ef>em</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background-color</span>: <span style=color:#ae81ff>#f9f9f9</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=配置网站浏览器图标>配置网站浏览器图标</h3><p>制作 ico 图片文件，可以参考<a href=https://www.bitbug.net/>链接</a>，文件下载到 <code>typecho/themes/{theme_name}/favicon.ico</code> 路径。</p><p>在 <code>header.php</code> 的 <code>&lt;head>&lt;/head></code> 标签之间添加：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;shortcut icon&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&lt;?php $this-&gt;options-&gt;themeUrl(&#39;favicon.ico&#39;); ?&gt;&#34;</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;image/x-icon&#34;</span> /&gt;
+</span></span><span style=display:flex><span># 如果有下面这一行就删掉
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>data-n-head</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;true&#34;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;icon&#34;</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;image/x-icon&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/favicon.ico&#34;</span>&gt;
+</span></span></code></pre></div><h3 id=主页只显示摘要方法>主页只显示摘要方法</h3><p>在编写文章时在摘要和全文中间使用分隔符 `</p><p>`，例如：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>[文章摘要BALABALA ...]
+</span></span><span style=display:flex><span><span style=color:#75715e>&lt;!--more--&gt;</span>
+</span></span><span style=display:flex><span>[文章正文BALABALA ...]
+</span></span></code></pre></div></content><p><a href=https://imx.ink/typecho/>#Typecho</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

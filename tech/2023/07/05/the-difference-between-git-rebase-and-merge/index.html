@@ -1,0 +1,48 @@
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Git rebase 与 merge 的区别 | 提笔忘字</title>
+<meta name=title content="Git rebase 与 merge 的区别"><meta name=description content="git rebase 与 git merge 的区别在于，merge 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 rebase 则是将两个分支的提交融合成一个线性的提交。
+如下图所示，一个项目在 C2 时基于主分支创建了一个 experiment 分支，并做了一个 C3 版本的提交：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 merge 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 rebase 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。
+在操作过程中，Merge 操作遇到冲突的时候，当前 merge 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 rebase 操作的话，会中断 rebase，同时会提示去解决冲突。解决冲突后，将修改 add，然后执行 git rebase --continue 继续操作，或者 git rebase --skip 忽略冲突。
+需要注意的一点是，我们平时 git pull 时，实际上是将远程提交与本地提交进行 merge。git pull 默认是 git fetch + git merge FETCH_HEAD 的缩写。如果希望 pull 时使用 rebase，可以加上 --rebase 参数。"><meta name=keywords content="git,"><meta property="og:title" content="Git rebase 与 merge 的区别"><meta property="og:description" content="git rebase 与 git merge 的区别在于，merge 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 rebase 则是将两个分支的提交融合成一个线性的提交。
+如下图所示，一个项目在 C2 时基于主分支创建了一个 experiment 分支，并做了一个 C3 版本的提交：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 merge 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 rebase 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。
+在操作过程中，Merge 操作遇到冲突的时候，当前 merge 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 rebase 操作的话，会中断 rebase，同时会提示去解决冲突。解决冲突后，将修改 add，然后执行 git rebase --continue 继续操作，或者 git rebase --skip 忽略冲突。
+需要注意的一点是，我们平时 git pull 时，实际上是将远程提交与本地提交进行 merge。git pull 默认是 git fetch + git merge FETCH_HEAD 的缩写。如果希望 pull 时使用 rebase，可以加上 --rebase 参数。"><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/07/05/the-difference-between-git-rebase-and-merge/"><meta property="og:image" content="https://imx.ink/images/share.png"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-07-05T19:32:00+08:00"><meta property="article:modified_time" content="2023-07-05T19:32:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://imx.ink/images/share.png"><meta name=twitter:title content="Git rebase 与 merge 的区别"><meta name=twitter:description content="git rebase 与 git merge 的区别在于，merge 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 rebase 则是将两个分支的提交融合成一个线性的提交。
+如下图所示，一个项目在 C2 时基于主分支创建了一个 experiment 分支，并做了一个 C3 版本的提交：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 merge 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 rebase 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。
+在操作过程中，Merge 操作遇到冲突的时候，当前 merge 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 rebase 操作的话，会中断 rebase，同时会提示去解决冲突。解决冲突后，将修改 add，然后执行 git rebase --continue 继续操作，或者 git rebase --skip 忽略冲突。
+需要注意的一点是，我们平时 git pull 时，实际上是将远程提交与本地提交进行 merge。git pull 默认是 git fetch + git merge FETCH_HEAD 的缩写。如果希望 pull 时使用 rebase，可以加上 --rebase 参数。"><meta itemprop=name content="Git rebase 与 merge 的区别"><meta itemprop=description content="git rebase 与 git merge 的区别在于，merge 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 rebase 则是将两个分支的提交融合成一个线性的提交。
+如下图所示，一个项目在 C2 时基于主分支创建了一个 experiment 分支，并做了一个 C3 版本的提交：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 merge 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+如果用 rebase 命令合并，结果如下图：
+{:refdef: style=&ldquo;text-align: center;&rdquo;} {: refdef}
+单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。
+在操作过程中，Merge 操作遇到冲突的时候，当前 merge 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 rebase 操作的话，会中断 rebase，同时会提示去解决冲突。解决冲突后，将修改 add，然后执行 git rebase --continue 继续操作，或者 git rebase --skip 忽略冲突。
+需要注意的一点是，我们平时 git pull 时，实际上是将远程提交与本地提交进行 merge。git pull 默认是 git fetch + git merge FETCH_HEAD 的缩写。如果希望 pull 时使用 rebase，可以加上 --rebase 参数。"><meta itemprop=datePublished content="2023-07-05T19:32:00+08:00"><meta itemprop=dateModified content="2023-07-05T19:32:00+08:00"><meta itemprop=wordCount content="89"><meta itemprop=image content="https://imx.ink/images/share.png"><meta itemprop=keywords content="git,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+<a href=/tech>技术文章</a>
+<a href=/project>项目实践</a>
+<a href=/xueqiu>滚雪球</a>
+<a href=/about>关于</a></nav></header><main><content><p><code>git rebase</code> 与 <code>git merge</code> 的区别在于，<code>merge</code> 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 <code>rebase</code> 则是将两个分支的提交融合成一个线性的提交。</p><p>如下图所示，一个项目在 <code>C2</code> 时基于主分支创建了一个 <code>experiment</code> 分支，并做了一个 <code>C3</code> 版本的提交：</p><p>{:refdef: style=&ldquo;text-align: center;&rdquo;}
+<img src=https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_flow.jpg alt=git_flow>
+{: refdef}</p><p>如果用 <code>merge</code> 命令合并，结果如下图：</p><p>{:refdef: style=&ldquo;text-align: center;&rdquo;}
+<img src=https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_merge.jpg alt=git_merge>
+{: refdef}</p><p>如果用 <code>rebase</code> 命令合并，结果如下图：</p><p>{:refdef: style=&ldquo;text-align: center;&rdquo;}
+<img src=https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_rebase.jpg alt=git_rebase>
+{: refdef}</p><p>单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。</p><p>在操作过程中，Merge 操作遇到冲突的时候，当前 <code>merge</code> 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 <code>rebase</code> 操作的话，会中断 <code>rebase</code>，同时会提示去解决冲突。解决冲突后，将修改 <code>add</code>，然后执行 <code>git rebase --continue</code> 继续操作，或者 <code>git rebase --skip</code> 忽略冲突。</p><p>需要注意的一点是，我们平时 <code>git pull</code> 时，实际上是将远程提交与本地提交进行 <code>merge</code>。<code>git pull</code> 默认是 <code>git fetch</code> + <code>git merge FETCH_HEAD</code> 的缩写。如果希望 <code>pull</code> 时使用 <code>rebase</code>，可以加上 <code>--rebase</code> 参数。</p><p>至于 <code>merge</code> 与 <code>rebase</code> 的使用场景，则是众说纷纭，具体可以根据自己的需求选择合适的方式。</p></content><p><a href=https://imx.ink/git/>#Git</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

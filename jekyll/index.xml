@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jekyll on 提笔忘字</title><link>https://imx.ink/jekyll/</link><description>Recent content in Jekyll on 提笔忘字</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Mon, 18 Sep 2023 20:36:00 +0800</lastBuildDate><atom:link href="https://imx.ink/jekyll/index.xml" rel="self" type="application/rss+xml"/><item><title>Rouge 插件支持 Jekyll 代码高亮</title><link>https://imx.ink/tech/2023/09/18/jekyll-with-rouge/</link><pubDate>Mon, 18 Sep 2023 20:36:00 +0800</pubDate><guid>https://imx.ink/tech/2023/09/18/jekyll-with-rouge/</guid><description>Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
+$ gem install rouge 然后在 _config.yml 文件声明使用：
+highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
+markdown: kramdown kramdown: input: GFM syntax_highlighter: rouge 使用 Rouge 代码语法高亮 Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
+{% raw %} {% highlight ruby linenos %} def foo puts &amp;#39;foo&amp;#39; end {% endhighlight %} {% endraw %} 包含 linenos 参数将强制突出显示的代码包含行号。
+Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。</description></item></channel></rss>

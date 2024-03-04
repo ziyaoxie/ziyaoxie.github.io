@@ -1,0 +1,49 @@
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>如何删除 Docker 镜像，容器和卷 | 提笔忘字</title>
+<meta name=title content="如何删除 Docker 镜像，容器和卷"><meta name=description content="Docker 本身提供了从命令行清理系统所需的所有工具，可用于释放磁盘空间并通过删除未使用的 Docker 镜像，容器和卷来保持系统的有序性。
+清除所有未使用或悬空的镜像，容器，卷和网络 Docker 提供了一个命令，可以清理悬空的任何资源（镜像，容器，卷和网络）（与容器无关）：
+$ docker system prune 要另外删除任何已停止的容器和所有未使用的图像（不只是悬空图像），请将该 -a 标志添加到命令：
+$ docker system prune -a 删除镜像 删除悬空镜像：
+# 列出悬空镜像 $ docker images -f dangling=true # 删除悬空镜像 $ docker images purge # 删除所有镜像 $ docker rmi $(docker images -a -q) 删除容器 使用多个过滤器移除容器：
+# 如果要删除标记为Created的所有容器（运行具有无效命令的容器时可能导致的状态）或Exited，则可以使用两个过滤器 $ docker rm $(docker ps -a -f status=exited -f status=created -q) # 停止所有容器 $ docker stop $(docker ps -a -q) # 删除所有容器 $ docker rm $(docker ps -a -q) 删除卷 仅 Docker 1."><meta name=keywords content="docker,"><meta property="og:title" content="如何删除 Docker 镜像，容器和卷"><meta property="og:description" content="Docker 本身提供了从命令行清理系统所需的所有工具，可用于释放磁盘空间并通过删除未使用的 Docker 镜像，容器和卷来保持系统的有序性。
+清除所有未使用或悬空的镜像，容器，卷和网络 Docker 提供了一个命令，可以清理悬空的任何资源（镜像，容器，卷和网络）（与容器无关）：
+$ docker system prune 要另外删除任何已停止的容器和所有未使用的图像（不只是悬空图像），请将该 -a 标志添加到命令：
+$ docker system prune -a 删除镜像 删除悬空镜像：
+# 列出悬空镜像 $ docker images -f dangling=true # 删除悬空镜像 $ docker images purge # 删除所有镜像 $ docker rmi $(docker images -a -q) 删除容器 使用多个过滤器移除容器：
+# 如果要删除标记为Created的所有容器（运行具有无效命令的容器时可能导致的状态）或Exited，则可以使用两个过滤器 $ docker rm $(docker ps -a -f status=exited -f status=created -q) # 停止所有容器 $ docker stop $(docker ps -a -q) # 删除所有容器 $ docker rm $(docker ps -a -q) 删除卷 仅 Docker 1."><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/06/25/delete-docker-images-containers-and-volumes/"><meta property="og:image" content="https://imx.ink/images/share.png"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-06-25T16:19:00+08:00"><meta property="article:modified_time" content="2023-06-25T16:19:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://imx.ink/images/share.png"><meta name=twitter:title content="如何删除 Docker 镜像，容器和卷"><meta name=twitter:description content="Docker 本身提供了从命令行清理系统所需的所有工具，可用于释放磁盘空间并通过删除未使用的 Docker 镜像，容器和卷来保持系统的有序性。
+清除所有未使用或悬空的镜像，容器，卷和网络 Docker 提供了一个命令，可以清理悬空的任何资源（镜像，容器，卷和网络）（与容器无关）：
+$ docker system prune 要另外删除任何已停止的容器和所有未使用的图像（不只是悬空图像），请将该 -a 标志添加到命令：
+$ docker system prune -a 删除镜像 删除悬空镜像：
+# 列出悬空镜像 $ docker images -f dangling=true # 删除悬空镜像 $ docker images purge # 删除所有镜像 $ docker rmi $(docker images -a -q) 删除容器 使用多个过滤器移除容器：
+# 如果要删除标记为Created的所有容器（运行具有无效命令的容器时可能导致的状态）或Exited，则可以使用两个过滤器 $ docker rm $(docker ps -a -f status=exited -f status=created -q) # 停止所有容器 $ docker stop $(docker ps -a -q) # 删除所有容器 $ docker rm $(docker ps -a -q) 删除卷 仅 Docker 1."><meta itemprop=name content="如何删除 Docker 镜像，容器和卷"><meta itemprop=description content="Docker 本身提供了从命令行清理系统所需的所有工具，可用于释放磁盘空间并通过删除未使用的 Docker 镜像，容器和卷来保持系统的有序性。
+清除所有未使用或悬空的镜像，容器，卷和网络 Docker 提供了一个命令，可以清理悬空的任何资源（镜像，容器，卷和网络）（与容器无关）：
+$ docker system prune 要另外删除任何已停止的容器和所有未使用的图像（不只是悬空图像），请将该 -a 标志添加到命令：
+$ docker system prune -a 删除镜像 删除悬空镜像：
+# 列出悬空镜像 $ docker images -f dangling=true # 删除悬空镜像 $ docker images purge # 删除所有镜像 $ docker rmi $(docker images -a -q) 删除容器 使用多个过滤器移除容器：
+# 如果要删除标记为Created的所有容器（运行具有无效命令的容器时可能导致的状态）或Exited，则可以使用两个过滤器 $ docker rm $(docker ps -a -f status=exited -f status=created -q) # 停止所有容器 $ docker stop $(docker ps -a -q) # 删除所有容器 $ docker rm $(docker ps -a -q) 删除卷 仅 Docker 1."><meta itemprop=datePublished content="2023-06-25T16:19:00+08:00"><meta itemprop=dateModified content="2023-06-25T16:19:00+08:00"><meta itemprop=wordCount content="103"><meta itemprop=image content="https://imx.ink/images/share.png"><meta itemprop=keywords content="docker,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+<a href=/tech>技术文章</a>
+<a href=/project>项目实践</a>
+<a href=/xueqiu>滚雪球</a>
+<a href=/about>关于</a></nav></header><main><content><p>Docker 本身提供了从命令行清理系统所需的所有工具，可用于释放磁盘空间并通过删除未使用的 Docker 镜像，容器和卷来保持系统的有序性。</p><h2 id=清除所有未使用或悬空的镜像容器卷和网络>清除所有未使用或悬空的镜像，容器，卷和网络</h2><p>Docker 提供了一个命令，可以清理悬空的任何资源（镜像，容器，卷和网络）（与容器无关）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ docker system prune
+</span></span></code></pre></div><p>要另外删除任何已停止的容器和所有未使用的图像（不只是悬空图像），请将该 -a 标志添加到命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ docker system prune -a
+</span></span></code></pre></div><h2 id=删除镜像>删除镜像</h2><p>删除悬空镜像：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 列出悬空镜像</span>
+</span></span><span style=display:flex><span>$ docker images -f dangling<span style=color:#f92672>=</span>true
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除悬空镜像</span>
+</span></span><span style=display:flex><span>$ docker images purge
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有镜像</span>
+</span></span><span style=display:flex><span>$ docker rmi <span style=color:#66d9ef>$(</span>docker images -a -q<span style=color:#66d9ef>)</span>
+</span></span></code></pre></div><h2 id=删除容器>删除容器</h2><p>使用多个过滤器移除容器：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 如果要删除标记为Created的所有容器（运行具有无效命令的容器时可能导致的状态）或Exited，则可以使用两个过滤器</span>
+</span></span><span style=display:flex><span>$ docker rm <span style=color:#66d9ef>$(</span>docker ps -a -f status<span style=color:#f92672>=</span>exited -f status<span style=color:#f92672>=</span>created -q<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 停止所有容器</span>
+</span></span><span style=display:flex><span>$ docker stop <span style=color:#66d9ef>$(</span>docker ps -a -q<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除所有容器</span>
+</span></span><span style=display:flex><span>$ docker rm <span style=color:#66d9ef>$(</span>docker ps -a -q<span style=color:#66d9ef>)</span>
+</span></span></code></pre></div><h2 id=删除卷>删除卷</h2><p>仅 Docker 1.9 及更高版本支持。由于卷的位置与容器无关，因此在移除容器时，不会同时自动删除卷；当卷存在且不再连接到任何容器时，它称为悬空卷。</p><p>删除悬空卷：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 列出悬空卷</span>
+</span></span><span style=display:flex><span>$ docker volume ls -f dangling<span style=color:#f92672>=</span>true
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除悬空卷</span>
+</span></span><span style=display:flex><span>$ docker volume prune
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除容器及其卷</span>
+</span></span><span style=display:flex><span>$ docker rm -v container_name
+</span></span></code></pre></div></content><p><a href=https://imx.ink/docker/>#Docker</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

@@ -1,5 +1,2 @@
----
-layout: none
----
-User-agent: *
-Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml
+User-Agent: *
+Sitemap: https://imx.ink/sitemap.xml

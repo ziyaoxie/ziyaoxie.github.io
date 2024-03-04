@@ -1,0 +1,207 @@
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Linux 性能指标监控：CPU、Memory、IO、Network | 提笔忘字</title>
+<meta name=title content="Linux 性能指标监控：CPU、Memory、IO、Network"><meta name=description content="指标 工具 cpu usr <= 70%, sys <= 35%, usr+sys <= 70% top memory si == so == 0, 可用空间 >= 30% vmstat 5; free io iowait% < 20% iostat -x network 网络连通性/吞吐量, TCP连接状态 TIME_WAIT sar -n DEV 1; ping; netstat -nat CPU $ top top - 09:14:56 up 264 days, 20:56, 1 user, load average: 0.02, 0.04, 0.00 Tasks: 87 total, 1 running, 86 sleeping, 0 stopped, 0 zombie Cpu(s): 0."><meta name=keywords content="linux,性能指标,"><meta property="og:title" content="Linux 性能指标监控：CPU、Memory、IO、Network"><meta property="og:description" content="指标 工具 cpu usr <= 70%, sys <= 35%, usr+sys <= 70% top memory si == so == 0, 可用空间 >= 30% vmstat 5; free io iowait% < 20% iostat -x network 网络连通性/吞吐量, TCP连接状态 TIME_WAIT sar -n DEV 1; ping; netstat -nat CPU $ top top - 09:14:56 up 264 days, 20:56, 1 user, load average: 0.02, 0.04, 0.00 Tasks: 87 total, 1 running, 86 sleeping, 0 stopped, 0 zombie Cpu(s): 0."><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/07/18/linux-performance-monitoring/"><meta property="og:image" content="https://imx.ink/images/share.png"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-07-18T10:57:00+08:00"><meta property="article:modified_time" content="2023-07-18T10:57:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://imx.ink/images/share.png"><meta name=twitter:title content="Linux 性能指标监控：CPU、Memory、IO、Network"><meta name=twitter:description content="指标 工具 cpu usr <= 70%, sys <= 35%, usr+sys <= 70% top memory si == so == 0, 可用空间 >= 30% vmstat 5; free io iowait% < 20% iostat -x network 网络连通性/吞吐量, TCP连接状态 TIME_WAIT sar -n DEV 1; ping; netstat -nat CPU $ top top - 09:14:56 up 264 days, 20:56, 1 user, load average: 0.02, 0.04, 0.00 Tasks: 87 total, 1 running, 86 sleeping, 0 stopped, 0 zombie Cpu(s): 0."><meta itemprop=name content="Linux 性能指标监控：CPU、Memory、IO、Network"><meta itemprop=description content="指标 工具 cpu usr <= 70%, sys <= 35%, usr+sys <= 70% top memory si == so == 0, 可用空间 >= 30% vmstat 5; free io iowait% < 20% iostat -x network 网络连通性/吞吐量, TCP连接状态 TIME_WAIT sar -n DEV 1; ping; netstat -nat CPU $ top top - 09:14:56 up 264 days, 20:56, 1 user, load average: 0.02, 0.04, 0.00 Tasks: 87 total, 1 running, 86 sleeping, 0 stopped, 0 zombie Cpu(s): 0."><meta itemprop=datePublished content="2023-07-18T10:57:00+08:00"><meta itemprop=dateModified content="2023-07-18T10:57:00+08:00"><meta itemprop=wordCount content="935"><meta itemprop=image content="https://imx.ink/images/share.png"><meta itemprop=keywords content="linux,性能指标,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+<a href=/tech>技术文章</a>
+<a href=/project>项目实践</a>
+<a href=/xueqiu>滚雪球</a>
+<a href=/about>关于</a></nav></header><main><content><table><thead><tr><th></th><th><strong>指标</strong></th><th><strong>工具</strong></th></tr></thead><tbody><tr><td><strong>cpu</strong></td><td>usr &lt;= 70%, sys &lt;= 35%, usr+sys &lt;= 70%</td><td>top</td></tr><tr><td><strong>memory</strong></td><td>si == so == 0, 可用空间 >= 30%</td><td>vmstat 5; free</td></tr><tr><td><strong>io</strong></td><td>iowait% &lt; 20%</td><td>iostat -x</td></tr><tr><td><strong>network</strong></td><td>网络连通性/吞吐量, TCP连接状态 TIME_WAIT</td><td>sar -n DEV 1; ping; netstat -nat</td></tr></tbody></table><h2 id=cpu>CPU</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ top
+</span></span><span style=display:flex><span>top - 09:14:56 up <span style=color:#ae81ff>264</span> days, 20:56,  <span style=color:#ae81ff>1</span> user,  load average: 0.02, 0.04, 0.00
+</span></span><span style=display:flex><span>Tasks:  <span style=color:#ae81ff>87</span> total,   <span style=color:#ae81ff>1</span> running,  <span style=color:#ae81ff>86</span> sleeping,   <span style=color:#ae81ff>0</span> stopped,   <span style=color:#ae81ff>0</span> zombie
+</span></span><span style=display:flex><span>Cpu<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>:  0.0%us,  0.2%sy,  0.0%ni, 99.7%id,  0.0%wa,  0.0%hi,  0.0%si,  0.2%st
+</span></span><span style=display:flex><span>Mem:    377672k total,   322332k used,    55340k free,    32592k buffers
+</span></span><span style=display:flex><span>Swap:   397308k total,    67192k used,   330116k free,    71900k cached
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span> root      <span style=color:#ae81ff>20</span>   <span style=color:#ae81ff>0</span>  <span style=color:#ae81ff>2856</span>  <span style=color:#ae81ff>656</span>  <span style=color:#ae81ff>388</span> S  0.0  0.2   0:49.40 init
+</span></span><span style=display:flex><span><span style=color:#ae81ff>2</span> root      <span style=color:#ae81ff>20</span>   <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span> S  0.0  0.0   0:00.00 kthreadd
+</span></span><span style=display:flex><span><span style=color:#ae81ff>3</span> root      <span style=color:#ae81ff>20</span>   <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span> S  0.0  0.0   7:15.20 ksoftirqd/0
+</span></span><span style=display:flex><span><span style=color:#ae81ff>4</span> root      RT   <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span> S  0.0  0.0   0:00.00 migration/0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第一行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 09:14:56 ： 系统当前时间</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 264 days, 20:56 ： 系统开机到现在经过了多少时间</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 1 users ： 当前2用户在线</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第二行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Tasks：任务;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 87 total：很好理解，就是当前有87个任务，也就是87个进程。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 1 running：1个进程正在运行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 86 sleeping：86个进程睡眠</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0 stopped：停止的进程数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0 zombie：僵死的进程数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第三行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Cpu(s)：表示这一行显示CPU总体信息</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.7%sy：内核占用CPU时间百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.0%ni：改变过优先级的进程占用CPU的百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 99.3%id：空闲CPU时间百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.0%wa：等待I/O的CPU时间百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.0%hi：CPU硬中断时间百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 0.0%si：CPU软中断时间百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第四行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Men：内存的意思</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 8175320kk total：物理内存总量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 8058868k used：使用的物理内存量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 116452k free：空闲的物理内存量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 283084k buffers：用作内核缓存的物理内存量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第五行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Swap：交换空间</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6881272k total：交换区总量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4010444k used：使用的交换区量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2870828k free：空闲的交换区量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4336992k cached：缓冲交换区总量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 进程信息</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 再下面就是进程信息：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># PID：进程的ID</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># USER：进程所有者</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># PR：进程的优先级别，越小越优先被执行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># NInice：值</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># VIRT：进程占用的虚拟内存</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># RES：进程占用的物理内存</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># SHR：进程使用的共享内存</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %CPU：进程占用CPU的使用率</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %MEM：进程使用的物理内存和总内存的百分比</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># COMMAND：进程启动命令名称</span>
+</span></span></code></pre></div><h2 id=memory>Memory</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ free
+</span></span><span style=display:flex><span>                   <span style=color:#ae81ff>1</span>          <span style=color:#ae81ff>2</span>          <span style=color:#ae81ff>3</span>          <span style=color:#ae81ff>4</span>          <span style=color:#ae81ff>5</span>          <span style=color:#ae81ff>6</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span>              total       used       free     shared    buffers     cached
+</span></span><span style=display:flex><span><span style=color:#ae81ff>2</span> Mem:      <span style=color:#ae81ff>24677460</span>   <span style=color:#ae81ff>23276064</span>    <span style=color:#ae81ff>1401396</span>          <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>870540</span>   <span style=color:#ae81ff>12084008</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>3</span> Swap:     <span style=color:#ae81ff>25151484</span>     <span style=color:#ae81ff>224188</span>   <span style=color:#ae81ff>24927296</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第二行说明内存使用情况</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第一列是总量（total），第二列是使用量（used），第三列是可用量（free），第四列表示被几个进程共享的内存（shared），第五列表示被 OS buffer 住的内存，第六列表示被 OS cache 的内存。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># buffer/cache:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># A buffer is something that has yet to be &#34;written&#34; to disk.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># A cache is something that has been &#34;read&#34; from the disk and stored for later use.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 释放掉被系统 cache 占用的数据：释放掉被系统 cache 占用的数据。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 第三行为交换区的信息</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 分别是交换的总量（total），使用量（used）和有多少空闲的交换区（free）。</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ vmstat <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu-----
+</span></span><span style=display:flex><span>r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+</span></span><span style=display:flex><span><span style=color:#ae81ff>6</span>  <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>27900472</span> <span style=color:#ae81ff>204216</span> <span style=color:#ae81ff>28188356</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>9</span>    <span style=color:#ae81ff>1</span>    <span style=color:#ae81ff>2</span> <span style=color:#ae81ff>11</span> <span style=color:#ae81ff>14</span> <span style=color:#ae81ff>75</span>  <span style=color:#ae81ff>0</span>  <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9</span>  <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>27900380</span> <span style=color:#ae81ff>204228</span> <span style=color:#ae81ff>28188360</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>13</span> <span style=color:#ae81ff>33312</span> <span style=color:#ae81ff>126221</span> <span style=color:#ae81ff>22</span> <span style=color:#ae81ff>20</span> <span style=color:#ae81ff>58</span>  <span style=color:#ae81ff>0</span>  <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>2</span>  <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>27900340</span> <span style=color:#ae81ff>204240</span> <span style=color:#ae81ff>28188364</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>10</span> <span style=color:#ae81ff>32755</span> <span style=color:#ae81ff>125566</span> <span style=color:#ae81ff>22</span> <span style=color:#ae81ff>20</span> <span style=color:#ae81ff>58</span>  <span style=color:#ae81ff>0</span>  <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Procs（进程）:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># r: 运行队列中进程数量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># b: 等待IO的进程数量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Memory（内存）:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># swpd: 使用虚拟内存大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># free: 可用内存大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># buff: 用作缓冲的内存大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># cache: 用作缓存的内存大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Swap:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># si: 每秒从交换区写到内存的大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># so: 每秒写入交换区的内存大小</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># IO：（现在的Linux版本块的大小为1024bytes）</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># bi: 每秒读取的块数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># bo: 每秒写入的块数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># system：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># in: 每秒中断数，包括时钟中断</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># cs: 每秒上下文切换数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># CPU（以百分比表示）</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># us: 用户进程执行时间(user time)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># sy: 系统进程执行时间(system time)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># id: 空闲时间(包括IO等待时间)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># wa: 等待IO时间</span>
+</span></span></code></pre></div><h2 id=io>IO</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ iostat -xk <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Linux 4.14.105-1-tlinux3-0023.1 <span style=color:#f92672>(</span>TENCENT64.site<span style=color:#f92672>)</span> 	07/17/2023 	_x86_64_	<span style=color:#f92672>(</span><span style=color:#ae81ff>48</span> CPU<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+</span></span><span style=display:flex><span>           0.10    0.00    0.06    0.00    0.00   99.83
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+</span></span><span style=display:flex><span>nvme0n1           0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
+</span></span><span style=display:flex><span>nvme1n1           0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
+</span></span><span style=display:flex><span>nvme2n1           0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
+</span></span><span style=display:flex><span>nvme3n1           0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
+</span></span><span style=display:flex><span>sda               0.00    43.00    0.00   60.00     0.00  2592.00    86.40     0.01    0.13    0.00    0.13   0.13   0.80
+</span></span><span style=display:flex><span>md0               0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># cpu属性值说明</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %user：CPU处在用户模式下的时间百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %nice：CPU处在带NICE值的用户模式下的时间百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %system：CPU处在系统模式下的时间百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %iowait：CPU等待输入输出完成时间的百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %steal：管理程序维护另一个虚拟处理器时，虚拟CPU的无意识等待时间百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %idle：CPU空闲时间百分比。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 如果%iowait的值过高，表示硬盘存在I/O瓶颈，%idle值高，表示CPU较空闲，如果%idle值高但系统响应慢时，有可能是CPU等待分配内存，此时应加大内存容量。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %idle值如果持续低于10，那么系统的CPU处理能力相对较低，表明系统中最需要解决的资源是CPU。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># disk属性值说明</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rrqm/s： 每秒进行 merge 的读操作数目.即 delta(rmerge)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># wrqm/s： 每秒进行 merge 的写操作数目.即 delta(wmerge)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># r/s： 每秒完成的读 I/O 设备次数.即 delta(rio)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># w/s： 每秒完成的写 I/O 设备次数.即 delta(wio)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rsec/s： 每秒读扇区数.即 delta(rsect)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># wsec/s： 每秒写扇区数.即 delta(wsect)/s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rkB/s： 每秒读K字节数.是 rsect/s 的一半,因为每扇区大小为512字节.(需要计算)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># wkB/s： 每秒写K字节数.是 wsect/s 的一半.(需要计算)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># avgrq-sz：平均每次设备I/O操作的数据大小 (扇区).delta(rsect+wsect)/delta(rio+wio)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># avgqu-sz：平均I/O队列长度.即 delta(aveq)/s/1000 (因为aveq的单位为毫秒).</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># await： 平均每次设备I/O操作的等待时间 (毫秒).即 delta(ruse+wuse)/delta(rio+wio)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># svctm： 平均每次设备I/O操作的服务时间 (毫秒).即 delta(use)/delta(rio+wio)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># %util： 一秒中有百分之多少的时间用于 I/O 操作,或者说一秒中有多少时间 I/O 队列是非空的，即 delta(use)/s/1000 (因为use的单位为毫秒)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 如果 %util 接近 100%，说明产生的I/O请求太多，I/O系统已经满负荷，该磁盘可能存在瓶颈。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 如果svctm的值与await很接近，表示几乎没有I/O等待，磁盘性能很好，如果await的值远高于svctm的值，则表示I/O队列等待太长，系统上运行的应用程序将变慢。</span>
+</span></span></code></pre></div><h2 id=network>Network</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 通过ping命令检测网络的连通性</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ netstat -nat
+</span></span><span style=display:flex><span>Active Internet connections <span style=color:#f92672>(</span>servers and established<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>Proto Recv-Q Send-Q Local Address           Foreign Address         State
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 0.0.0.0:56000           0.0.0.0:*               LISTEN     
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 0.0.0.0:36000           0.0.0.0:*               LISTEN     
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 0.0.0.0:48369           0.0.0.0:*               LISTEN     
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN     
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 127.0.0.1:42222         0.0.0.0:*               LISTEN     
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:44888     9.134.205.9:9922        ESTABLISHED
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>224</span> 9.135.140.130:36000     30.20.62.33:63640       ESTABLISHED
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:58860     169.254.0.35:9988       ESTABLISHED
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:36000     30.20.62.33:64643       ESTABLISHED
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:55180     9.134.37.243:80         ESTABLISHED
+</span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:55306     9.134.104.10:80         ESTABLISHED
+</span></span><span style=display:flex><span>tcp6       <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> :::36000                :::*                    LISTEN     
+</span></span><span style=display:flex><span>tcp6       <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> :::3306                 :::*                    LISTEN     
+</span></span><span style=display:flex><span>tcp6       <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> :::80                   :::*                    LISTEN     
+</span></span><span style=display:flex><span>tcp6       <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> :::33060                :::*                    LISTEN     
+</span></span><span style=display:flex><span>tcp6       <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 9.135.140.130:3306      9.30.4.220:41902        ESTABLISHED
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看TCP连接状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Recv-Q：当连接为ESTABLISHED状态时，表示没有被应用程序取走的字节数。当连接为LISTEN状态时，表示syn backlog的当前值。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Send-Q：当连接为LISTEN状态时，表示没有被远端确认的字节数。当连接为LISTEN状态时，表示最大的syn backlog值。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Local Address：本地端口地址。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Foreign Address：远端端口地址。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># State：套接字状态。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># TIME_WAIT状态的出现，是由于主动断开连接导致的，也就是说，应用程序中存在大量的短连接。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 当出现大量CLOSE_WAIT状态时，通常是应用程序，未及时调用close()关闭连接。</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ sar -n DEV <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Linux 5.4.119-1-tlinux4-0010.3 <span style=color:#f92672>(</span>TENCENT64.site<span style=color:#f92672>)</span> 	07/19/2023 	_x86_64_	<span style=color:#f92672>(</span><span style=color:#ae81ff>32</span> CPU<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>11:56:35 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s
+</span></span><span style=display:flex><span>11:56:36 AM      eth1      7.00      6.00      0.75      0.58      0.00      0.00      0.00
+</span></span><span style=display:flex><span>11:56:36 AM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+</span></span><span style=display:flex><span>11:56:36 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># IFACE：LAN接口</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rxpck/s：每秒钟接收的数据包</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># txpck/s：每秒钟发送的数据包</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rxbyt/s：每秒钟接收的字节数</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># txbyt/s：每秒钟发送的字节数</span>
+</span></span></code></pre></div><h2 id=参考资料>参考资料</h2><ul><li><a href=https://blog.donothing.site/2019/05/01/linux-server-maint/#part-2e9bff25d9134309>Linux 服务器维护简易指南</a></li><li><a href=https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html>Linux工具快速教程</a></li></ul></content><p><a href=https://imx.ink/linux/>#Linux</a>
+<a href=https://imx.ink/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/>#性能指标</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
