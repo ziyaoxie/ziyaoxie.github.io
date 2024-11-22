@@ -1,33 +1,49 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Rouge 插件支持 Jekyll 代码高亮 | 提笔忘字</title>
-<meta name=title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=description content="Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Rouge 插件支持 Jekyll 代码高亮 | 提笔忘字</title><meta name=title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=description content="Rouge 插件支持 Jekyll 代码高亮
+Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+安装 Rouge
+安装 Rouge 和普通的 Jekyll 插件安装一样：
+$ gem install rouge
+然后在 _config.yml 文件声明使用：
+highlighter: rouge
+如果你使用 kramdown，那么添加以下内容：
+markdown: kramdown
+kramdown:
+input: GFM
+syntax_highlighter: rouge
+使用 Rouge 代码语法高亮
+Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
+{% raw %}
+{% highlight ruby linenos %}
+def foo
+  puts 'foo'
+end
+{% endhighlight %}
+{% endraw %}
+包含 linenos 参数将强制突出显示的代码包含行号。
+Rouge 样式
+Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta name=keywords content="jekyll,"><meta property="og:url" content="https://imx.ink/tech/2023/09/18/jekyll-with-rouge/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Rouge 插件支持 Jekyll 代码高亮"><meta property="og:description" content="Rouge 插件支持 Jekyll 代码高亮 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
 安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
 $ gem install rouge 然后在 _config.yml 文件声明使用：
 highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
 markdown: kramdown kramdown: input: GFM syntax_highlighter: rouge 使用 Rouge 代码语法高亮 Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
 {% raw %} {% highlight ruby linenos %} def foo puts 'foo' end {% endhighlight %} {% endraw %} 包含 linenos 参数将强制突出显示的代码包含行号。
-Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta name=keywords content="jekyll,"><meta property="og:title" content="Rouge 插件支持 Jekyll 代码高亮"><meta property="og:description" content="Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-09-18T20:36:00+08:00"><meta property="article:modified_time" content="2023-09-18T20:36:00+08:00"><meta property="article:tag" content="Jekyll"><meta name=twitter:card content="summary"><meta name=twitter:title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=twitter:description content="Rouge 插件支持 Jekyll 代码高亮 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
 安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
 $ gem install rouge 然后在 _config.yml 文件声明使用：
 highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
 markdown: kramdown kramdown: input: GFM syntax_highlighter: rouge 使用 Rouge 代码语法高亮 Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
 {% raw %} {% highlight ruby linenos %} def foo puts 'foo' end {% endhighlight %} {% endraw %} 包含 linenos 参数将强制突出显示的代码包含行号。
-Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/09/18/jekyll-with-rouge/"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-09-18T20:36:00+08:00"><meta property="article:modified_time" content="2023-09-18T20:36:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary"><meta name=twitter:title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=twitter:description content="Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta itemprop=name content="Rouge 插件支持 Jekyll 代码高亮"><meta itemprop=description content="Rouge 插件支持 Jekyll 代码高亮 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
 安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
 $ gem install rouge 然后在 _config.yml 文件声明使用：
 highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
 markdown: kramdown kramdown: input: GFM syntax_highlighter: rouge 使用 Rouge 代码语法高亮 Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
 {% raw %} {% highlight ruby linenos %} def foo puts 'foo' end {% endhighlight %} {% endraw %} 包含 linenos 参数将强制突出显示的代码包含行号。
-Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta itemprop=name content="Rouge 插件支持 Jekyll 代码高亮"><meta itemprop=description content="Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
-安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
-$ gem install rouge 然后在 _config.yml 文件声明使用：
-highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
-markdown: kramdown kramdown: input: GFM syntax_highlighter: rouge 使用 Rouge 代码语法高亮 Rouge 可以支持 100 多种语言的语法突出显示，参考官方说明。要使用语法突出显示来呈现代码块，示例如下：
-{% raw %} {% highlight ruby linenos %} def foo puts 'foo' end {% endhighlight %} {% endraw %} 包含 linenos 参数将强制突出显示的代码包含行号。
-Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta itemprop=datePublished content="2023-09-18T20:36:00+08:00"><meta itemprop=dateModified content="2023-09-18T20:36:00+08:00"><meta itemprop=wordCount content="117"><meta itemprop=keywords content="jekyll,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+Rouge 样式 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。"><meta itemprop=datePublished content="2023-09-18T20:36:00+08:00"><meta itemprop=dateModified content="2023-09-18T20:36:00+08:00"><meta itemprop=wordCount content="121"><meta itemprop=keywords content="Jekyll"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%;border-collapse:collapse;table-layout:auto}th,td{border:1px solid #ddd;padding:8px;text-align:left;min-width:50px}th{background-color:#f2f2f2;font-weight:700}tr:hover{background-color:#f5f5f5}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
 <a href=/tech>技术文章</a>
 <a href=/life>花落知多少</a>
-<a href=/xueqiu>滚雪球</a>
-<a href=/about>关于</a></nav></header><main><content><p>Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。</p><h2 id=安装-rouge>安装 Rouge</h2><p>安装 Rouge 和普通的 Jekyll 插件安装一样：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ gem install rouge
+<a href=/digest>摘抄</a>
+<a href=/about>关于</a></nav></header><main><content><h2 id=rouge-插件支持-jekyll-代码高亮>Rouge 插件支持 Jekyll 代码高亮</h2><p>Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。</p><h2 id=安装-rouge>安装 Rouge</h2><p>安装 Rouge 和普通的 Jekyll 插件安装一样：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ gem install rouge
 </span></span></code></pre></div><p>然后在 <code>_config.yml</code> 文件声明使用：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>highlighter</span>: <span style=color:#ae81ff>rouge</span>
 </span></span></code></pre></div><p>如果你使用 <code>kramdown</code>，那么添加以下内容：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>markdown</span>: <span style=color:#ae81ff>kramdown</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>kramdown</span>:

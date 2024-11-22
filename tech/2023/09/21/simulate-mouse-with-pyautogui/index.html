@@ -1,25 +1,86 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>PyAutoGUI 模拟鼠标点击 | 提笔忘字</title>
-<meta name=title content="PyAutoGUI 模拟鼠标点击"><meta name=description content="如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>PyAutoGUI 模拟鼠标点击 | 提笔忘字</title><meta name=title content="PyAutoGUI 模拟鼠标点击"><meta name=description content='PyAutoGUI 模拟鼠标点击
+如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
+代码示例
+Python 代码示例如下：
+# 需要先安装 PyAutoGUI 库: pip install pyautogui
+
+import pyautogui
+
+for i in range(10):
+    pyautogui.click(100, 100)
+JavaScript 代码示例如下：
+for (let i = 0; i < 10; i++) {
+  setTimeout(() => {
+    window.dispatchEvent(new MouseEvent(&#39;click&#39;, {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    }));
+  }, i * 1000);
+}
+PowerShell 代码示例如下：
+for ($i = 0; $i -lt 10; $i++) {
+  [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100)
+  [System.Windows.Forms.SendKeys]::SendWait("{LBUTTON}")
+}
+获取屏幕坐标
+鼠标就会出现一个浮窗跟随，实时显示当前鼠标坐标，Python 代码示例如下：
+import pyautogui
+import tkinter as tk
+
+def update_position_label():
+    # 获取鼠标当前位置的坐标
+    x, y = pyautogui.position()
+    position_label.configure(text=f"坐标：({x}, {y})")
+    position_label.after(100, update_position_label)
+
+# 创建主窗口
+window = tk.Tk()
+window.title("鼠标坐标")
+window.geometry("200x50")
+
+# 创建坐标标签
+position_label = tk.Label(window, text="坐标：(0, 0)")
+position_label.pack()
+
+# 更新坐标标签
+update_position_label()
+
+# 设置窗口始终在最顶层显示
+window.attributes("-topmost", True)
+
+# 隐藏窗口标题栏
+window.overrideredirect(True)
+
+# 窗口跟随鼠标移动
+def move_window(event):
+    x, y = event.x_root, event.y_root
+    window.geometry(f"+{x}+{y}")
+
+window.bind("<Motion>", move_window)
+
+# 运行窗口主循环
+window.mainloop()
+'><meta name=keywords content="pyautogui,"><meta property="og:url" content="https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="PyAutoGUI 模拟鼠标点击"><meta property="og:description" content='PyAutoGUI 模拟鼠标点击 如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
 代码示例 Python 代码示例如下：
 # 需要先安装 PyAutoGUI 库: pip install pyautogui import pyautogui for i in range(10): pyautogui.click(100, 100) JavaScript 代码示例如下：
-for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
-for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System."><meta name=keywords content="pyautogui,"><meta property="og:title" content="PyAutoGUI 模拟鼠标点击"><meta property="og:description" content="如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
+for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent(&#39;click&#39;, { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
+for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System.Windows.Forms.SendKeys]::SendWait("{LBUTTON}") } 获取屏幕坐标 鼠标就会出现一个浮窗跟随，实时显示当前鼠标坐标，Python 代码示例如下：
+import pyautogui import tkinter as tk def update_position_label(): # 获取鼠标当前位置的坐标 x, y = pyautogui.position() position_label.configure(text=f"坐标：({x}, {y})") position_label.after(100, update_position_label) # 创建主窗口 window = tk.Tk() window.title("鼠标坐标") window.geometry("200x50") # 创建坐标标签 position_label = tk.Label(window, text="坐标：(0, 0)") position_label.pack() # 更新坐标标签 update_position_label() # 设置窗口始终在最顶层显示 window.attributes("-topmost", True) # 隐藏窗口标题栏 window.overrideredirect(True) # 窗口跟随鼠标移动 def move_window(event): x, y = event.x_root, event.y_root window.geometry(f"+{x}+{y}") window.bind("<Motion>", move_window) # 运行窗口主循环 window.mainloop()'><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-09-21T14:44:00+08:00"><meta property="article:modified_time" content="2023-09-21T14:44:00+08:00"><meta property="article:tag" content="Pyautogui"><meta name=twitter:card content="summary"><meta name=twitter:title content="PyAutoGUI 模拟鼠标点击"><meta name=twitter:description content='PyAutoGUI 模拟鼠标点击 如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
 代码示例 Python 代码示例如下：
 # 需要先安装 PyAutoGUI 库: pip install pyautogui import pyautogui for i in range(10): pyautogui.click(100, 100) JavaScript 代码示例如下：
-for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
-for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System."><meta property="og:type" content="article"><meta property="og:url" content="https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/"><meta property="article:section" content="tech"><meta property="article:published_time" content="2023-09-21T14:44:00+08:00"><meta property="article:modified_time" content="2023-09-21T14:44:00+08:00"><meta property="og:site_name" content="提笔忘字"><meta name=twitter:card content="summary"><meta name=twitter:title content="PyAutoGUI 模拟鼠标点击"><meta name=twitter:description content="如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
+for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent(&#39;click&#39;, { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
+for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System.Windows.Forms.SendKeys]::SendWait("{LBUTTON}") } 获取屏幕坐标 鼠标就会出现一个浮窗跟随，实时显示当前鼠标坐标，Python 代码示例如下：
+import pyautogui import tkinter as tk def update_position_label(): # 获取鼠标当前位置的坐标 x, y = pyautogui.position() position_label.configure(text=f"坐标：({x}, {y})") position_label.after(100, update_position_label) # 创建主窗口 window = tk.Tk() window.title("鼠标坐标") window.geometry("200x50") # 创建坐标标签 position_label = tk.Label(window, text="坐标：(0, 0)") position_label.pack() # 更新坐标标签 update_position_label() # 设置窗口始终在最顶层显示 window.attributes("-topmost", True) # 隐藏窗口标题栏 window.overrideredirect(True) # 窗口跟随鼠标移动 def move_window(event): x, y = event.x_root, event.y_root window.geometry(f"+{x}+{y}") window.bind("<Motion>", move_window) # 运行窗口主循环 window.mainloop()'><meta itemprop=name content="PyAutoGUI 模拟鼠标点击"><meta itemprop=description content='PyAutoGUI 模拟鼠标点击 如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
 代码示例 Python 代码示例如下：
 # 需要先安装 PyAutoGUI 库: pip install pyautogui import pyautogui for i in range(10): pyautogui.click(100, 100) JavaScript 代码示例如下：
-for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
-for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System."><meta itemprop=name content="PyAutoGUI 模拟鼠标点击"><meta itemprop=description content="如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
-代码示例 Python 代码示例如下：
-# 需要先安装 PyAutoGUI 库: pip install pyautogui import pyautogui for i in range(10): pyautogui.click(100, 100) JavaScript 代码示例如下：
-for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
-for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System."><meta itemprop=datePublished content="2023-09-21T14:44:00+08:00"><meta itemprop=dateModified content="2023-09-21T14:44:00+08:00"><meta itemprop=wordCount content="133"><meta itemprop=keywords content="pyautogui,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+for (let i = 0; i < 10; i++) { setTimeout(() => { window.dispatchEvent(new MouseEvent(&#39;click&#39;, { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
+for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System.Windows.Forms.SendKeys]::SendWait("{LBUTTON}") } 获取屏幕坐标 鼠标就会出现一个浮窗跟随，实时显示当前鼠标坐标，Python 代码示例如下：
+import pyautogui import tkinter as tk def update_position_label(): # 获取鼠标当前位置的坐标 x, y = pyautogui.position() position_label.configure(text=f"坐标：({x}, {y})") position_label.after(100, update_position_label) # 创建主窗口 window = tk.Tk() window.title("鼠标坐标") window.geometry("200x50") # 创建坐标标签 position_label = tk.Label(window, text="坐标：(0, 0)") position_label.pack() # 更新坐标标签 update_position_label() # 设置窗口始终在最顶层显示 window.attributes("-topmost", True) # 隐藏窗口标题栏 window.overrideredirect(True) # 窗口跟随鼠标移动 def move_window(event): x, y = event.x_root, event.y_root window.geometry(f"+{x}+{y}") window.bind("<Motion>", move_window) # 运行窗口主循环 window.mainloop()'><meta itemprop=datePublished content="2023-09-21T14:44:00+08:00"><meta itemprop=dateModified content="2023-09-21T14:44:00+08:00"><meta itemprop=wordCount content="135"><meta itemprop=keywords content="Pyautogui"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%;border-collapse:collapse;table-layout:auto}th,td{border:1px solid #ddd;padding:8px;text-align:left;min-width:50px}th{background-color:#f2f2f2;font-weight:700}tr:hover{background-color:#f5f5f5}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
 <a href=/tech>技术文章</a>
 <a href=/life>花落知多少</a>
-<a href=/xueqiu>滚雪球</a>
-<a href=/about>关于</a></nav></header><main><content><p>如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。</p><h2 id=代码示例>代码示例</h2><p>Python 代码示例如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 需要先安装 PyAutoGUI 库: pip install pyautogui</span>
+<a href=/digest>摘抄</a>
+<a href=/about>关于</a></nav></header><main><content><h2 id=pyautogui-模拟鼠标点击>PyAutoGUI 模拟鼠标点击</h2><p>如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。</p><h2 id=代码示例>代码示例</h2><p>Python 代码示例如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 需要先安装 PyAutoGUI 库: pip install pyautogui</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#f92672>import</span> pyautogui
 </span></span><span style=display:flex><span>

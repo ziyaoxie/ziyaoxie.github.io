@@ -1,3 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chaosblade on 提笔忘字</title><link>https://imx.ink/chaosblade/</link><description>Recent content in Chaosblade on 提笔忘字</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Fri, 14 Jul 2023 19:52:00 +0800</lastBuildDate><atom:link href="https://imx.ink/chaosblade/index.xml" rel="self" type="application/rss+xml"/><item><title>ChaosBlade 简述及内部实现逻辑</title><link>https://imx.ink/tech/2023/07/14/introduction-and-implementation-of-chaosblade/</link><pubDate>Fri, 14 Jul 2023 19:52:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/14/introduction-and-implementation-of-chaosblade/</guid><description>ChaosBlade 是一款混沌工程工具，目前支持的演练场景有操作系统类的 CPU、磁盘、进程、网络，Java 应用类的 Dubbo、MySQL、Servlet 和自定义类方法延迟或抛异常等以及杀容器、杀 Pod。
-Chaosblade 可直接编译运行，支持 cli 命令，具体可执行 blade create -h 查看：
-Create a chaos engineering experiment Usage: blade create [command] Aliases: create, c Examples: create dubbo delay --time 3000 --offset 100 --service com.example.Service --consumer Available Commands: cplus c++ experiment cpu Cpu experiment disk Disk experiment docker Execute a docker experiment druid Druid experiment dubbo dubbo experiment http http experiment jvm method k8s Kubernetes experiment mysql mysql experiment network Network experiment process Process experiment rocketmq Rocketmq experiment,can make message send or pull delay and exception script Script chaos experiment servlet java servlet experiment Flags: -h, --help help for create Global Flags: -d, --debug Set client to DEBUG mode Use &amp;#34;blade create [command] --help&amp;#34; for more information about a command.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chaosblade on 提笔忘字</title><link>https://imx.ink/chaosblade/</link><description>Recent content in Chaosblade on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Fri, 14 Jul 2023 19:52:00 +0800</lastBuildDate><atom:link href="https://imx.ink/chaosblade/index.xml" rel="self" type="application/rss+xml"/><item><title>ChaosBlade 简述及内部实现逻辑</title><link>https://imx.ink/tech/2023/07/14/introduction-and-implementation-of-chaosblade/</link><pubDate>Fri, 14 Jul 2023 19:52:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/14/introduction-and-implementation-of-chaosblade/</guid><description>&lt;h2 id="chaosblade-简述及内部实现逻辑">ChaosBlade 简述及内部实现逻辑&lt;/h2>
+&lt;p>ChaosBlade 是一款混沌工程工具，目前支持的演练场景有操作系统类的 CPU、磁盘、进程、网络，Java 应用类的 Dubbo、MySQL、Servlet 和自定义类方法延迟或抛异常等以及杀容器、杀 Pod。&lt;/p>
+&lt;p>Chaosblade 可直接编译运行，支持 cli 命令，具体可执行 &lt;code>blade create -h&lt;/code> 查看：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>Create a chaos engineering experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Usage:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> blade create &lt;span style="color:#f92672">[&lt;/span>command&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Aliases:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> create, c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Examples:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>create dubbo delay --time &lt;span style="color:#ae81ff">3000&lt;/span> --offset &lt;span style="color:#ae81ff">100&lt;/span> --service com.example.Service --consumer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Available Commands:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cplus c++ experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cpu Cpu experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> disk Disk experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> docker Execute a docker experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> druid Druid experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dubbo dubbo experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> http http experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jvm method
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> k8s Kubernetes experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mysql mysql experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> network Network experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> process Process experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rocketmq Rocketmq experiment,can make message send or pull delay and exception
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> script Script chaos experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> servlet java servlet experiment
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Flags:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -h, --help help &lt;span style="color:#66d9ef">for&lt;/span> create
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Global Flags:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -d, --debug Set client to DEBUG mode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use &lt;span style="color:#e6db74">&amp;#34;blade create [command] --help&amp;#34;&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> more information about a command.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>github地址: &lt;a href="https://github.com/chaosblade-io/chaosblade">https://github.com/chaosblade-io/chaosblade&lt;/a>&lt;/p></description></item></channel></rss>

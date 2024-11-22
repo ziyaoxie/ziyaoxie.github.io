@@ -1,5 +1,64 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pyautogui on 提笔忘字</title><link>https://imx.ink/pyautogui/</link><description>Recent content in Pyautogui on 提笔忘字</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Thu, 21 Sep 2023 14:44:00 +0800</lastBuildDate><atom:link href="https://imx.ink/pyautogui/index.xml" rel="self" type="application/rss+xml"/><item><title>PyAutoGUI 模拟鼠标点击</title><link>https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/</link><pubDate>Thu, 21 Sep 2023 14:44:00 +0800</pubDate><guid>https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/</guid><description>如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。
-代码示例 Python 代码示例如下：
-# 需要先安装 PyAutoGUI 库: pip install pyautogui import pyautogui for i in range(10): pyautogui.click(100, 100) JavaScript 代码示例如下：
-for (let i = 0; i &amp;lt; 10; i++) { setTimeout(() =&amp;gt; { window.dispatchEvent(new MouseEvent(&amp;#39;click&amp;#39;, { view: window, bubbles: true, cancelable: true })); }, i * 1000); } PowerShell 代码示例如下：
-for ($i = 0; $i -lt 10; $i++) { [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(100, 100) [System.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pyautogui on 提笔忘字</title><link>https://imx.ink/pyautogui/</link><description>Recent content in Pyautogui on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Thu, 21 Sep 2023 14:44:00 +0800</lastBuildDate><atom:link href="https://imx.ink/pyautogui/index.xml" rel="self" type="application/rss+xml"/><item><title>PyAutoGUI 模拟鼠标点击</title><link>https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/</link><pubDate>Thu, 21 Sep 2023 14:44:00 +0800</pubDate><guid>https://imx.ink/tech/2023/09/21/simulate-mouse-with-pyautogui/</guid><description>&lt;h2 id="pyautogui-模拟鼠标点击">PyAutoGUI 模拟鼠标点击&lt;/h2>
+&lt;p>如果你想在 Windows 系统中创建一个自动点击脚本，你可以使用脚本语言（如 Python、JavaScript 或者 PowerShell）来实现。&lt;/p>
+&lt;h2 id="代码示例">代码示例&lt;/h2>
+&lt;p>Python 代码示例如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 需要先安装 PyAutoGUI 库: pip install pyautogui&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> pyautogui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> i &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">10&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pyautogui&lt;span style="color:#f92672">.&lt;/span>click(&lt;span style="color:#ae81ff">100&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>JavaScript 代码示例如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-javascript" data-lang="javascript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">10&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">setTimeout&lt;/span>(() =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> window.&lt;span style="color:#a6e22e">dispatchEvent&lt;/span>(&lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">MouseEvent&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;click&amp;#39;&lt;/span>, {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">view&lt;/span>&lt;span style="color:#f92672">:&lt;/span> window,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">bubbles&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cancelable&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }, &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">1000&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>PowerShell 代码示例如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>$i &lt;span style="color:#f92672">=&lt;/span> 0; $i -lt 10; $i++&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">[&lt;/span>System.Windows.Forms.Cursor&lt;span style="color:#f92672">]&lt;/span>::Position &lt;span style="color:#f92672">=&lt;/span> New-Object System.Drawing.Point&lt;span style="color:#f92672">(&lt;/span>100, 100&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">[&lt;/span>System.Windows.Forms.SendKeys&lt;span style="color:#f92672">]&lt;/span>::SendWait&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;{LBUTTON}&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="获取屏幕坐标">获取屏幕坐标&lt;/h2>
+&lt;p>鼠标就会出现一个浮窗跟随，实时显示当前鼠标坐标，Python 代码示例如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> pyautogui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> tkinter &lt;span style="color:#66d9ef">as&lt;/span> tk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">update_position_label&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 获取鼠标当前位置的坐标&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x, y &lt;span style="color:#f92672">=&lt;/span> pyautogui&lt;span style="color:#f92672">.&lt;/span>position()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> position_label&lt;span style="color:#f92672">.&lt;/span>configure(text&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;坐标：(&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">, &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>y&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">)&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> position_label&lt;span style="color:#f92672">.&lt;/span>after(&lt;span style="color:#ae81ff">100&lt;/span>, update_position_label)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 创建主窗口&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window &lt;span style="color:#f92672">=&lt;/span> tk&lt;span style="color:#f92672">.&lt;/span>Tk()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>title(&lt;span style="color:#e6db74">&amp;#34;鼠标坐标&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>geometry(&lt;span style="color:#e6db74">&amp;#34;200x50&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 创建坐标标签&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>position_label &lt;span style="color:#f92672">=&lt;/span> tk&lt;span style="color:#f92672">.&lt;/span>Label(window, text&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;坐标：(0, 0)&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>position_label&lt;span style="color:#f92672">.&lt;/span>pack()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 更新坐标标签&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>update_position_label()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 设置窗口始终在最顶层显示&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>attributes(&lt;span style="color:#e6db74">&amp;#34;-topmost&amp;#34;&lt;/span>, &lt;span style="color:#66d9ef">True&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 隐藏窗口标题栏&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>overrideredirect(&lt;span style="color:#66d9ef">True&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 窗口跟随鼠标移动&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">move_window&lt;/span>(event):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x, y &lt;span style="color:#f92672">=&lt;/span> event&lt;span style="color:#f92672">.&lt;/span>x_root, event&lt;span style="color:#f92672">.&lt;/span>y_root
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> window&lt;span style="color:#f92672">.&lt;/span>geometry(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;+&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">+&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>y&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>bind(&lt;span style="color:#e6db74">&amp;#34;&amp;lt;Motion&amp;gt;&amp;#34;&lt;/span>, move_window)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 运行窗口主循环&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>window&lt;span style="color:#f92672">.&lt;/span>mainloop()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
