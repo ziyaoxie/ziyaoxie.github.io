@@ -1,0 +1,50 @@
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>数据库事务测试工具 | 提笔忘字</title>
+<meta name=title content="数据库事务测试工具"><meta name=description content="数据库事务测试工具
+参考资料：TiDB-事务前沿研究；
+
+  
+      
+          分类
+          名称
+          描述
+      
+  
+  
+      
+          事务一致性测试
+          Bank
+          银行测试是模拟一个银行系统中的转账流程。
+
+在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。
+      
+      
+          事务一致性测试
+          Porcupine
+          Porcupine 一个用 Go 实现的线性一致性验证工具。
+
+是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。
+      
+      
+          事务隔离级别测试
+          Elle
+          Elle 是用来验证数据库事务隔离级别的检查工具。
+
+Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。
+      
+      
+          事务隔离级别测试
+          pg_isolation_regress
+          包含一组针对 PostgreSQL 中并发行为的测试。
+
+这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。
+      
+  
+"><meta name=keywords content="database,transaction,"><meta property="og:url" content="https://imx.ink/tech/2024/05/11/database-transaction-testing-tools/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="数据库事务测试工具"><meta property="og:description" content="数据库事务测试工具 参考资料：TiDB-事务前沿研究；
+分类 名称 描述 事务一致性测试 Bank 银行测试是模拟一个银行系统中的转账流程。 在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。 事务一致性测试 Porcupine Porcupine 一个用 Go 实现的线性一致性验证工具。 是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。 事务隔离级别测试 Elle Elle 是用来验证数据库事务隔离级别的检查工具。 Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。 事务隔离级别测试 pg_isolation_regress 包含一组针对 PostgreSQL 中并发行为的测试。 这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2024-05-11T18:00:00+08:00"><meta property="article:modified_time" content="2024-05-11T18:00:00+08:00"><meta property="article:tag" content="Database"><meta property="article:tag" content="Transaction"><meta name=twitter:card content="summary"><meta name=twitter:title content="数据库事务测试工具"><meta name=twitter:description content="数据库事务测试工具 参考资料：TiDB-事务前沿研究；
+分类 名称 描述 事务一致性测试 Bank 银行测试是模拟一个银行系统中的转账流程。 在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。 事务一致性测试 Porcupine Porcupine 一个用 Go 实现的线性一致性验证工具。 是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。 事务隔离级别测试 Elle Elle 是用来验证数据库事务隔离级别的检查工具。 Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。 事务隔离级别测试 pg_isolation_regress 包含一组针对 PostgreSQL 中并发行为的测试。 这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。"><meta itemprop=name content="数据库事务测试工具"><meta itemprop=description content="数据库事务测试工具 参考资料：TiDB-事务前沿研究；
+分类 名称 描述 事务一致性测试 Bank 银行测试是模拟一个银行系统中的转账流程。 在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。 事务一致性测试 Porcupine Porcupine 一个用 Go 实现的线性一致性验证工具。 是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。 事务隔离级别测试 Elle Elle 是用来验证数据库事务隔离级别的检查工具。 Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。 事务隔离级别测试 pg_isolation_regress 包含一组针对 PostgreSQL 中并发行为的测试。 这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。"><meta itemprop=datePublished content="2024-05-11T18:00:00+08:00"><meta itemprop=dateModified content="2024-05-11T18:00:00+08:00"><meta itemprop=wordCount content="35"><meta itemprop=keywords content="Database,Transaction"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%;border-collapse:collapse;table-layout:auto}th,td{border:1px solid #ddd;padding:8px;text-align:left;min-width:50px}th{background-color:#f2f2f2;font-weight:700}tr:hover{background-color:#f5f5f5}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>提笔忘字</h2></a><nav><a href=/>主页</a>
+<a href=/tech>技术文章</a>
+<a href=/life>花落知多少</a>
+<a href=/favorite>收藏夹</a>
+<a href=/about>关于</a></nav></header><main><content><h2 id=数据库事务测试工具>数据库事务测试工具</h2><p>参考资料：<a href=https://cn.pingcap.com/blog/tag/transaction-frontier-research/>TiDB-事务前沿研究</a>；</p><table><thead><tr><th>分类</th><th>名称</th><th>描述</th></tr></thead><tbody><tr><td>事务一致性测试</td><td><a href=https://github.com/pingcap/tipocket/tree/master/testcase/bank>Bank</a></td><td>银行测试是模拟一个银行系统中的转账流程。<br><br>在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。</td></tr><tr><td>事务一致性测试</td><td><a href=https://github.com/anishathalye/porcupine>Porcupine</a></td><td>Porcupine 一个用 Go 实现的线性一致性验证工具。<br><br>是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。</td></tr><tr><td>事务隔离级别测试</td><td><a href=https://github.com/jepsen-io/elle>Elle</a></td><td>Elle 是用来验证数据库事务隔离级别的检查工具。<br><br>Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。</td></tr><tr><td>事务隔离级别测试</td><td><a href=https://github.com/postgres/postgres/tree/master/src/test/isolation>pg_isolation_regress</a></td><td>包含一组针对 PostgreSQL 中并发行为的测试。<br><br>这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。</td></tr></tbody></table></content><p><a href=https://imx.ink/database/>#Database</a>
+<a href=https://imx.ink/transaction/>#Transaction</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

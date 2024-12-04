@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Transaction on 提笔忘字</title><link>https://imx.ink/transaction/</link><description>Recent content in Transaction on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 11 May 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/transaction/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库事务测试工具</title><link>https://imx.ink/tech/2024/05/11/database-transaction-testing-tools/</link><pubDate>Sat, 11 May 2024 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/05/11/database-transaction-testing-tools/</guid><description>&lt;h2 id="数据库事务测试工具">数据库事务测试工具&lt;/h2>
+&lt;p>参考资料：&lt;a href="https://cn.pingcap.com/blog/tag/transaction-frontier-research/">TiDB-事务前沿研究&lt;/a>；&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>分类&lt;/th>
+ &lt;th>名称&lt;/th>
+ &lt;th>描述&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>事务一致性测试&lt;/td>
+ &lt;td>&lt;a href="https://github.com/pingcap/tipocket/tree/master/testcase/bank">Bank&lt;/a>&lt;/td>
+ &lt;td>银行测试是模拟一个银行系统中的转账流程。
+&lt;br>&lt;br>
+在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>事务一致性测试&lt;/td>
+ &lt;td>&lt;a href="https://github.com/anishathalye/porcupine">Porcupine&lt;/a>&lt;/td>
+ &lt;td>Porcupine 一个用 Go 实现的线性一致性验证工具。
+&lt;br>&lt;br>
+是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>事务隔离级别测试&lt;/td>
+ &lt;td>&lt;a href="https://github.com/jepsen-io/elle">Elle&lt;/a>&lt;/td>
+ &lt;td>Elle 是用来验证数据库事务隔离级别的检查工具。
+&lt;br>&lt;br>
+Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>事务隔离级别测试&lt;/td>
+ &lt;td>&lt;a href="https://github.com/postgres/postgres/tree/master/src/test/isolation">pg_isolation_regress&lt;/a>&lt;/td>
+ &lt;td>包含一组针对 PostgreSQL 中并发行为的测试。
+&lt;br>&lt;br>
+这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table></description></item></channel></rss>
