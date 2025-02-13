@@ -219,12 +219,12 @@ Create a chaos engineering experiment Usage: blade create [command] Aliases: cre
 </span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> {
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>2147483647</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
 </span></span><span style=display:flex><span>                }
-</span></span><span style=display:flex><span>                <span style=color:#a6e22e>runtime</span>.<span style=color:#a6e22e>Gosched</span>() <span style=color:#75715e>//让出CPU时间片
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>            }
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>runtime</span>.<span style=color:#a6e22e>Gosched</span>() <span style=color:#75715e>//让出CPU时间片</span>
+</span></span><span style=display:flex><span>            }
 </span></span><span style=display:flex><span>        }()
 </span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {} <span style=color:#75715e>// wait forever
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {} <span style=color:#75715e>// wait forever</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></div><p>关闭CPU满载负荷的过程也比较简单粗暴，总共分为两步：</p><ol><li>使用 <code>ps -ef | grep …</code> 命令找出chaos_burncpu的pid。</li><li>使用 <code>kill -9 pid</code> 命令干掉它。</li></ol><h3 id=指定内核满载>指定内核满载</h3><p>我们在上面就了解到通过<code>--cpu-count</code>可以指定CPU满载的内核个数，通过<code>--cpu-list</code>可以指定内核满载。</p><p><code>--cpu-count</code>的功能很好实现，在上面的<code>func burnCpu()</code>函数中的cpuCount就是<code>--cpu-count</code>所指定的值。</p><p><code>--cpu-list</code>的功能比较复杂，总共分为3步：</p><ul><li>第一步：执行 <code>nohup bin/chaos_burncpu --nohup --cpu-count 1 --cpu-processor [cpu内核编号] > /dev/null 2>&amp;1 &</code>。假设我们要指定编号为1的内核满载，那么对应的命令即为：<code>nohup bin/chaos_burncpu --nohup --cpu-count 1 --cpu-processor 1 > /dev/null 2>&amp;1 &</code>。其实这个只是个烟雾弹，实际上还是调用原本的 <code>bin/chaos_burncpu --start --cpu-count 1</code> 而已，只不过这里多了一个 cpu-processor 的信息，这个在下面有用。</li><li>第二步：执行 <code>ps -ef | grep …</code> 命令找出对应的pid。</li><li>第三步：将进程pid绑定到编号为 cpu-processor 的内核上。</li></ul><p>CPU affinity （亲和力/亲和性）是一种调度属性（scheduler property）, 它可以将一个进程"绑定" 到一个或一组CPU上。taskset命令用于获取或者设定CPU affinity。</p><h2 id=os级故障实现原理解析>OS级故障实现原理解析</h2><p>在上一章中我们了解了burncpu的故障实现原理，本章主要来描述一下下面列表中除burncpu之外的故障实现原理。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>├── bin
 </span></span><span style=display:flex><span>│   ├── chaos_burncpu
 </span></span><span style=display:flex><span>│   ├── chaos_burnio

@@ -102,11 +102,11 @@ go-resty 有很多特性：
 </span></span><span style=display:flex><span>)
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>client</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>resty</span>.<span style=color:#a6e22e>New</span>() <span style=color:#75715e>// 创建一个restry客户端
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().<span style=color:#a6e22e>EnableTrace</span>().<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;https://httpbin.org/get&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>client</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>resty</span>.<span style=color:#a6e22e>New</span>() <span style=color:#75715e>// 创建一个restry客户端</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().<span style=color:#a6e22e>EnableTrace</span>().<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;https://httpbin.org/get&#34;</span>)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// Explore response object
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Response Info:&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// Explore response object</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Response Info:&#34;</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  Error      :&#34;</span>, <span style=color:#a6e22e>err</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  Status Code:&#34;</span>, <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>StatusCode</span>())
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  Status     :&#34;</span>, <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>Status</span>())
@@ -116,8 +116,8 @@ go-resty 有很多特性：
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  Body       :\n&#34;</span>, <span style=color:#a6e22e>resp</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>()
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// Explore trace info
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Request Trace Info:&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// Explore trace info</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Request Trace Info:&#34;</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>ti</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>Request</span>.<span style=color:#a6e22e>TraceInfo</span>()
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  DNSLookup     :&#34;</span>, <span style=color:#a6e22e>ti</span>.<span style=color:#a6e22e>DNSLookup</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  ConnTime      :&#34;</span>, <span style=color:#a6e22e>ti</span>.<span style=color:#a6e22e>ConnTime</span>)
@@ -129,9 +129,9 @@ go-resty 有很多特性：
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  IsConnReused  :&#34;</span>, <span style=color:#a6e22e>ti</span>.<span style=color:#a6e22e>IsConnReused</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  IsConnWasIdle :&#34;</span>, <span style=color:#a6e22e>ti</span>.<span style=color:#a6e22e>IsConnWasIdle</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;  ConnIdleTime  :&#34;</span>, <span style=color:#a6e22e>ti</span>.<span style=color:#a6e22e>ConnIdleTime</span>)
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// fmt.Println(&#34;  RequestAttempt:&#34;, ti.RequestAttempt)
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// fmt.Println(&#34;  RemoteAddr    :&#34;, ti.RemoteAddr.String())
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// fmt.Println(&#34;  RequestAttempt:&#34;, ti.RequestAttempt)</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// fmt.Println(&#34;  RemoteAddr    :&#34;, ti.RemoteAddr.String())</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></div><h2 id=增强的-get>增强的 GET</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>client</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>resty</span>.<span style=color:#a6e22e>New</span>()
 </span></span><span style=display:flex><span><span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetQueryParams</span>(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{
@@ -145,15 +145,15 @@ go-resty 有很多特性：
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetAuthToken</span>(<span style=color:#e6db74>&#34;BC594900518B4F7EAC75BD37F019E08FBC594900518B4F7EAC75BD37F019E08F&#34;</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;/search_result&#34;</span>)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Request.SetQueryString method
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().
+</span></span><span style=display:flex><span><span style=color:#75715e>// Request.SetQueryString method</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetQueryString</span>(<span style=color:#e6db74>&#34;productId=232&amp;template=fresh-sample&amp;cat=resty&amp;source=google&amp;kw=buy a lot more&#34;</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetHeader</span>(<span style=color:#e6db74>&#34;Accept&#34;</span>, <span style=color:#e6db74>&#34;application/json&#34;</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetAuthToken</span>(<span style=color:#e6db74>&#34;BC594900518B4F7EAC75BD37F019E08FBC594900518B4F7EAC75BD37F019E08F&#34;</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;/show_product&#34;</span>)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 解析返回的内容，内容是json解析到struct
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().
+</span></span><span style=display:flex><span><span style=color:#75715e>// 解析返回的内容，内容是json解析到struct</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>R</span>().
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>SetResult</span>(<span style=color:#a6e22e>result</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>ForceContentType</span>(<span style=color:#e6db74>&#34;application/json&#34;</span>).
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;v2/alpine/mainfestes/latest&#34;</span>)
