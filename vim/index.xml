@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vim on 提笔忘字</title><link>https://imx.ink/vim/</link><description>Recent content in Vim on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Wed, 05 Jun 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>Vim 快捷键</title><link>https://imx.ink/tech/2024/06/05/vim-shortcuts/</link><pubDate>Wed, 05 Jun 2024 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/06/05/vim-shortcuts/</guid><description>&lt;h2 id="vim-快捷键">Vim 快捷键&lt;/h2>
+&lt;h3 id="方向键">方向键&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>0&lt;/code>&lt;/td>
+ &lt;td>（数字 0）移动光标至本行开头&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>$&lt;/code>&lt;/td>
+ &lt;td>移动光标至本行末尾&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>:0&lt;/code>&lt;/td>
+ &lt;td>（数字 0）移动光标至文件开头&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>:$&lt;/code>&lt;/td>
+ &lt;td>移动光标至文件末尾&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="删除文本">删除文本&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>x&lt;/code>&lt;/td>
+ &lt;td>删除光标处字符&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>dw&lt;/code>&lt;/td>
+ &lt;td>删除一个词&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>dd&lt;/code>&lt;/td>
+ &lt;td>删除该行&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="复制粘贴文本">复制/粘贴文本&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>yy&lt;/code>&lt;/td>
+ &lt;td>复制当前行至存储缓冲区&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>p&lt;/code>&lt;/td>
+ &lt;td>在当前行之后粘贴存储缓冲区中的内容&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="撤销重做操作">撤销/重做操作&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>u&lt;/code>&lt;/td>
+ &lt;td>撤销最后的操作&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>Ctrl+r&lt;/code>&lt;/td>
+ &lt;td>重做最后撤销的操作&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="搜索和替换">搜索和替换&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>?search_text&lt;/code>&lt;/td>
+ &lt;td>检索文档，在文档前面的部分搜索 search_text&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>n&lt;/code>&lt;/td>
+ &lt;td>移动到后一个检索结果&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>N&lt;/code>&lt;/td>
+ &lt;td>移动到前一个检索结果&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>:/original/replacement&lt;/code>&lt;/td>
+ &lt;td>检索并将本行的 “original” 替换为 “replacement”&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>:%s/original/replacement/g&lt;/code>&lt;/td>
+ &lt;td>检索并将所有的 “original” 替换为 “replacement”&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="书签">书签&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>m{a-zA-Z}&lt;/code>&lt;/td>
+ &lt;td>在当前光标位置设置书签，书签名可用一个大小写字母（{a-zA-Z}）&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>:marks&lt;/code>&lt;/td>
+ &lt;td>列出所有书签&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>`{a-zA-Z}&lt;/code>&lt;/td>
+ &lt;td>跳转到书签 {a-zA-Z}&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="编程常用">编程常用&lt;/h3>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>快捷键&lt;/th>
+ &lt;th>功能&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;code>gd&lt;/code>&lt;/td>
+ &lt;td>跳转到局部变量的定义处&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>&amp;gt;&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>增加缩进&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;code>&amp;lt;&amp;lt;&lt;/code>&lt;/td>
+ &lt;td>减少缩进&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table></description></item></channel></rss>
