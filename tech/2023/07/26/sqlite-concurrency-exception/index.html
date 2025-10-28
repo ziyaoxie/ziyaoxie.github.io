@@ -1,5 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>解决 SQLite 并发异常问题的方法 | 提笔忘字</title>
-<meta name=title content="解决 SQLite 并发异常问题的方法"><meta name=description content="解决 SQLite 并发异常问题的方法
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>解决 SQLite 并发异常问题的方法 | 提笔忘字</title><meta name=title content="解决 SQLite 并发异常问题的方法"><meta name=description content="解决 SQLite 并发异常问题的方法
 SQLite 是文件级别的数据库，其锁也是文件级别的：多个进程/线程可以同时读，但是同时只能有一个进程/线程写。
 问题描述
 在执行写操作时，数据库文件被琐定，此时任何其他读/写操作都被阻塞，如果阻塞超过5秒钟（默认是5秒，能过重新编译 SQLite 可以修改超时时间），就报&#34;database is locked&#34;错误。

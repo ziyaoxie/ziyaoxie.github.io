@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gin on 提笔忘字</title><link>https://imx.ink/gin/</link><description>Recent content in Gin on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Tue, 05 Mar 2024 20:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/gin/index.xml" rel="self" type="application/rss+xml"/><item><title>Gin 框架的 Web 服务流程</title><link>https://imx.ink/tech/2024/03/05/go-language-gin-framework/</link><pubDate>Tue, 05 Mar 2024 20:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/03/05/go-language-gin-framework/</guid><description>&lt;h2 id="gin-框架的-web-服务流程">Gin 框架的 Web 服务流程&lt;/h2>
-&lt;p>Go 标准库 &lt;code>net/http&lt;/code> 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：&lt;/p>
-&lt;ul>
-&lt;li>动态路由：例如 &lt;code>hello/:name&lt;/code>，&lt;code>hello/*&lt;/code> 这类的规则；&lt;/li>
-&lt;li>鉴权：没有分组/统一鉴权的能力，需要在每个路由映射的handler中实现；&lt;/li>
-&lt;li>模板：没有统一简化的HTML机制；&lt;/li>
-&lt;li>&amp;hellip;&lt;/li>
-&lt;/ul>
-&lt;p>&lt;a href="https://github.com/gin-gonic/gin">gin&lt;/a> 是一个应用广泛的 Go 语言 Web 框架框架，它基于 &lt;a href="https://github.com/julienschmidt/httprouter">htttprouter&lt;/a> 实现最重要的路由模块，采用类似字典树一样的数据结构来存储路由与 &lt;code>handle&lt;/code> 方法的映射。&lt;/p>
-&lt;h2 id="go-语言-web-服务流程">Go 语言 Web 服务流程&lt;/h2>
-&lt;p>使用 go 语言内置的 &lt;code>net&lt;/code> 包启动的一个 web 服务：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 注册一个服务&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">HandleFunc&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;/hello&amp;#34;&lt;/span>, &lt;span style="color:#66d9ef">func&lt;/span>(&lt;span style="color:#a6e22e">w&lt;/span> &lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">ResponseWriter&lt;/span>, &lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">Request&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Fprintf&lt;/span>(&lt;span style="color:#a6e22e">w&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Hello, %q&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">html&lt;/span>.&lt;span style="color:#a6e22e">EscapeString&lt;/span>(&lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">URL&lt;/span>.&lt;span style="color:#a6e22e">Path&lt;/span>))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 监听 8080 端口&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">log&lt;/span>.&lt;span style="color:#a6e22e">Fatal&lt;/span>(&lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">ListenAndServe&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;:8080&amp;#34;&lt;/span>, &lt;span style="color:#66d9ef">nil&lt;/span>))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>当执行上面的服务 &lt;code>go run main.go&lt;/code> 时，此时在 &lt;code>ListenAndServe&lt;/code> 方法会先创建一个 &lt;code>Server{Addr: addr, Handler: handler}&lt;/code> 结构：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// net/http/server.go&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// ListenAndServe listens on the TCP network address addr and then calls&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Serve with handler to handle requests on incoming connections.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Accepted connections are configured to enable TCP keep-alives.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// The handler is typically nil, in which case the DefaultServeMux is used.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// ListenAndServe always returns a non-nil error.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">ListenAndServe&lt;/span>(&lt;span style="color:#a6e22e">addr&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#a6e22e">handler&lt;/span> &lt;span style="color:#a6e22e">Handler&lt;/span>) &lt;span style="color:#66d9ef">error&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#a6e22e">server&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">Server&lt;/span>{&lt;span style="color:#a6e22e">Addr&lt;/span>: &lt;span style="color:#a6e22e">addr&lt;/span>, &lt;span style="color:#a6e22e">Handler&lt;/span>: &lt;span style="color:#a6e22e">handler&lt;/span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">server&lt;/span>.&lt;span style="color:#a6e22e">ListenAndServe&lt;/span>()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>server&lt;/code> 对象的 &lt;code>ListenAndServe&lt;/code> 方法会开启 &lt;code>net.Listen&lt;/code> 进行监听，然后调用 &lt;code>srv.Serve(ln)&lt;/code> 服务：&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gin on 提笔忘字</title><link>https://imx.ink/gin/</link><description>Recent content in Gin on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Tue, 05 Mar 2024 20:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/gin/index.xml" rel="self" type="application/rss+xml"/><item><title>Gin 框架的 Web 服务流程</title><link>https://imx.ink/tech/2024/03/05/go-language-gin-framework/</link><pubDate>Tue, 05 Mar 2024 20:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/03/05/go-language-gin-framework/</guid><description>&lt;h2 id="gin-框架的-web-服务流程"&gt;Gin 框架的 Web 服务流程&lt;/h2&gt;
+&lt;p&gt;Go 标准库 &lt;code&gt;net/http&lt;/code&gt; 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;动态路由：例如 &lt;code&gt;hello/:name&lt;/code&gt;，&lt;code&gt;hello/*&lt;/code&gt; 这类的规则；&lt;/li&gt;
+&lt;li&gt;鉴权：没有分组/统一鉴权的能力，需要在每个路由映射的handler中实现；&lt;/li&gt;
+&lt;li&gt;模板：没有统一简化的HTML机制；&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://github.com/gin-gonic/gin"&gt;gin&lt;/a&gt; 是一个应用广泛的 Go 语言 Web 框架框架，它基于 &lt;a href="https://github.com/julienschmidt/httprouter"&gt;htttprouter&lt;/a&gt; 实现最重要的路由模块，采用类似字典树一样的数据结构来存储路由与 &lt;code&gt;handle&lt;/code&gt; 方法的映射。&lt;/p&gt;
+&lt;h2 id="go-语言-web-服务流程"&gt;Go 语言 Web 服务流程&lt;/h2&gt;
+&lt;p&gt;使用 go 语言内置的 &lt;code&gt;net&lt;/code&gt; 包启动的一个 web 服务：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 注册一个服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;HandleFunc&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;/hello&amp;#34;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;w&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;ResponseWriter&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;r&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Request&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Fprintf&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;w&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;Hello, %q&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;html&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;EscapeString&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;r&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;URL&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Path&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 监听 8080 端口&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Fatal&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;ListenAndServe&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;:8080&amp;#34;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;nil&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当执行上面的服务 &lt;code&gt;go run main.go&lt;/code&gt; 时，此时在 &lt;code&gt;ListenAndServe&lt;/code&gt; 方法会先创建一个 &lt;code&gt;Server{Addr: addr, Handler: handler}&lt;/code&gt; 结构：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// net/http/server.go&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// ListenAndServe listens on the TCP network address addr and then calls&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// Serve with handler to handle requests on incoming connections.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// Accepted connections are configured to enable TCP keep-alives.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// The handler is typically nil, in which case the DefaultServeMux is used.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// ListenAndServe always returns a non-nil error.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ListenAndServe&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;addr&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Handler&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;error&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#a6e22e"&gt;server&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;amp;&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;Server&lt;/span&gt;{&lt;span style="color:#a6e22e"&gt;Addr&lt;/span&gt;: &lt;span style="color:#a6e22e"&gt;addr&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;Handler&lt;/span&gt;: &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;server&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;ListenAndServe&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;server&lt;/code&gt; 对象的 &lt;code&gt;ListenAndServe&lt;/code&gt; 方法会开启 &lt;code&gt;net.Listen&lt;/code&gt; 进行监听，然后调用 &lt;code&gt;srv.Serve(ln)&lt;/code&gt; 服务：&lt;/p&gt;</description></item></channel></rss>

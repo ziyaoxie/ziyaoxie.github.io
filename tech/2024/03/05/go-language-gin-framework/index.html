@@ -1,5 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Gin 框架的 Web 服务流程 | 提笔忘字</title>
-<meta name=title content="Gin 框架的 Web 服务流程"><meta name=description content='Gin 框架的 Web 服务流程
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Gin 框架的 Web 服务流程 | 提笔忘字</title><meta name=title content="Gin 框架的 Web 服务流程"><meta name=description content='Gin 框架的 Web 服务流程
 Go 标准库 net/http 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：
 
 动态路由：例如 hello/:name，hello/* 这类的规则；
@@ -63,10 +62,10 @@ func main() { // 注册一个服务 http.HandleFunc("/hello", func(w http.Respon
 </span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe listens on the TCP network address addr and then calls</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// Serve with handler to handle requests on incoming connections.</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// Accepted connections are configured to enable TCP keep-alives.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// The handler is typically nil, in which case the DefaultServeMux is used.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe always returns a non-nil error.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// The handler is typically nil, in which case the DefaultServeMux is used.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe always returns a non-nil error.</span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>ListenAndServe</span>(<span style=color:#a6e22e>addr</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>handler</span> <span style=color:#a6e22e>Handler</span>) <span style=color:#66d9ef>error</span> {
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>server</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Server</span>{<span style=color:#a6e22e>Addr</span>: <span style=color:#a6e22e>addr</span>, <span style=color:#a6e22e>Handler</span>: <span style=color:#a6e22e>handler</span>}
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>server</span>.<span style=color:#a6e22e>ListenAndServe</span>()
@@ -76,10 +75,10 @@ func main() { // 注册一个服务 http.HandleFunc("/hello", func(w http.Respon
 </span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe listens on the TCP network address srv.Addr and then</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// calls Serve to handle requests on incoming connections.</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// Accepted connections are configured to enable TCP keep-alives.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// If srv.Addr is blank, &#34;:http&#34; is used.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe always returns a non-nil error. After Shutdown or Close,</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// If srv.Addr is blank, &#34;:http&#34; is used.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// ListenAndServe always returns a non-nil error. After Shutdown or Close,</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// the returned error is ErrServerClosed.</span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>srv</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Server</span>) <span style=color:#a6e22e>ListenAndServe</span>() <span style=color:#66d9ef>error</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>srv</span>.<span style=color:#a6e22e>shuttingDown</span>() {
@@ -100,12 +99,12 @@ func main() { // 注册一个服务 http.HandleFunc("/hello", func(w http.Respon
 </span></span><span style=display:flex><span><span style=color:#75715e>// Serve accepts incoming connections on the Listener l, creating a</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// new service goroutine for each. The service goroutines read requests and</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// then call srv.Handler to reply to them.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// HTTP/2 support is only enabled if the Listener returns *tls.Conn</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// HTTP/2 support is only enabled if the Listener returns *tls.Conn</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// connections and they were configured with &#34;h2&#34; in the TLS</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// Config.NextProtos.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Serve always returns a non-nil error and closes l.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// Serve always returns a non-nil error and closes l.</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// After Shutdown or Close, the returned error is ErrServerClosed.</span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>srv</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Server</span>) <span style=color:#a6e22e>Serve</span>(<span style=color:#a6e22e>l</span> <span style=color:#a6e22e>net</span>.<span style=color:#a6e22e>Listener</span>) <span style=color:#66d9ef>error</span> {
 </span></span><span style=display:flex><span>	<span style=color:#f92672>...</span>
