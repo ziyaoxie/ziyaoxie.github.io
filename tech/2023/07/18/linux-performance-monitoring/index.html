@@ -242,7 +242,7 @@ Linux工具快速教程
 <a href=/tech>技术文章</a>
 <a href=/life>花落知多少</a>
 <a href=/favorite>收藏夹</a>
-<a href=/about>关于</a></nav></header><main><content><h2 id=linux-性能指标监控cpumemoryionetwork>Linux 性能指标监控：CPU、Memory、IO、Network</h2><table><thead><tr><th></th><th><strong>指标</strong></th><th><strong>工具</strong></th></tr></thead><tbody><tr><td><strong>cpu</strong></td><td>usr &lt;= 70%, sys &lt;= 35%, usr+sys &lt;= 70%</td><td>top</td></tr><tr><td><strong>memory</strong></td><td>si == so == 0, 可用空间 >= 30%</td><td>vmstat 5; free</td></tr><tr><td><strong>io</strong></td><td>iowait% &lt; 20%</td><td>iostat -x</td></tr><tr><td><strong>network</strong></td><td>网络连通性/吞吐量, TCP连接状态 TIME_WAIT</td><td>sar -n DEV 1; ping; netstat -nat</td></tr></tbody></table><h2 id=cpu>CPU</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ top
+<a href=/about>关于</a></nav></header><main><content><h2 id=linux-性能指标监控cpumemoryionetwork>Linux 性能指标监控：CPU、Memory、IO、Network</h2><table><thead><tr><th></th><th><strong>指标</strong></th><th><strong>工具</strong></th></tr></thead><tbody><tr><td><strong>cpu</strong></td><td>usr &lt;= 70%, sys &lt;= 35%, usr+sys &lt;= 70%</td><td>top</td></tr><tr><td><strong>memory</strong></td><td>si == so == 0, 可用空间 >= 30%</td><td>vmstat 5; free</td></tr><tr><td><strong>io</strong></td><td>iowait% &lt; 20%</td><td>iostat -x</td></tr><tr><td><strong>network</strong></td><td>网络连通性/吞吐量, TCP连接状态 TIME_WAIT</td><td>sar -n DEV 1; ping; netstat -nat</td></tr></tbody></table><h2 id=cpu>CPU</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ top
 </span></span><span style=display:flex><span>top - 09:14:56 up <span style=color:#ae81ff>264</span> days, 20:56,  <span style=color:#ae81ff>1</span> user,  load average: 0.02, 0.04, 0.00
 </span></span><span style=display:flex><span>Tasks:  <span style=color:#ae81ff>87</span> total,   <span style=color:#ae81ff>1</span> running,  <span style=color:#ae81ff>86</span> sleeping,   <span style=color:#ae81ff>0</span> stopped,   <span style=color:#ae81ff>0</span> zombie
 </span></span><span style=display:flex><span>Cpu<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>:  0.0%us,  0.2%sy,  0.0%ni, 99.7%id,  0.0%wa,  0.0%hi,  0.0%si,  0.2%st
@@ -308,7 +308,7 @@ Linux工具快速教程
 </span></span><span style=display:flex><span><span style=color:#75715e># %MEM：进程使用的物理内存和总内存的百分比</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># COMMAND：进程启动命令名称</span>
-</span></span></code></pre></div><h2 id=memory>Memory</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ free
+</span></span></code></pre></div><h2 id=memory>Memory</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ free
 </span></span><span style=display:flex><span>                   <span style=color:#ae81ff>1</span>          <span style=color:#ae81ff>2</span>          <span style=color:#ae81ff>3</span>          <span style=color:#ae81ff>4</span>          <span style=color:#ae81ff>5</span>          <span style=color:#ae81ff>6</span>
 </span></span><span style=display:flex><span><span style=color:#ae81ff>1</span>              total       used       free     shared    buffers     cached
 </span></span><span style=display:flex><span><span style=color:#ae81ff>2</span> Mem:      <span style=color:#ae81ff>24677460</span>   <span style=color:#ae81ff>23276064</span>    <span style=color:#ae81ff>1401396</span>          <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>870540</span>   <span style=color:#ae81ff>12084008</span>
@@ -323,7 +323,7 @@ Linux工具快速教程
 </span></span><span style=display:flex><span><span style=color:#75715e>#</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 第三行为交换区的信息</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 分别是交换的总量（total），使用量（used）和有多少空闲的交换区（free）。</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ vmstat <span style=color:#ae81ff>5</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ vmstat <span style=color:#ae81ff>5</span>
 </span></span><span style=display:flex><span>procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu-----
 </span></span><span style=display:flex><span>r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
 </span></span><span style=display:flex><span><span style=color:#ae81ff>6</span>  <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>27900472</span> <span style=color:#ae81ff>204216</span> <span style=color:#ae81ff>28188356</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>0</span>     <span style=color:#ae81ff>9</span>    <span style=color:#ae81ff>1</span>    <span style=color:#ae81ff>2</span> <span style=color:#ae81ff>11</span> <span style=color:#ae81ff>14</span> <span style=color:#ae81ff>75</span>  <span style=color:#ae81ff>0</span>  <span style=color:#ae81ff>0</span>
@@ -357,7 +357,7 @@ Linux工具快速教程
 </span></span><span style=display:flex><span><span style=color:#75715e># sy: 系统进程执行时间(system time)</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># id: 空闲时间(包括IO等待时间)</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># wa: 等待IO时间</span>
-</span></span></code></pre></div><h2 id=io>IO</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ iostat -xk <span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><h2 id=io>IO</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ iostat -xk <span style=color:#ae81ff>1</span>
 </span></span><span style=display:flex><span>Linux 4.14.105-1-tlinux3-0023.1 <span style=color:#f92672>(</span>TENCENT64.site<span style=color:#f92672>)</span> 	07/17/2023 	_x86_64_	<span style=color:#f92672>(</span><span style=color:#ae81ff>48</span> CPU<span style=color:#f92672>)</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -399,8 +399,8 @@ Linux工具快速教程
 </span></span><span style=display:flex><span><span style=color:#75715e>#</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 如果 %util 接近 100%，说明产生的I/O请求太多，I/O系统已经满负荷，该磁盘可能存在瓶颈。</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 如果svctm的值与await很接近，表示几乎没有I/O等待，磁盘性能很好，如果await的值远高于svctm的值，则表示I/O队列等待太长，系统上运行的应用程序将变慢。</span>
-</span></span></code></pre></div><h2 id=network>Network</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 通过ping命令检测网络的连通性</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ netstat -nat
+</span></span></code></pre></div><h2 id=network>Network</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 通过ping命令检测网络的连通性</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ netstat -nat
 </span></span><span style=display:flex><span>Active Internet connections <span style=color:#f92672>(</span>servers and established<span style=color:#f92672>)</span>
 </span></span><span style=display:flex><span>Proto Recv-Q Send-Q Local Address           Foreign Address         State
 </span></span><span style=display:flex><span>tcp        <span style=color:#ae81ff>0</span>      <span style=color:#ae81ff>0</span> 0.0.0.0:56000           0.0.0.0:*               LISTEN     
@@ -429,7 +429,7 @@ Linux工具快速教程
 </span></span><span style=display:flex><span><span style=color:#75715e>#</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># TIME_WAIT状态的出现，是由于主动断开连接导致的，也就是说，应用程序中存在大量的短连接。</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 当出现大量CLOSE_WAIT状态时，通常是应用程序，未及时调用close()关闭连接。</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ sar -n DEV <span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>$ sar -n DEV <span style=color:#ae81ff>1</span>
 </span></span><span style=display:flex><span>Linux 5.4.119-1-tlinux4-0010.3 <span style=color:#f92672>(</span>TENCENT64.site<span style=color:#f92672>)</span> 	07/19/2023 	_x86_64_	<span style=color:#f92672>(</span><span style=color:#ae81ff>32</span> CPU<span style=color:#f92672>)</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>11:56:35 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s

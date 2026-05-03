@@ -5,7 +5,7 @@
 &lt;h2 id="解决方法"&gt;解决方法&lt;/h2&gt;
 &lt;p&gt;1、连接数据库时设置参数 &lt;code&gt;timeout&lt;/code&gt;，设置当数据库处于锁定状态时最长等待时间，&lt;code&gt;sqlite3.connect()&lt;/code&gt;函数的参数 &lt;code&gt;timeout&lt;/code&gt; 默认值为 5 秒，不适合服务端程序；&lt;/p&gt;
 &lt;p&gt;2、使用锁机制使得多个进程/线程竞争进入临界区，确保同一时刻只有一个进程/线程执行写入数据库的代码；&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 以多进程写为例, 注释 lock.acquire() 和 lock.release() 可复现问题&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 以多进程写为例, 注释 lock.acquire() 和 lock.release() 可复现问题&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/usr/bin/env python3&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
