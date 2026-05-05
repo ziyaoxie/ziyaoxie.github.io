@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术文章 on 提笔忘字</title><link>https://imx.ink/tech/</link><description>Recent content in 技术文章 on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 02 May 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/tech/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程 1.0 → 2.0 → 3.0：三次范式跃迁，和它们背后同一条红线</title><link>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</link><pubDate>Sat, 02 May 2026 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</guid><description>&lt;!-- raw HTML omitted --&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术文章 on 提笔忘字</title><link>https://imx.ink/tech/</link><description>Recent content in 技术文章 on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 02 May 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/tech/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程 1.0 → 2.0 → 3.0：三次范式跃迁，和它们背后同一条红线</title><link>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</link><pubDate>Sat, 02 May 2026 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</guid><description>&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20260505/software-engineering-waves.png" alt="软件工程三次范式跃迁：瀑布流 → 敏捷 + DevOps → 人 + 数字员工" style="zoom:50%;" /&gt;
 &lt;p&gt;这一篇想把镜头拉远一点，问一个更大的问题——&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;整个软件工程 50 多年的历史上，有过几次真正意义上的范式跃迁？我们现在在哪？&lt;/strong&gt;&lt;/p&gt;
@@ -27,10 +27,7 @@
 &lt;li&gt;&lt;strong&gt;文档成了目的而非手段&lt;/strong&gt;——团队花更多时间维护文档而不是解决问题&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;人被流程困住了&lt;/strong&gt;——每个角色都在等上游的文档，串行阻塞&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;瀑布流的本质困境是：&lt;strong&gt;它假设软件开发是确定性问题，但软件开发本质上是探索性活动。&lt;/strong&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="软件工程-20敏捷--devops2001--2024"&gt;软件工程 2.0：敏捷 + DevOps（2001 — ~2024）&lt;/h2&gt;
-&lt;p&gt;2001 年，17 位开发者在犹他州雪鸟镇签署了《敏捷宣言》，核心观点一句话：&lt;/p&gt;</description></item><item><title>从 Prompt 到 Harness：AI 工程范式的三级跃迁</title><link>https://imx.ink/tech/2026/04/05/prompt-context-harness-three-shifts/</link><pubDate>Sun, 05 Apr 2026 17:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/04/05/prompt-context-harness-three-shifts/</guid><description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;瀑布流的本质困境是：&lt;strong&gt;它假设软件开发是确定性问题，但软件开发本质上是探索性活动。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>从 Prompt 到 Harness：AI 工程范式的三级跃迁</title><link>https://imx.ink/tech/2026/04/05/prompt-context-harness-three-shifts/</link><pubDate>Sun, 05 Apr 2026 17:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/04/05/prompt-context-harness-three-shifts/</guid><description>&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20260505/prompt-context-harness-hero.png" alt="Prompt → Context → Harness 的三级跃迁" style="zoom:50%;" /&gt;
 &lt;p&gt;最近把一堆关于 Agent / Harness Engineering 的技术分享整理了一遍，发现一个特别清晰的线索——&lt;strong&gt;2023 到 2026 这四年里，AI 工程的&amp;quot;调教对象&amp;quot;发生了三次跃迁&lt;/strong&gt;。而且这三次跃迁不是词汇升级，是问题维度的升级。&lt;/p&gt;
 &lt;p&gt;本文记一下这条主线、以及它背后的两个硬事实。&lt;/p&gt;
 &lt;hr&gt;
@@ -489,16 +486,15 @@ Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;syntax_highlighter&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;rouge&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="使用-rouge-代码语法高亮"&gt;使用 Rouge 代码语法高亮&lt;/h2&gt;
 &lt;p&gt;Rouge 可以支持 100 多种语言的语法突出显示，参考&lt;a href="https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers"&gt;官方说明&lt;/a&gt;。要使用语法突出显示来呈现代码块，示例如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% raw %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% highlight ruby linenos %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;def foo
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; puts &amp;#39;foo&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;end
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% endhighlight %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% endraw %}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;包含 &lt;code&gt;linenos&lt;/code&gt; 参数将强制突出显示的代码包含行号。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-liquid" data-lang="liquid"&gt;{% highlight ruby linenos %}
+def foo
+ puts &amp;#39;foo&amp;#39;
+end
+{% endhighlight %}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;包含 &lt;code&gt;linenos&lt;/code&gt; 参数将强制突出显示的代码包含行号。&lt;/p&gt;
 &lt;h2 id="rouge-样式"&gt;Rouge 样式&lt;/h2&gt;
-&lt;p&gt;Rouge 提供了一些语法突出显示样式主题，参考官方说明：&lt;a href="https://rouge-ruby.github.io/docs/Rouge/Themes.html"&gt;Rouge 主题文档&lt;/a&gt; / &lt;a href="https://github.com/mzlogin/rouge-themes"&gt;Rouge 主题&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>解决 SQLite 并发异常问题的方法</title><link>https://imx.ink/tech/2023/07/26/sqlite-concurrency-exception/</link><pubDate>Wed, 26 Jul 2023 14:36:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/26/sqlite-concurrency-exception/</guid><description>&lt;h2 id="解决-sqlite-并发异常问题的方法"&gt;解决 SQLite 并发异常问题的方法&lt;/h2&gt;
+&lt;p&gt;Rouge 提供了一些语法突出显示样式主题，参考官方说明：&lt;a href="https://rouge-ruby.github.io/docs/Rouge/Themes.html"&gt;Rouge 主题文档&lt;/a&gt; / &lt;a href="https://github.com/mzlogin/rouge-themes"&gt;Rouge 主题&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;Rouge 内置有 &lt;code&gt;rougify&lt;/code&gt;，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。&lt;/p&gt;</description></item><item><title>解决 SQLite 并发异常问题的方法</title><link>https://imx.ink/tech/2023/07/26/sqlite-concurrency-exception/</link><pubDate>Wed, 26 Jul 2023 14:36:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/26/sqlite-concurrency-exception/</guid><description>&lt;h2 id="解决-sqlite-并发异常问题的方法"&gt;解决 SQLite 并发异常问题的方法&lt;/h2&gt;
 &lt;p&gt;SQLite 是文件级别的数据库，其锁也是文件级别的：多个进程/线程可以同时读，但是同时只能有一个进程/线程写。&lt;/p&gt;
 &lt;h2 id="问题描述"&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;在执行写操作时，数据库文件被琐定，此时任何其他读/写操作都被阻塞，如果阻塞超过5秒钟（默认是5秒，能过重新编译 SQLite 可以修改超时时间），就报&amp;quot;database is locked&amp;quot;错误。&lt;/p&gt;
@@ -920,19 +916,20 @@ Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Git rebase 与 merge 的区别</title><link>https://imx.ink/tech/2023/07/05/the-difference-between-git-rebase-and-merge/</link><pubDate>Wed, 05 Jul 2023 19:32:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/05/the-difference-between-git-rebase-and-merge/</guid><description>&lt;h2 id="git-rebase-与-merge-的区别"&gt;Git rebase 与 merge 的区别&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;git rebase&lt;/code&gt; 与 &lt;code&gt;git merge&lt;/code&gt; 的区别在于，&lt;code&gt;merge&lt;/code&gt; 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 &lt;code&gt;rebase&lt;/code&gt; 则是将两个分支的提交融合成一个线性的提交。&lt;/p&gt;
 &lt;p&gt;如下图所示，一个项目在 &lt;code&gt;C2&lt;/code&gt; 时基于主分支创建了一个 &lt;code&gt;experiment&lt;/code&gt; 分支，并做了一个 &lt;code&gt;C3&lt;/code&gt; 版本的提交：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_flow.jpg" alt="git_flow"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_flow.jpg" alt="git_flow"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;如果用 &lt;code&gt;merge&lt;/code&gt; 命令合并，结果如下图：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_merge.jpg" alt="git_merge"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_merge.jpg" alt="git_merge"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;如果用 &lt;code&gt;rebase&lt;/code&gt; 命令合并，结果如下图：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_rebase.jpg" alt="git_rebase"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_rebase.jpg" alt="git_rebase"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。&lt;/p&gt;
-&lt;p&gt;在操作过程中，Merge 操作遇到冲突的时候，当前 &lt;code&gt;merge&lt;/code&gt; 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 &lt;code&gt;rebase&lt;/code&gt; 操作的话，会中断 &lt;code&gt;rebase&lt;/code&gt;，同时会提示去解决冲突。解决冲突后，将修改 &lt;code&gt;add&lt;/code&gt;，然后执行 &lt;code&gt;git rebase --continue&lt;/code&gt; 继续操作，或者 &lt;code&gt;git rebase --skip&lt;/code&gt; 忽略冲突。&lt;/p&gt;</description></item><item><title>数据库分库分表</title><link>https://imx.ink/tech/2023/06/28/database-sharding/</link><pubDate>Wed, 28 Jun 2023 12:48:00 +0800</pubDate><guid>https://imx.ink/tech/2023/06/28/database-sharding/</guid><description>&lt;h2 id="数据库分库分表"&gt;数据库分库分表&lt;/h2&gt;
+&lt;p&gt;在操作过程中，Merge 操作遇到冲突的时候，当前 &lt;code&gt;merge&lt;/code&gt; 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 &lt;code&gt;rebase&lt;/code&gt; 操作的话，会中断 &lt;code&gt;rebase&lt;/code&gt;，同时会提示去解决冲突。解决冲突后，将修改 &lt;code&gt;add&lt;/code&gt;，然后执行 &lt;code&gt;git rebase --continue&lt;/code&gt; 继续操作，或者 &lt;code&gt;git rebase --skip&lt;/code&gt; 忽略冲突。&lt;/p&gt;
+&lt;p&gt;需要注意的一点是，我们平时 &lt;code&gt;git pull&lt;/code&gt; 时，实际上是将远程提交与本地提交进行 &lt;code&gt;merge&lt;/code&gt;。&lt;code&gt;git pull&lt;/code&gt; 默认是 &lt;code&gt;git fetch&lt;/code&gt; + &lt;code&gt;git merge FETCH_HEAD&lt;/code&gt; 的缩写。如果希望 &lt;code&gt;pull&lt;/code&gt; 时使用 &lt;code&gt;rebase&lt;/code&gt;，可以加上 &lt;code&gt;--rebase&lt;/code&gt; 参数。&lt;/p&gt;</description></item><item><title>数据库分库分表</title><link>https://imx.ink/tech/2023/06/28/database-sharding/</link><pubDate>Wed, 28 Jun 2023 12:48:00 +0800</pubDate><guid>https://imx.ink/tech/2023/06/28/database-sharding/</guid><description>&lt;h2 id="数据库分库分表"&gt;数据库分库分表&lt;/h2&gt;
 &lt;p&gt;分库分表在解决如 IO 瓶颈、读写性能、物理存储瓶颈、内存瓶颈、单机故障影响面等问题的同时，也带来如事务性、主键冲突、跨库 join、跨库聚合查询等问题。&lt;/p&gt;
 &lt;p&gt;在综合业务场景考虑，正如缓存的使用一样，本着非必须勿使用原则。如数据库确实成为性能瓶颈时，在设计分库分表方案时也应充分考虑方案的扩展性，或者考虑采用成熟热门的分布式数据库解决方案。&lt;/p&gt;
 &lt;h2 id="什么是分库分表"&gt;什么是分库分表&lt;/h2&gt;

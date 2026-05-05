@@ -12,13 +12,12 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;syntax_highlighter&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;rouge&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="使用-rouge-代码语法高亮"&gt;使用 Rouge 代码语法高亮&lt;/h2&gt;
 &lt;p&gt;Rouge 可以支持 100 多种语言的语法突出显示，参考&lt;a href="https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers"&gt;官方说明&lt;/a&gt;。要使用语法突出显示来呈现代码块，示例如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% raw %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% highlight ruby linenos %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;def foo
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; puts &amp;#39;foo&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;end
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% endhighlight %}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% endraw %}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;包含 &lt;code&gt;linenos&lt;/code&gt; 参数将强制突出显示的代码包含行号。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-liquid" data-lang="liquid"&gt;{% highlight ruby linenos %}
+def foo
+ puts &amp;#39;foo&amp;#39;
+end
+{% endhighlight %}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;包含 &lt;code&gt;linenos&lt;/code&gt; 参数将强制突出显示的代码包含行号。&lt;/p&gt;
 &lt;h2 id="rouge-样式"&gt;Rouge 样式&lt;/h2&gt;
-&lt;p&gt;Rouge 提供了一些语法突出显示样式主题，参考官方说明：&lt;a href="https://rouge-ruby.github.io/docs/Rouge/Themes.html"&gt;Rouge 主题文档&lt;/a&gt; / &lt;a href="https://github.com/mzlogin/rouge-themes"&gt;Rouge 主题&lt;/a&gt;。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;Rouge 提供了一些语法突出显示样式主题，参考官方说明：&lt;a href="https://rouge-ruby.github.io/docs/Rouge/Themes.html"&gt;Rouge 主题文档&lt;/a&gt; / &lt;a href="https://github.com/mzlogin/rouge-themes"&gt;Rouge 主题&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;Rouge 内置有 &lt;code&gt;rougify&lt;/code&gt;，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。&lt;/p&gt;</description></item></channel></rss>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on 提笔忘字</title><link>https://imx.ink/git/</link><description>Recent content in Git on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Wed, 05 Jul 2023 19:32:00 +0800</lastBuildDate><atom:link href="https://imx.ink/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Git rebase 与 merge 的区别</title><link>https://imx.ink/tech/2023/07/05/the-difference-between-git-rebase-and-merge/</link><pubDate>Wed, 05 Jul 2023 19:32:00 +0800</pubDate><guid>https://imx.ink/tech/2023/07/05/the-difference-between-git-rebase-and-merge/</guid><description>&lt;h2 id="git-rebase-与-merge-的区别"&gt;Git rebase 与 merge 的区别&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;git rebase&lt;/code&gt; 与 &lt;code&gt;git merge&lt;/code&gt; 的区别在于，&lt;code&gt;merge&lt;/code&gt; 会将不同分支的提交合并成一个新的节点，之前的提交分开显示；而 &lt;code&gt;rebase&lt;/code&gt; 则是将两个分支的提交融合成一个线性的提交。&lt;/p&gt;
 &lt;p&gt;如下图所示，一个项目在 &lt;code&gt;C2&lt;/code&gt; 时基于主分支创建了一个 &lt;code&gt;experiment&lt;/code&gt; 分支，并做了一个 &lt;code&gt;C3&lt;/code&gt; 版本的提交：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_flow.jpg" alt="git_flow"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_flow.jpg" alt="git_flow"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;如果用 &lt;code&gt;merge&lt;/code&gt; 命令合并，结果如下图：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_merge.jpg" alt="git_merge"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_merge.jpg" alt="git_merge"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;如果用 &lt;code&gt;rebase&lt;/code&gt; 命令合并，结果如下图：&lt;/p&gt;
-&lt;p&gt;{:refdef: style=&amp;ldquo;text-align: center;&amp;rdquo;}
-&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_rebase.jpg" alt="git_rebase"&gt;
-{: refdef}&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;p&gt;&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20230705/git_rebase.jpg" alt="git_rebase"&gt;&lt;/p&gt;
+&lt;/p&gt;
 &lt;p&gt;单纯的从功能上来讲，Rebase 与 Merge 没有什么区别。但实际上，Rebase 更干净，因为提交历史最后会是线性的，但是 commit 不一定按日期先后排列，而是 local commit 总在后边；Merge 会保留各分支的提交历史，commit 会按日期先后排序，但这样看起来会比较复杂。&lt;/p&gt;
-&lt;p&gt;在操作过程中，Merge 操作遇到冲突的时候，当前 &lt;code&gt;merge&lt;/code&gt; 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 &lt;code&gt;rebase&lt;/code&gt; 操作的话，会中断 &lt;code&gt;rebase&lt;/code&gt;，同时会提示去解决冲突。解决冲突后，将修改 &lt;code&gt;add&lt;/code&gt;，然后执行 &lt;code&gt;git rebase --continue&lt;/code&gt; 继续操作，或者 &lt;code&gt;git rebase --skip&lt;/code&gt; 忽略冲突。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;在操作过程中，Merge 操作遇到冲突的时候，当前 &lt;code&gt;merge&lt;/code&gt; 不能继续进行下去，需手动修改冲突内容后再做一次提交；而 &lt;code&gt;rebase&lt;/code&gt; 操作的话，会中断 &lt;code&gt;rebase&lt;/code&gt;，同时会提示去解决冲突。解决冲突后，将修改 &lt;code&gt;add&lt;/code&gt;，然后执行 &lt;code&gt;git rebase --continue&lt;/code&gt; 继续操作，或者 &lt;code&gt;git rebase --skip&lt;/code&gt; 忽略冲突。&lt;/p&gt;
+&lt;p&gt;需要注意的一点是，我们平时 &lt;code&gt;git pull&lt;/code&gt; 时，实际上是将远程提交与本地提交进行 &lt;code&gt;merge&lt;/code&gt;。&lt;code&gt;git pull&lt;/code&gt; 默认是 &lt;code&gt;git fetch&lt;/code&gt; + &lt;code&gt;git merge FETCH_HEAD&lt;/code&gt; 的缩写。如果希望 &lt;code&gt;pull&lt;/code&gt; 时使用 &lt;code&gt;rebase&lt;/code&gt;，可以加上 &lt;code&gt;--rebase&lt;/code&gt; 参数。&lt;/p&gt;</description></item></channel></rss>

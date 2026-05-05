@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Software-Engineering on 提笔忘字</title><link>https://imx.ink/software-engineering/</link><description>Recent content in Software-Engineering on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 02 May 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/software-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程 1.0 → 2.0 → 3.0：三次范式跃迁，和它们背后同一条红线</title><link>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</link><pubDate>Sat, 02 May 2026 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</guid><description>&lt;!-- raw HTML omitted --&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Software-Engineering on 提笔忘字</title><link>https://imx.ink/software-engineering/</link><description>Recent content in Software-Engineering on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 02 May 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/software-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程 1.0 → 2.0 → 3.0：三次范式跃迁，和它们背后同一条红线</title><link>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</link><pubDate>Sat, 02 May 2026 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2026/05/02/software-engineering-three-paradigms/</guid><description>&lt;img src="https://f005.backblazeb2.com/file/wml5yw8gwgll/20260505/software-engineering-waves.png" alt="软件工程三次范式跃迁：瀑布流 → 敏捷 + DevOps → 人 + 数字员工" style="zoom:50%;" /&gt;
 &lt;p&gt;这一篇想把镜头拉远一点，问一个更大的问题——&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;整个软件工程 50 多年的历史上，有过几次真正意义上的范式跃迁？我们现在在哪？&lt;/strong&gt;&lt;/p&gt;
@@ -27,7 +27,4 @@
 &lt;li&gt;&lt;strong&gt;文档成了目的而非手段&lt;/strong&gt;——团队花更多时间维护文档而不是解决问题&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;人被流程困住了&lt;/strong&gt;——每个角色都在等上游的文档，串行阻塞&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;瀑布流的本质困境是：&lt;strong&gt;它假设软件开发是确定性问题，但软件开发本质上是探索性活动。&lt;/strong&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="软件工程-20敏捷--devops2001--2024"&gt;软件工程 2.0：敏捷 + DevOps（2001 — ~2024）&lt;/h2&gt;
-&lt;p&gt;2001 年，17 位开发者在犹他州雪鸟镇签署了《敏捷宣言》，核心观点一句话：&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;瀑布流的本质困境是：&lt;strong&gt;它假设软件开发是确定性问题，但软件开发本质上是探索性活动。&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
