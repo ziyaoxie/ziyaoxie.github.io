@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Database on 提笔忘字</title><link>https://imx.ink/database/</link><description>Recent content in Database on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 11 May 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://imx.ink/database/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库事务测试工具</title><link>https://imx.ink/tech/2024/05/11/database-transaction-testing-tools/</link><pubDate>Sat, 11 May 2024 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/05/11/database-transaction-testing-tools/</guid><description>&lt;h2 id="数据库事务测试工具"&gt;数据库事务测试工具&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Database on 提笔忘字</title><link>https://ziyaoxie.github.io/database/</link><description>Recent content in Database on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 11 May 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://ziyaoxie.github.io/database/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库事务测试工具</title><link>https://ziyaoxie.github.io/tech/2024/05/11/database-transaction-testing-tools/</link><pubDate>Sat, 11 May 2024 18:00:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2024/05/11/database-transaction-testing-tools/</guid><description>&lt;h2 id="数据库事务测试工具"&gt;数据库事务测试工具&lt;/h2&gt;
 &lt;p&gt;参考资料：&lt;a href="https://cn.pingcap.com/blog/tag/transaction-frontier-research/"&gt;TiDB-事务前沿研究&lt;/a&gt;；&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -38,7 +38,7 @@ Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，
 这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>数据库测什么与怎么测</title><link>https://imx.ink/tech/2024/04/22/what-and-how-to-test-the-database/</link><pubDate>Mon, 22 Apr 2024 18:00:00 +0800</pubDate><guid>https://imx.ink/tech/2024/04/22/what-and-how-to-test-the-database/</guid><description>&lt;h2 id="数据库测什么与怎么测"&gt;数据库测什么与怎么测&lt;/h2&gt;
+&lt;/table&gt;</description></item><item><title>数据库测什么与怎么测</title><link>https://ziyaoxie.github.io/tech/2024/04/22/what-and-how-to-test-the-database/</link><pubDate>Mon, 22 Apr 2024 18:00:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2024/04/22/what-and-how-to-test-the-database/</guid><description>&lt;h2 id="数据库测什么与怎么测"&gt;数据库测什么与怎么测&lt;/h2&gt;
 &lt;p&gt;传说中有三个问题能直击灵魂：“你是谁？从哪来？到哪去？”&lt;/p&gt;
 &lt;p&gt;对于测试人员来说，“你是谁”这个问题已经解决了，剩下两个问题也随之变成了“测什么”和“怎么测”。&lt;/p&gt;
 &lt;h2 id="测什么"&gt;测什么&lt;/h2&gt;
@@ -122,7 +122,7 @@ Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="怎么测"&gt;怎么测&lt;/h2&gt;
-&lt;p&gt;或者具体地说，我们需要编写怎样的测试工具。&lt;/p&gt;</description></item><item><title>数据库分库分表</title><link>https://imx.ink/tech/2023/06/28/database-sharding/</link><pubDate>Wed, 28 Jun 2023 12:48:00 +0800</pubDate><guid>https://imx.ink/tech/2023/06/28/database-sharding/</guid><description>&lt;h2 id="数据库分库分表"&gt;数据库分库分表&lt;/h2&gt;
+&lt;p&gt;或者具体地说，我们需要编写怎样的测试工具。&lt;/p&gt;</description></item><item><title>数据库分库分表</title><link>https://ziyaoxie.github.io/tech/2023/06/28/database-sharding/</link><pubDate>Wed, 28 Jun 2023 12:48:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2023/06/28/database-sharding/</guid><description>&lt;h2 id="数据库分库分表"&gt;数据库分库分表&lt;/h2&gt;
 &lt;p&gt;分库分表在解决如 IO 瓶颈、读写性能、物理存储瓶颈、内存瓶颈、单机故障影响面等问题的同时，也带来如事务性、主键冲突、跨库 join、跨库聚合查询等问题。&lt;/p&gt;
 &lt;p&gt;在综合业务场景考虑，正如缓存的使用一样，本着非必须勿使用原则。如数据库确实成为性能瓶颈时，在设计分库分表方案时也应充分考虑方案的扩展性，或者考虑采用成熟热门的分布式数据库解决方案。&lt;/p&gt;
 &lt;h2 id="什么是分库分表"&gt;什么是分库分表&lt;/h2&gt;

@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Docker 部署 Typecho | 提笔忘字</title><meta name=title content="Docker 部署 Typecho"><meta name=description content='Docker 部署 Typecho
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://ziyaoxie.github.io/images/favicon.png><title>Docker 部署 Typecho | 提笔忘字</title><meta name=title content="Docker 部署 Typecho"><meta name=description content='Docker 部署 Typecho
 博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
 安装 Docker 并配置镜像加速源
 参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
@@ -243,7 +243,7 @@ blockquote {
 # 如果有下面这一行就删掉
 <link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
 主页只显示摘要方法
-在编写文章时在摘要和全文中间使用分隔符 `'><meta name=keywords content="typecho,"><meta property="og:url" content="https://imx.ink/tech/2023/06/09/docker-install-typecho/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Docker 部署 Typecho"><meta property="og:description" content='Docker 部署 Typecho 博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
+在编写文章时在摘要和全文中间使用分隔符 `'><meta name=keywords content="typecho,"><meta property="og:url" content="https://ziyaoxie.github.io/tech/2023/06/09/docker-install-typecho/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Docker 部署 Typecho"><meta property="og:description" content='Docker 部署 Typecho 博客搭建环境为腾讯云服务器资源，使用 Docker 容器部署 Typecho 服务，添加 Https 支持和常用的样式修改。
 安装 Docker 并配置镜像加速源 参考搭建 Docker 和腾讯云软件源加速软件包下载和更新安装部署；
 安装 Typecho 服务 使用 80x86/typecho 开源镜像，注意 /srv/http/typecho 为 typecho 解压安装的路径，下载地址参考链接； 安装执行命令：
 $ docker run -d \ --name=typecho-blog \ --restart always \ --mount type=tmpfs,destination=/tmp \ -v /srv/http/typecho:/data \ -e PHP_TZ=Asia/Shanghai \ -e PHP_MAX_EXECUTION_TIME=600 \ -p 80:80 \ -p 443:443 \ 80x86/typecho:latest Docker HTTPS 开启 腾讯云官网申请免费证书：免费 SSL 证书申请流程，下载 Nginx 证书，得到 xxxx.pem 和 xxxx.key 文件，上传至 /srv/http/typecho/crt 文件夹中，需要先新建此文件夹。
@@ -535,4 +535,4 @@ blockquote { margin: 1.5em 0em; padding: 0.5em 1.5em; /* padding-left: 1.5em; */
 </span></span></code></pre></div><h3 id=主页只显示摘要方法>主页只显示摘要方法</h3><p>在编写文章时在摘要和全文中间使用分隔符 `</p><p>`，例如：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>[文章摘要BALABALA ...]
 </span></span><span style=display:flex><span><span style=color:#75715e>&lt;!--more--&gt;</span>
 </span></span><span style=display:flex><span>[文章正文BALABALA ...]
-</span></span></code></pre></div></content><p><a href=https://imx.ink/typecho/>#Typecho</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
+</span></span></code></pre></div></content><p><a href=https://ziyaoxie.github.io/typecho/>#Typecho</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

@@ -1,2 +1,2 @@
 User-Agent: *
-Sitemap: https://imx.ink/sitemap.xml
+Sitemap: https://ziyaoxie.github.io/sitemap.xml

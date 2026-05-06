@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Rouge 插件支持 Jekyll 代码高亮 | 提笔忘字</title><meta name=title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=description content="Rouge 插件支持 Jekyll 代码高亮
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://ziyaoxie.github.io/images/favicon.png><title>Rouge 插件支持 Jekyll 代码高亮 | 提笔忘字</title><meta name=title content="Rouge 插件支持 Jekyll 代码高亮"><meta name=description content="Rouge 插件支持 Jekyll 代码高亮
 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
 安装 Rouge
 安装 Rouge 和普通的 Jekyll 插件安装一样：
@@ -20,7 +20,7 @@ end
 包含 linenos 参数将强制突出显示的代码包含行号。
 Rouge 样式
 Rouge 提供了一些语法突出显示样式主题，参考官方说明：Rouge 主题文档 / Rouge 主题。
-Rouge 内置有 rougify，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。"><meta name=keywords content="jekyll,"><meta property="og:url" content="https://imx.ink/tech/2023/09/18/jekyll-with-rouge/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Rouge 插件支持 Jekyll 代码高亮"><meta property="og:description" content="Rouge 插件支持 Jekyll 代码高亮 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
+Rouge 内置有 rougify，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。"><meta name=keywords content="jekyll,"><meta property="og:url" content="https://ziyaoxie.github.io/tech/2023/09/18/jekyll-with-rouge/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Rouge 插件支持 Jekyll 代码高亮"><meta property="og:description" content="Rouge 插件支持 Jekyll 代码高亮 Jekyll 内置支持使用 Rouge 或 Pygments 对代码片段进行语法高亮显示，Rouge 是 Jekyll 3 及更高版本中的默认语法高亮显示，且支持 Github Pages。
 安装 Rouge 安装 Rouge 和普通的 Jekyll 插件安装一样：
 $ gem install rouge 然后在 _config.yml 文件声明使用：
 highlighter: rouge 如果你使用 kramdown，那么添加以下内容：
@@ -57,4 +57,4 @@ def foo
   puts &#39;foo&#39;
 end
 {% endhighlight %}
-</code></pre><p>包含 <code>linenos</code> 参数将强制突出显示的代码包含行号。</p><h2 id=rouge-样式>Rouge 样式</h2><p>Rouge 提供了一些语法突出显示样式主题，参考官方说明：<a href=https://rouge-ruby.github.io/docs/Rouge/Themes.html>Rouge 主题文档</a> / <a href=https://github.com/mzlogin/rouge-themes>Rouge 主题</a>。</p><p>Rouge 内置有 <code>rougify</code>，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。</p><h2 id=特殊代码处理>特殊代码处理</h2><p>Markdown 解析代码块时，如遇到 Liquid 的源码，由于转义字符 <code>{</code> 及 <code>}</code>，会使得 Liquid 的部分不被渲染，可以用标签 <code>{% raw %}</code> 与 <code>{% endraw %}</code> 包裹转义字符进行处理。</p><h2 id=参考资料>参考资料</h2><ul><li><a href=https://dqdongg.com/blog/2018/12/22/Blog-rouge.html>Syntax Highlighting your code in Jekyll with Rouge</a></li><li><a href=http://blog.17study.com.cn/2017/12/11/setting-your-own-jekyll-blog/>使用Jekyll和github搭建自己的个人博客</a></li></ul></content><p><a href=https://imx.ink/jekyll/>#Jekyll</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
+</code></pre><p>包含 <code>linenos</code> 参数将强制突出显示的代码包含行号。</p><h2 id=rouge-样式>Rouge 样式</h2><p>Rouge 提供了一些语法突出显示样式主题，参考官方说明：<a href=https://rouge-ruby.github.io/docs/Rouge/Themes.html>Rouge 主题文档</a> / <a href=https://github.com/mzlogin/rouge-themes>Rouge 主题</a>。</p><p>Rouge 内置有 <code>rougify</code>，这是一个将样式主题转换为 CSS 文件的命令行工具，参考上面链接的文档使用。</p><h2 id=特殊代码处理>特殊代码处理</h2><p>Markdown 解析代码块时，如遇到 Liquid 的源码，由于转义字符 <code>{</code> 及 <code>}</code>，会使得 Liquid 的部分不被渲染，可以用标签 <code>{% raw %}</code> 与 <code>{% endraw %}</code> 包裹转义字符进行处理。</p><h2 id=参考资料>参考资料</h2><ul><li><a href=https://dqdongg.com/blog/2018/12/22/Blog-rouge.html>Syntax Highlighting your code in Jekyll with Rouge</a></li><li><a href=http://blog.17study.com.cn/2017/12/11/setting-your-own-jekyll-blog/>使用Jekyll和github搭建自己的个人博客</a></li></ul></content><p><a href=https://ziyaoxie.github.io/jekyll/>#Jekyll</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

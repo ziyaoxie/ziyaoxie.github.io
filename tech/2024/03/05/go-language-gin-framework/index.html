@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>Gin 框架的 Web 服务流程 | 提笔忘字</title><meta name=title content="Gin 框架的 Web 服务流程"><meta name=description content='Gin 框架的 Web 服务流程
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://ziyaoxie.github.io/images/favicon.png><title>Gin 框架的 Web 服务流程 | 提笔忘字</title><meta name=title content="Gin 框架的 Web 服务流程"><meta name=description content='Gin 框架的 Web 服务流程
 Go 标准库 net/http 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：
 
 动态路由：例如 hello/:name，hello/* 这类的规则；
@@ -32,7 +32,7 @@ func ListenAndServe(addr string, handler Handler) error {
 	server := &amp;Server{Addr: addr, Handler: handler}
 	return server.ListenAndServe()
 }
-server 对象的 ListenAndServe 方法会开启 net.Listen 进行监听，然后调用 srv.Serve(ln) 服务：'><meta name=keywords content="golang,gin,"><meta property="og:url" content="https://imx.ink/tech/2024/03/05/go-language-gin-framework/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Gin 框架的 Web 服务流程"><meta property="og:description" content='Gin 框架的 Web 服务流程 Go 标准库 net/http 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：
+server 对象的 ListenAndServe 方法会开启 net.Listen 进行监听，然后调用 srv.Serve(ln) 服务：'><meta name=keywords content="golang,gin,"><meta property="og:url" content="https://ziyaoxie.github.io/tech/2024/03/05/go-language-gin-framework/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="Gin 框架的 Web 服务流程"><meta property="og:description" content='Gin 框架的 Web 服务流程 Go 标准库 net/http 提供了基础的 Web 功能，即监听端口，映射静态路由，解析 HTTP 报文。一些 Web 开发中简单的需求并不支持，需要更强大的框架实现：
 动态路由：例如 hello/:name，hello/* 这类的规则； 鉴权：没有分组/统一鉴权的能力，需要在每个路由映射的handler中实现； 模板：没有统一简化的HTML机制； … gin 是一个应用广泛的 Go 语言 Web 框架框架，它基于 htttprouter 实现最重要的路由模块，采用类似字典树一样的数据结构来存储路由与 handle 方法的映射。
 Go 语言 Web 服务流程 使用 go 语言内置的 net 包启动的一个 web 服务：
 func main() { // 注册一个服务 http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path)) }) // 监听 8080 端口 log.Fatal(http.ListenAndServe(":8080", nil)) } 当执行上面的服务 go run main.go 时，此时在 ListenAndServe 方法会先创建一个 Server{Addr: addr, Handler: handler} 结构：
@@ -282,5 +282,5 @@ func main() { // 注册一个服务 http.HandleFunc("/hello", func(w http.Respon
 </span></span><span style=display:flex><span>   
 </span></span><span style=display:flex><span>   <span style=color:#f92672>...</span>
 </span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>其路由的原理是大量使用公共前缀的树结构，它基本上是一个紧凑的<a href=https://zh.wikipedia.org/wiki/Trie>前缀树（字典树）</a>，具有公共前缀的节点也共享一个公共父节点。</p></content><p><a href=https://imx.ink/golang/>#Golang</a>
-<a href=https://imx.ink/gin/>#Gin</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
+</span></span></code></pre></div><p>其路由的原理是大量使用公共前缀的树结构，它基本上是一个紧凑的<a href=https://zh.wikipedia.org/wiki/Trie>前缀树（字典树）</a>，具有公共前缀的节点也共享一个公共父节点。</p></content><p><a href=https://ziyaoxie.github.io/golang/>#Golang</a>
+<a href=https://ziyaoxie.github.io/gin/>#Gin</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>

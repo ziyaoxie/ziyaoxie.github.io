@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://imx.ink/images/favicon.png><title>history 命令整理 | 提笔忘字</title><meta name=title content="history 命令整理"><meta name=description content="history 命令整理
+<!doctype html><html lang=zh-CN><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://ziyaoxie.github.io/images/favicon.png><title>history 命令整理 | 提笔忘字</title><meta name=title content="history 命令整理"><meta name=description content="history 命令整理
 history 命令的常用方法记录。
 显示时间戳
 如果要让 history 在显示历史命令时同时显示记录命令的时间，则需要设置如下环境变量：
@@ -37,7 +37,7 @@ export HISTCONTROL='ignoredups'
 
 # 禁止记录任何命令
 export HISTSIZE=0
-"><meta name=keywords content="shell,"><meta property="og:url" content="https://imx.ink/tech/2023/07/05/shell-command-history/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="history 命令整理"><meta property="og:description" content="history 命令整理 history 命令的常用方法记录。
+"><meta name=keywords content="shell,"><meta property="og:url" content="https://ziyaoxie.github.io/tech/2023/07/05/shell-command-history/"><meta property="og:site_name" content="提笔忘字"><meta property="og:title" content="history 命令整理"><meta property="og:description" content="history 命令整理 history 命令的常用方法记录。
 显示时间戳 如果要让 history 在显示历史命令时同时显示记录命令的时间，则需要设置如下环境变量：
 $ export HISTTIMEFORMAT='%F %T ' 也可以设置 alias 语句来查看最近的历史命令：
 alias h1='history 10' alias h2='history 20' alias h3='history 30' 搜索历史命令 按下 Ctrl +R 然后输入关键字，可以在历史命令中通过关键字来查找已经历史命名。例如，搜索 red，则显示以前的命令中含有 red 的命令 cat/etc/redhat-release：
@@ -86,4 +86,4 @@ $ history | more 1 service network restart 2 exit 3 id 4 cat /etc/redhat-release
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 禁止记录任何命令</span>
 </span></span><span style=display:flex><span>export HISTSIZE<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>
-</span></span></code></pre></div></content><p><a href=https://imx.ink/shell/>#Shell</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
+</span></span></code></pre></div></content><p><a href=https://ziyaoxie.github.io/shell/>#Shell</a></p></main><footer>Copyright © 2023, Xie Ziyao.</footer></body></html>
