@@ -1,125 +1,125 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Database on 提笔忘字</title><link>https://ziyaoxie.github.io/database/</link><description>Recent content in Database on 提笔忘字</description><generator>Hugo</generator><language>zh-CN</language><copyright>Copyright © 2023, Xie Ziyao.</copyright><lastBuildDate>Sat, 11 May 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://ziyaoxie.github.io/database/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库事务测试工具</title><link>https://ziyaoxie.github.io/tech/2024/05/11/database-transaction-testing-tools/</link><pubDate>Sat, 11 May 2024 18:00:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2024/05/11/database-transaction-testing-tools/</guid><description>&lt;h2 id="数据库事务测试工具"&gt;数据库事务测试工具&lt;/h2&gt;
 &lt;p&gt;参考资料：&lt;a href="https://cn.pingcap.com/blog/tag/transaction-frontier-research/"&gt;TiDB-事务前沿研究&lt;/a&gt;；&lt;/p&gt;
 &lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;分类&lt;/th&gt;
- &lt;th&gt;名称&lt;/th&gt;
- &lt;th&gt;描述&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;事务一致性测试&lt;/td&gt;
- &lt;td&gt;&lt;a href="https://github.com/pingcap/tipocket/tree/master/testcase/bank"&gt;Bank&lt;/a&gt;&lt;/td&gt;
- &lt;td&gt;银行测试是模拟一个银行系统中的转账流程。
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;分类&lt;/th&gt;
+					&lt;th&gt;名称&lt;/th&gt;
+					&lt;th&gt;描述&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事务一致性测试&lt;/td&gt;
+					&lt;td&gt;&lt;a href="https://github.com/pingcap/tipocket/tree/master/testcase/bank"&gt;Bank&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;银行测试是模拟一个银行系统中的转账流程。
 &lt;br&gt;&lt;br&gt;
 在这个测试中，我们创建一系列模拟银行账户，并随时选择两个账户使用事务进行相互转账，一个账户减去一定的金额，另一个账户增加对应的金额，这样的交易不断的并发执行着。在快照隔离下，所有的转账都必须保证每一个时刻所有的账户的总金额是相同的。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;事务一致性测试&lt;/td&gt;
- &lt;td&gt;&lt;a href="https://github.com/anishathalye/porcupine"&gt;Porcupine&lt;/a&gt;&lt;/td&gt;
- &lt;td&gt;Porcupine 一个用 Go 实现的线性一致性验证工具。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事务一致性测试&lt;/td&gt;
+					&lt;td&gt;&lt;a href="https://github.com/anishathalye/porcupine"&gt;Porcupine&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Porcupine 一个用 Go 实现的线性一致性验证工具。
 &lt;br&gt;&lt;br&gt;
 是基于 P-compositionality 算法，P-compositionality 算法利用了线性一致性的 Locality 原理，即如果一个调用历史的所有子历史都满足线性一致性，那么这个历史本身也满足线性一致性。因此，可以将一些不相关的历史划分开来，形成多个规模更小的子历史，转而验证这些子历史的线性一致性。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;事务隔离级别测试&lt;/td&gt;
- &lt;td&gt;&lt;a href="https://github.com/jepsen-io/elle"&gt;Elle&lt;/a&gt;&lt;/td&gt;
- &lt;td&gt;Elle 是用来验证数据库事务隔离级别的检查工具。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事务隔离级别测试&lt;/td&gt;
+					&lt;td&gt;&lt;a href="https://github.com/jepsen-io/elle"&gt;Elle&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Elle 是用来验证数据库事务隔离级别的检查工具。
 &lt;br&gt;&lt;br&gt;
 Elle 是一个纯黑盒的测试工具，巧妙的构造了一个测试场景，通过客户端生成的历史构造出依赖关系图，通过判断依赖图中是否有环以及分析环来确定事务的出现的异常类型，来确定事务的隔离级别。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;事务隔离级别测试&lt;/td&gt;
- &lt;td&gt;&lt;a href="https://github.com/postgres/postgres/tree/master/src/test/isolation"&gt;pg_isolation_regress&lt;/a&gt;&lt;/td&gt;
- &lt;td&gt;包含一组针对 PostgreSQL 中并发行为的测试。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事务隔离级别测试&lt;/td&gt;
+					&lt;td&gt;&lt;a href="https://github.com/postgres/postgres/tree/master/src/test/isolation"&gt;pg_isolation_regress&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;包含一组针对 PostgreSQL 中并发行为的测试。
 &lt;br&gt;&lt;br&gt;
 这些测试需要运行多个交互事务，这需要管理多个并发连接，因此无法使用常规 pg_regress 程序进行测试。主要测试可序列化隔离级别，也添加了针对其他类型并发行为的测试。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;</description></item><item><title>数据库测什么与怎么测</title><link>https://ziyaoxie.github.io/tech/2024/04/22/what-and-how-to-test-the-database/</link><pubDate>Mon, 22 Apr 2024 18:00:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2024/04/22/what-and-how-to-test-the-database/</guid><description>&lt;h2 id="数据库测什么与怎么测"&gt;数据库测什么与怎么测&lt;/h2&gt;
 &lt;p&gt;传说中有三个问题能直击灵魂：“你是谁？从哪来？到哪去？”&lt;/p&gt;
 &lt;p&gt;对于测试人员来说，“你是谁”这个问题已经解决了，剩下两个问题也随之变成了“测什么”和“怎么测”。&lt;/p&gt;
 &lt;h2 id="测什么"&gt;测什么&lt;/h2&gt;
 &lt;p&gt;如果从代码开始，由内而外进行总结的话，数据库的测试，可以分为以下层次。&lt;/p&gt;
 &lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;序号&lt;/th&gt;
- &lt;th&gt;测试项&lt;/th&gt;
- &lt;th&gt;说明&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;0&lt;/td&gt;
- &lt;td&gt;代码静态检查&lt;/td&gt;
- &lt;td&gt;根据所选择的开发语言，可以根据已制定的开发规范选择相应的自动化检查工具，在代码合并到主仓库之前完成检查。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;1&lt;/td&gt;
- &lt;td&gt;基于编译器的检查，sanitizers&lt;/td&gt;
- &lt;td&gt;无论是传统一些的 valgrind，还是现在开始流行的 google sanitizers，都能够在产品走向生产环境之前，暴露出一些内存、线程等相关问题。
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;序号&lt;/th&gt;
+					&lt;th&gt;测试项&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;0&lt;/td&gt;
+					&lt;td&gt;代码静态检查&lt;/td&gt;
+					&lt;td&gt;根据所选择的开发语言，可以根据已制定的开发规范选择相应的自动化检查工具，在代码合并到主仓库之前完成检查。&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;1&lt;/td&gt;
+					&lt;td&gt;基于编译器的检查，sanitizers&lt;/td&gt;
+					&lt;td&gt;无论是传统一些的 valgrind，还是现在开始流行的 google sanitizers，都能够在产品走向生产环境之前，暴露出一些内存、线程等相关问题。
 &lt;br&gt;&lt;br&gt;
 严格来讲这些问题的暴露是需要和丰富的测例库配合的，但由于 sanitizers 需要在编译时打开相关的选项，所以笔者选择将其放在紧挨着代码静态检查的地方。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;2&lt;/td&gt;
- &lt;td&gt;单元测试&lt;/td&gt;
- &lt;td&gt;这是最贴近代码的测试形式，能一定程度保证被测试单元的质量，减少低级错误所引发的 bug。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;3&lt;/td&gt;
- &lt;td&gt;Assert&lt;/td&gt;
- &lt;td&gt;如果说单元测试保证的是零件的质量，合理并必要的 Debug Assert 则能够通过检查关键变量是否为合理值，从而尽早地检查出零件组合之后存在的问题。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;4&lt;/td&gt;
- &lt;td&gt;基本功能测试（冒烟测试）&lt;/td&gt;
- &lt;td&gt;这个阶段的测试内容，主要是保证数据库能够像一个数据库一样运行，能够像一个数据库一样对用户的操作作出反应。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;5&lt;/td&gt;
- &lt;td&gt;SQL 逻辑测试&lt;/td&gt;
- &lt;td&gt;一般而言，SQL 逻辑测试是数据库测试的重中之重，因为如果 SQL 语句执行的结果有问题，数据库其他特性做得再好也没有意义了。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;单元测试&lt;/td&gt;
+					&lt;td&gt;这是最贴近代码的测试形式，能一定程度保证被测试单元的质量，减少低级错误所引发的 bug。&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;3&lt;/td&gt;
+					&lt;td&gt;Assert&lt;/td&gt;
+					&lt;td&gt;如果说单元测试保证的是零件的质量，合理并必要的 Debug Assert 则能够通过检查关键变量是否为合理值，从而尽早地检查出零件组合之后存在的问题。&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;4&lt;/td&gt;
+					&lt;td&gt;基本功能测试（冒烟测试）&lt;/td&gt;
+					&lt;td&gt;这个阶段的测试内容，主要是保证数据库能够像一个数据库一样运行，能够像一个数据库一样对用户的操作作出反应。&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;5&lt;/td&gt;
+					&lt;td&gt;SQL 逻辑测试&lt;/td&gt;
+					&lt;td&gt;一般而言，SQL 逻辑测试是数据库测试的重中之重，因为如果 SQL 语句执行的结果有问题，数据库其他特性做得再好也没有意义了。
 &lt;br&gt;&lt;br&gt;
 可以说数据库领域的新人和新产品是十分幸运的，因为市面上有很多成熟的开源数据库，在开源了代码的同时也开源了它们的海量测例，后来者可以直接用测例来验证自己的数据库产品。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;6&lt;/td&gt;
- &lt;td&gt;SQL 混淆测试&lt;/td&gt;
- &lt;td&gt;混淆测试即 Fuzz 测试，算是 SQL 逻辑测试的延伸，主要思路是通过分析语法树自动生成大量随机的 SQL 语句，对数据库解析器的解析能力进行考验。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;6&lt;/td&gt;
+					&lt;td&gt;SQL 混淆测试&lt;/td&gt;
+					&lt;td&gt;混淆测试即 Fuzz 测试，算是 SQL 逻辑测试的延伸，主要思路是通过分析语法树自动生成大量随机的 SQL 语句，对数据库解析器的解析能力进行考验。
 &lt;br&gt;&lt;br&gt;
 现在主要有两种思路：一种是不关心语句执行结果，只检查解析器是否存在可能导致崩溃的 bug；另一种则是按照特定的算法生成语句，能够根据算法推断出语句的执行结果，再跟数据库实际返回的结果做比较。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;7&lt;/td&gt;
- &lt;td&gt;压力测试&lt;/td&gt;
- &lt;td&gt;无故障场景下的稳定性测试，测试的手段一般都很简单，基本是通过其他工具程序模拟出长时间、高并发、高频率的客户端动作。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;7&lt;/td&gt;
+					&lt;td&gt;压力测试&lt;/td&gt;
+					&lt;td&gt;无故障场景下的稳定性测试，测试的手段一般都很简单，基本是通过其他工具程序模拟出长时间、高并发、高频率的客户端动作。
 &lt;br&gt;&lt;br&gt;
 具体可以大致分为 CPU 资源紧张、磁盘资源紧张、内存资源紧张等几个测试方向，重点观察数据库在一般压力情况下和高压情况下，是否会出现语句执行结果出错、非预期的死锁、性能相关指标变化不符合预期等问题。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;8&lt;/td&gt;
- &lt;td&gt;故障模拟测试&lt;/td&gt;
- &lt;td&gt;在没有数据副本的情况下，故障模拟测试一般都围绕着数据安全性进行，确认故障发生时已提交的事务数据不丢失，未提交的数据不能生效。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;8&lt;/td&gt;
+					&lt;td&gt;故障模拟测试&lt;/td&gt;
+					&lt;td&gt;在没有数据副本的情况下，故障模拟测试一般都围绕着数据安全性进行，确认故障发生时已提交的事务数据不丢失，未提交的数据不能生效。
 &lt;br&gt;&lt;br&gt;
 故障形式一般以通过 kill 命令杀死数据库进程为主。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;9&lt;/td&gt;
- &lt;td&gt;性能测试&lt;/td&gt;
- &lt;td&gt;固定场景下测试并记录数据，待新版本发布时进行回归对比。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;10&lt;/td&gt;
- &lt;td&gt;事务属性相关测试&lt;/td&gt;
- &lt;td&gt;事务的 ACID 四个属性，其中 ACD 三个属性都很好测试验证，剩下的 I 则无论是测试难度还是对数据库的重要性，都是四个属性中最高的。
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;9&lt;/td&gt;
+					&lt;td&gt;性能测试&lt;/td&gt;
+					&lt;td&gt;固定场景下测试并记录数据，待新版本发布时进行回归对比。&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;10&lt;/td&gt;
+					&lt;td&gt;事务属性相关测试&lt;/td&gt;
+					&lt;td&gt;事务的 ACID 四个属性，其中 ACD 三个属性都很好测试验证，剩下的 I 则无论是测试难度还是对数据库的重要性，都是四个属性中最高的。
 &lt;br&gt;&lt;br&gt;
 基于传统的 ANSI 标准定义的隔离级，RC 和 Serializable 的定义清晰，相对比较容易设计测例编写测试工具；但 RR 隔离级则含糊得很，需要开发与测试人员共同参考一些比较新的论文，共同确认所研发的数据库 RR 隔离级具体能避免哪些问题，不能避免哪些问题。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="怎么测"&gt;怎么测&lt;/h2&gt;
 &lt;p&gt;或者具体地说，我们需要编写怎样的测试工具。&lt;/p&gt;</description></item><item><title>数据库分库分表</title><link>https://ziyaoxie.github.io/tech/2023/06/28/database-sharding/</link><pubDate>Wed, 28 Jun 2023 12:48:00 +0800</pubDate><guid>https://ziyaoxie.github.io/tech/2023/06/28/database-sharding/</guid><description>&lt;h2 id="数据库分库分表"&gt;数据库分库分表&lt;/h2&gt;
